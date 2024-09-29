@@ -1,0 +1,25 @@
+.breadcrumb {
+    list-style: none;
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+}
+
+.link {
+    text-decoration: none;
+    color: #007BFF;
+}
+
+.label {
+    color: #6c757d;
+}
+
+.separator {
+    margin: 0 0.5em;
+    color: #6c757d;
+}
