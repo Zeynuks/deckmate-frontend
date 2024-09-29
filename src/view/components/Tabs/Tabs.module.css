@@ -1,0 +1,25 @@
+.tabs {
+    width: 100%;
+}
+
+.tabList {
+    display: flex;
+    border-bottom: 1px solid #ccc;
+}
+
+.tab {
+    padding: 0.5em 1em;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.tab.active {
+    border-bottom: 2px solid #007BFF;
+    font-weight: bold;
+}
+
+.tabContent {
+    padding: 1em;
+}
