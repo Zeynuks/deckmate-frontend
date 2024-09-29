@@ -1,0 +1,11 @@
+.input {
+    width: 100%;
+    padding: 0.5em;
+    border: 0.05em solid #777;
+    border-radius: 0.25em;
+    outline: none;
+}
+
+.input:focus {
+    border-color: hsl(200, 100%, 50%);
+}
