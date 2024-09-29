@@ -1,0 +1,18 @@
+.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    cursor: pointer;
+}
+
+.input {
+    cursor: pointer;
+}
+
+.input:disabled {
+    cursor: not-allowed;
+}
+
+.label {
+    cursor: pointer;
+}
