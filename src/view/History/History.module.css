@@ -1,0 +1,12 @@
+.history {
+    background-image: url("../../assets/elements/Union.svg");
+    background-size: 100%;
+    padding-block: 12px;
+    padding-inline: 16px;
+    align-items: center;
+    display: flex;
+    gap: 8px;
+}
+
+
+
