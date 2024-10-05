@@ -37,10 +37,6 @@ export function Select({ multiple, value, onChange, options }: SelectProps) {
         return o1.value === o2.value;
     }
 
-    function clearOptions() {
-        multiple ? onChange([]) : onChange(undefined);
-    }
-
     function selectOption(option: SelectOption) {
         if (multiple) {
             if ((value as SelectOption[]).some((o) => areOptionsEqual(o, option))) {
@@ -122,29 +118,10 @@ export function Select({ multiple, value, onChange, options }: SelectProps) {
                     className={styles['option-badge']}
                 >
                     {v.label}
-                    <img
-                        src={exampleIcon}
-                        alt="Remove"
-                        className={styles['remove-btn-icon']}
-                    />
                 </button>
             ))
             : (value as SelectOption | undefined)?.label}
       </span>
-            <button
-                onClick={(e) => {
-                    e.stopPropagation();
-                    clearOptions();
-                }}
-                className={styles['clear-btn']}
-            >
-                <img
-                    src={exampleIcon}
-                    alt="Clear"
-                    className={styles['clear-btn-icon']}
-                />
-            </button>
-            <div className={styles.divider}></div>
             <button
                 className={styles.caret}
                 onClick={(e) => {
