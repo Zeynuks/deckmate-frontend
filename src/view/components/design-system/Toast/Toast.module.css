@@ -1,0 +1,129 @@
+.toastContainer {
+    position: fixed;
+    top: 11.5%;
+    right: 3%;
+    width: 300px;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    position: absolute;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    transform: translateY(-100%);
+    animation: slideIn 0.5s forwards, fadeIn 0.5s ease-out;
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+@keyframes slideIn {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.toastExit {
+    animation: slideOut 0.3s forwards, fadeOut 0.3s ease-in;
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-100%);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.success {
+    border-left: 5px solid #7B61FF;
+}
+
+.error {
+    border-left: 5px solid #dc3545;
+}
+
+.warning {
+    border-left: 5px solid #ffc107;
+}
+
+.info {
+    border-left: 5px solid #17a2b8;
+}
+
+/* Добавляем соответствующие цвета для линии прогресса */
+.progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    animation: progress 5s linear forwards;
+}
+
+.successProgress {
+    background-color: #7B61FF;
+}
+
+.errorProgress {
+    background-color: #dc3545;
+}
+
+.warningProgress {
+    background-color: #ffc107;
+}
+
+.infoProgress {
+    background-color: #17a2b8;
+}
+
+@keyframes progress {
+    from { width: 100%; }
+    to { width: 0%; }
+}
+
+.toastContent {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.icon img {
+    width: 24px;
+    height: 24px;
+}
+
+.message {
+    display: flex;
+    flex-direction: column;
+    margin-left: 12px;
+}
+
+@media (max-width: 600px) {
+    .toastContainer {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+    }
+
+    .toast {
+        width: auto;
+    }
+}
