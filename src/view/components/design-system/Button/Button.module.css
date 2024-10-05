@@ -1,0 +1,61 @@
+.button {
+    display: flex;
+    align-items: center;
+    gap: 0.55em;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: filter 0.3s, background-color 0.3s;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    background: none;
+}
+
+.border {
+    border: 1px solid #000000;
+}
+
+.button:disabled {
+    background-color: #ddd;
+    color: #aaa;
+    cursor: not-allowed;
+}
+
+.button:focus {
+    outline: none;
+}
+
+.button:hover:not(:disabled) {
+    filter: brightness(1.2);
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+}
+
+.iconOnly {
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.iconOnly:hover:not(:disabled) {
+    filter: none;
+}
+
+.iconOnly:disabled {
+    background-color: transparent;
+    color: #aaa;
+}
+
+.iconTop {
+    flex-direction: column; /* Добавляем вертикальное расположение для иконки сверху */
+    justify-content: center;
+    gap: 6px; /* Устанавливаем расстояние в 6px между иконкой и текстом */
+}
