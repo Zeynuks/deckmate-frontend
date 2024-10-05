@@ -1,0 +1,75 @@
+.container {
+    position: relative;
+}
+
+.inputWrapper {
+    max-height: 48px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 14px 16px;
+    background-color: #fff;
+}
+
+.input {
+    border: none;
+    outline: none;
+    flex: 1;
+    cursor: text;
+}
+
+.dropdownButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0 5px;
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s ease;
+}
+
+.arrowIcon {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+}
+
+.arrowUp {
+    transform: perspective(5px) translateZ(1px);
+}
+
+.dropdown {
+    position: absolute;
+    border-radius: 20px;
+    padding: 0;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    
+}
+
+.option {
+    padding: 14px 16px;
+    list-style: none;
+    cursor: pointer;
+}
+
+.option:hover,
+.highlighted {
+    background-color: #f0f0f0;
+}
+
+.selected {
+    background-color: #e0e0e0;
+}
+
+.noOptions {
+    padding: 14px 16px;
+    color: #999;
+    cursor: default;
+}
