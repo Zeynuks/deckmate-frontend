@@ -31,7 +31,10 @@
   padding: 0;
 }
 
-body {
-  font-family: 'Nunito', sans-serif;
-  box-sizing: border-box;
+html, body {
+
+  margin: 0;
+  padding: 0;
+  display: grid;
+
 }
