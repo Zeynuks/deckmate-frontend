@@ -31,6 +31,12 @@
   padding: 0;
 }
 
+text {
+  font-family: 'Nunito', serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
 html, body {
 
   margin: 0;
