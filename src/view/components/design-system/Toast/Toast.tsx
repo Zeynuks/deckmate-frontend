@@ -1,10 +1,11 @@
 import React, { useEffect, useState, CSSProperties } from 'react';
 import styles from './Toast.module.css';
-import checkIcon from '../../../../assets/icons/import.svg';
-import errorIcon from '../../../../assets/icons/import.svg';
-import warningIcon from '../../../../assets/icons/import.svg';
-import infoIcon from '../../../../assets/icons/import.svg';
+import successIcon from '../../../../assets/icons/tick-circle.svg';
+import errorIcon from '../../../../assets/icons/close-circle.svg';
+import warningIcon from '../../../../assets/icons/info-circle.svg';
+import infoIcon from '../../../../assets/icons/more-circle.svg';
 import { Typography } from "../Typography/Typography.tsx";
+import {Button} from "../Button/Button.tsx";
 
 interface Message {
     id: number;
@@ -35,7 +36,7 @@ const Toast: React.FC<ToastProps> = ({ message, onClose, duration = 5000, style 
     const getIcon = () => {
         switch (message.type) {
             case 'success':
-                return checkIcon;
+                return successIcon;
             case 'error':
                 return errorIcon;
             case 'warning':
@@ -76,9 +77,7 @@ const Toast: React.FC<ToastProps> = ({ message, onClose, duration = 5000, style 
             onClick={handleClose}
         >
             <div className={styles.toastContent}>
-                <div className={styles.icon}>
-                    <img src={getIcon()} alt={`${message.type || 'info'} icon`} />
-                </div>
+                <Button iconSrc={getIcon()} size={"small"} onClick={() => {}}></Button>
                 <div className={styles.message}>
                     <Typography variant="toastTitle">{message.title}</Typography>
                     <Typography color={"#666666"} variant="toastDescription">

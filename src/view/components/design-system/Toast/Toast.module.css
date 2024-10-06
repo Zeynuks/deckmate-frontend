@@ -1,5 +1,8 @@
 .toastContainer {
     position: fixed;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     top: 11.5%;
     right: 3%;
     width: 300px;
@@ -54,19 +57,19 @@
 }
 
 .success {
-    border-left: 5px solid #7B61FF;
+    border-left: 5px solid #26DD70;
 }
 
 .error {
-    border-left: 5px solid #dc3545;
+    border-left: 5px solid #FF7B61;
 }
 
 .warning {
-    border-left: 5px solid #ffc107;
+    border-left: 5px solid #7B61FF;
 }
 
 .info {
-    border-left: 5px solid #17a2b8;
+    border-left: 5px solid #4A9FB3;
 }
 
 /* Добавляем соответствующие цвета для линии прогресса */
@@ -79,19 +82,19 @@
 }
 
 .successProgress {
-    background-color: #7B61FF;
+    background-color: #26DD70;
 }
 
 .errorProgress {
-    background-color: #dc3545;
+    background-color: #FF7B61;
 }
 
 .warningProgress {
-    background-color: #ffc107;
+    background-color: #7B61FF;
 }
 
 .infoProgress {
-    background-color: #17a2b8;
+    background-color: #4A9FB3;
 }
 
 @keyframes progress {
@@ -105,7 +108,7 @@
     flex: 1;
 }
 
-.icon img {
+.icon {
     width: 24px;
     height: 24px;
 }
