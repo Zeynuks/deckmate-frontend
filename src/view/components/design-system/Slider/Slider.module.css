@@ -1,8 +1,0 @@
-.slider {
-    width: 100%;
-    cursor: pointer;
-}
-
-.slider:disabled {
-    cursor: not-allowed;
-}
