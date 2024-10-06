@@ -54,9 +54,9 @@ export const Header: React.FC<HeaderProps> = ({
                     </Typography>
                 </section>
                 <History
-                    onBack={() => handleShowToast('error')}
+                    onBack={() => handleShowToast('warning')}
                     onView={() => handleShowToast('warning')}
-                    onForward={() => handleShowToast('success')}
+                    onForward={() => handleShowToast('warning')}
                 ></History>
                 <section className={styles.actions}>
                     <Button iconSrc={importIcon}
@@ -65,19 +65,19 @@ export const Header: React.FC<HeaderProps> = ({
                     </Button>
                     <Button iconSrc={categoryIcon}
                             color={"none"}
-                            onClick={() => handleShowToast('success')}>
+                            onClick={() => handleShowToast('info')}>
                     </Button>
                     <Button iconSrc={playIcon}
                             color={"#7B61FF"}
                             textColor={"#FFFFFF"}
-                            onClick={() => handleShowToast('success')}
+                            onClick={() => handleShowToast('error')}
                             iconPosition={"right"}>
                         Present
                     </Button>
                     <Button iconSrc={shareIcon}
                             color={"#000000"}
                             textColor={"#FFFFFF"}
-                            onClick={() => handleShowToast('success')}
+                            onClick={() => handleShowToast('info')}
                             iconPosition={"right"}>
                         Share
                     </Button>
