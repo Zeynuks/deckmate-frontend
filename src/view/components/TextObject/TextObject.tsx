@@ -1,23 +1,28 @@
+// TextObjectComponent.tsx
+
 import React from 'react';
-import { TextObject } from '../../../source/types';
+import {TextObject} from '../../../source/types';
 
 type TextObjectProps = {
     object: TextObject;
+    slideWidth: number;
+    slideHeight: number;
 };
 
-const ORIGINAL_SLIDE_WIDTH = 1920;
-const ORIGINAL_SLIDE_HEIGHT = 1080;
-
-export const TextObjectComponent: React.FC<TextObjectProps> = ({ object }) => {
-    const scaledX = (object.position.x / ORIGINAL_SLIDE_WIDTH) * 100;
-    const scaledY = (object.position.y / ORIGINAL_SLIDE_HEIGHT) * 100;
-    const fontSize = object.fontSize + '%';
+export const TextObjectComponent: React.FC<TextObjectProps> = ({
+                                                                   object,
+                                                                   slideWidth,
+                                                                   slideHeight,
+                                                               }) => {
+    const scaledX =  (object.position.x + object.size.width / 1.3) / 1920 * slideWidth;
+    const scaledY = (object.position.y + object.size.height/ 4) / 1080 * slideHeight;
+    const scaledFontSize = object.fontSize * slideWidth / 1920;
 
     return (
         <text
-            x={`${scaledX}%`}
-            y={`${scaledY}%`}
-            fontSize={fontSize}
+            x={scaledX}
+            y={scaledY}
+            fontSize={scaledFontSize}
             fontFamily={object.fontFamily}
             fontWeight={object.fontWeight || 'normal'}
             textAnchor={

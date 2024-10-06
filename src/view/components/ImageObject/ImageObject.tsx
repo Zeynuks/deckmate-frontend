@@ -1,26 +1,32 @@
+// ImageObjectComponent.tsx
+
 import React from 'react';
 import { ImageObject } from '../../../source/types';
 
 type ImageObjectProps = {
     object: ImageObject;
+    slideWidth: number;
+    slideHeight: number;
 };
 
-const ORIGINAL_SLIDE_WIDTH = 1920;
-const ORIGINAL_SLIDE_HEIGHT = 1080;
-
-export const ImageObjectComponent: React.FC<ImageObjectProps> = ({ object }) => {
-    const scaledX = (object.position.x / ORIGINAL_SLIDE_WIDTH) * 100;
-    const scaledY = (object.position.y / ORIGINAL_SLIDE_HEIGHT) * 100;
-    const scaledWidth = (object.size.width / ORIGINAL_SLIDE_WIDTH) * 100;
-    const scaledHeight = (object.size.height / ORIGINAL_SLIDE_HEIGHT) * 100;
+export const ImageObjectComponent: React.FC<ImageObjectProps> = ({
+                                                                     object,
+                                                                     slideWidth,
+                                                                     slideHeight,
+                                                                 }) => {
+    const scaledX =  object.position.x / 1920 * slideWidth;
+    const scaledY =  object.position.y / 1080 * slideHeight;
+    const scaledWidth = object.size.width / 1920 * slideWidth;
+    const scaledHeight = object.size.height / 1080 * slideHeight;
 
     return (
         <image
+            style={{padding: 0, margin: 0}}
             href={object.src}
-            x={`${scaledX}%`}
-            y={`${scaledY}%`}
-            width={`${scaledWidth}%`}
-            height={`${scaledHeight}%`}
+            x={scaledX}
+            y={scaledY}
+            width={scaledWidth}
+            height={scaledHeight}
         />
     );
 };

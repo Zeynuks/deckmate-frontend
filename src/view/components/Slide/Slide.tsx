@@ -1,9 +1,9 @@
 // Slide.tsx
 
 import React from 'react';
-import { Slide as SlideType, ObjectType } from '../../../source/types';
-import { TextObjectComponent } from '../TextObject/TextObject';
-import { ImageObjectComponent } from '../ImageObject/ImageObject';
+import {Slide as SlideType, ObjectType} from '../../../source/types';
+import {TextObjectComponent} from '../TextObject/TextObject';
+import {ImageObjectComponent} from '../ImageObject/ImageObject';
 
 type SlideProps = {
     slide: SlideType;
@@ -11,13 +11,45 @@ type SlideProps = {
     height: number;
     borderRadius: number;
     transform?: string;
+    isView?: boolean
 };
 
-export const Slide: React.FC<SlideProps> = ({ slide, width, height, borderRadius, transform = '' }) => {
-    const { id, background, objects } = slide;
-    const { type: backgroundType } = background;
+export const Slide: React.FC<SlideProps> = ({slide, width, height, borderRadius, transform = '', isView = false}) => {
+    const {id, background, objects} = slide;
+    const {type: backgroundType} = background;
     console.log(slide.objects)
+
+    const viewObjects = objects.map((obj) => {
+        switch (obj.type) {
+            case ObjectType.Text:
+                return <TextObjectComponent
+                    key={obj.id}
+                    object={obj}
+                    slideWidth={width}
+                    slideHeight={height}/>;
+            case ObjectType.Image:
+                return <ImageObjectComponent
+                    key={obj.id}
+                    object={obj}
+                    slideWidth={width}
+                    slideHeight={height}/>;
+            default:
+                return null;
+        }
+    })
+
+    const rect = <rect
+        x="0"
+        y="0"
+        width={width}
+        height={height}
+        fill="white"
+        rx={borderRadius}
+        ry={borderRadius}
+    />
+
     return (
+
         <g transform={transform}>
             <defs>
                 <clipPath id={`clip-${id}`}>
@@ -45,15 +77,12 @@ export const Slide: React.FC<SlideProps> = ({ slide, width, height, borderRadius
 
             {backgroundType === 'image' && (
                 <>
-                    <rect
-                        x="0"
-                        y="0"
-                        width={width}
-                        height={height}
-                        fill="none"
-                        rx={borderRadius}
-                        ry={borderRadius}
-                    />
+                    {isView ? (
+                        <mask id="myMask">
+                            {rect}
+                        </mask>
+                    ) : rect}
+
                     <image
                         href={background.src}
                         x="0"
@@ -63,19 +92,16 @@ export const Slide: React.FC<SlideProps> = ({ slide, width, height, borderRadius
                         preserveAspectRatio="xMidYMid slice"
                         clipPath={`url(#clip-${id})`}
                     />
+
                 </>
             )}
+            {isView ? (
+                <g mask="url(#myMask)">
+                    {viewObjects}
+                </g>
+            ) : viewObjects}
 
-            {objects.map((obj) => {
-                switch (obj.type) {
-                    case ObjectType.Text:
-                        return <TextObjectComponent key={obj.id} object={obj} />;
-                    case ObjectType.Image:
-                        return <ImageObjectComponent key={obj.id} object={obj} />;
-                    default:
-                        return null;
-                }
-            })}
+
         </g>
     );
 };

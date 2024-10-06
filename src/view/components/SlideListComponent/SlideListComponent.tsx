@@ -1,8 +1,8 @@
 // SlideListComponent.tsx
 
 import React from 'react';
-import { Slide as SlideType } from '../../../source/types';
-import { Slide } from '../Slide/Slide';
+import {Slide as SlideType} from '../../../source/types';
+import {Slide} from '../Slide/Slide';
 
 type SlideListComponentProps = {
     slide: SlideType;
@@ -20,7 +20,7 @@ const CONFIG = {
     BORDER_COLOR: '#D9D9D9',
     BORDER_WIDTH: 15,
     SELECTED_BORDER_COLOR: '#7B61FF',
-    SELECTED_BORDER_WIDTH: 40,
+    SELECTED_BORDER_WIDTH: 50,
     FONT_SIZE: 96,
 };
 
@@ -82,16 +82,18 @@ export const SlideListComponent: React.FC<SlideListComponentProps> = ({
                     rx={SLIDE_BORDER_RADIUS}
                     ry={SLIDE_BORDER_RADIUS}
                 />
-
                 <g transform={`translate(${borderOffset}, ${borderOffset})`}>
                     <Slide
+                        isView={true}
                         slide={slide}
                         width={adjustedSlideWidth}
                         height={adjustedSlideHeight}
                         borderRadius={SLIDE_BORDER_RADIUS}
+                        transform={`translate(0, 0)`}
                     />
                 </g>
             </g>
         </g>
-    );
+    )
+        ;
 };
