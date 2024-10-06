@@ -3,8 +3,8 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    top: 11.5%;
-    right: 22.9%;
+    top: 118px;
+    right: 474px;
     width: 300px;
     z-index: 1000;
     pointer-events: none;

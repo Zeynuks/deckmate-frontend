@@ -25,8 +25,8 @@ function App() {
                             height: 200
                         },
                         position: {
-                            x: 200,
-                            y: 400
+                            x: 1000,
+                            y: 20
                         },
                         type: ObjectType.Text,
                         content: 'This is a full text object',
@@ -34,18 +34,18 @@ function App() {
                         fontFamily: 'Arial',
                         fontWeight: 'bold',
                         textAlign: 'center',
-                        lineHeight: 300,
+                        lineHeight: 20,
                         color: 'hsl(120, 100%, 50%)'
                     },
                     {
                         id: uuidv4() as ObjectID,
                         size: {
-                            width: 300,
-                            height: 200
+                            width: 192,
+                            height: 108
                         },
                         position: {
-                            x: 100,
-                            y: 200
+                            x: 200,
+                            y: 300
                         },
                         type: ObjectType.Image,
                         src: image,

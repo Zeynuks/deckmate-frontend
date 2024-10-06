@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Slide, SlideID, ObjectType, TextObject, Background, ObjectID, ImageObject } from './types';
+import { Slide, SlideID, ObjectType, TextObject, ObjectID, ImageObject } from './types';
 
 export const emptySlideTemplate: Slide = {
     id: uuidv4() as SlideID,
     background: {
-        src: '',
+        type: 'color',
         color: '#ffffff'
     },
     objects: []
@@ -20,7 +20,7 @@ export const emptyTextObjectTemplate: TextObject = {
         x: 0,
         y: 0
     },
-    content: '',
+    content: 'Text template',
     fontSize: 16,
     fontFamily: 'Arial'
 };
@@ -36,8 +36,4 @@ export const emptyImageObjectTemplate: ImageObject = {
         y: 0
     },
     src: '',
-};
-export const emptyBackgroundTemplate: Background = {
-    src: '',
-    color: '#ffffff'
 };
