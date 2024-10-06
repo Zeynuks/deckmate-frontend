@@ -8,15 +8,14 @@ import {SlideList} from "./view/SlideList/SlideList.tsx";
 import image from './assets/6581494373.jpg'
 
 function App() {
-    const maximalPresentation: Presentation = {
+    const presentation: Presentation = {
         title: 'Full Presentation',
         slides: [
-
             {
                 id: uuidv4() as SlideID,
                 background: {
-                    type: 'image',
-                    src: image
+                    type: 'color',
+                    color: '#FFFFFF'
                 },
                 objects: [
                     {
@@ -58,21 +57,61 @@ function App() {
                 id: uuidv4() as SlideID,
                 background: {
                     type: "color",
-                    color: '#000000',
+                    color: '#FFFFFF',
+                },
+                objects: []
+            },
+            {
+                id: uuidv4() as SlideID,
+                background: {
+                    type: "color",
+                    color: '#D9D9D9',
+                },
+                objects: []
+            },
+            {
+                id: uuidv4() as SlideID,
+                background: {
+                    type: "color",
+                    color: '#D9D9D9',
+                },
+                objects: []
+            },
+            {
+                id: uuidv4() as SlideID,
+                background: {
+                    type: "color",
+                    color: '#D9D9D9',
+                },
+                objects: []
+            },
+            {
+                id: uuidv4() as SlideID,
+                background: {
+                    type: "color",
+                    color: '#D9D9D9',
+                },
+                objects: []
+            },
+            {
+                id: uuidv4() as SlideID,
+                background: {
+                    type: "image",
+                    src: image,
                 },
                 objects: []
             }
         ]
     };
 
-    const maximalSelected: Selected = {
-        slideId: maximalPresentation.slides[0].id as SlideID,
-        objectId: [maximalPresentation.slides[0].objects[0].id, maximalPresentation.slides[0].objects[1].id] as ObjectID[]
+    const selected: Selected = {
+        slideId: presentation.slides[0].id as SlideID,
+        objectId: [presentation.slides[0].objects[0].id, presentation.slides[0].objects[1].id] as ObjectID[]
     };
 
     return (
         <ToastProvider>
-            <Header title={"Presentation name"} description={"Workspace"}/>
+            <Header title={presentation.title} description={"Workspace"}/>
             <div style={{height: "calc(100vh - 96px)", display: 'flex', flexDirection: 'row',}}>
                 <ElementPanel
                     onText={() => {
@@ -86,10 +125,11 @@ function App() {
                     onTriangle={() => {
                     }}/>
                 <PresentationWorkspace
+                    presentation={presentation}
+                    selected={selected}
                     scale={1.0}
-                    backgroundColor="#D9D9D9" // Цвет фона
                 />
-                <SlideList presentation={maximalPresentation} selected={maximalSelected}/>
+                <SlideList presentation={presentation} selected={selected}/>
             </div>
 
         </ToastProvider>
