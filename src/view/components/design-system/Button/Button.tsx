@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Button.module.css';
-import {Typography} from '../Typography/Typography';
+import { Typography } from '../Typography/Typography';
 
 type RequireAtLeastOne<T, Keys extends keyof T = keyof T> =
     Pick<T, Exclude<keyof T, Keys>> &
@@ -14,11 +14,12 @@ type ButtonBaseProps = {
     children?: React.ReactNode;
     size?: 'small' | 'medium' | 'large';
     iconSrc?: string;
-    iconPosition?: 'left' | 'right' | 'top'; // Добавили вариант 'top'
+    iconPosition?: 'left' | 'right' | 'top';
     textColor?: string;
     color?: string;
     border?: boolean;
     disabled?: boolean;
+    fullWidth?: boolean;
 };
 
 type ButtonProps = RequireAtLeastOne<ButtonBaseProps, 'iconSrc' | 'children'>;
@@ -30,9 +31,10 @@ export const Button: React.FC<ButtonProps> = ({
                                                   iconSrc,
                                                   iconPosition = 'left',
                                                   textColor,
-                                                  color = '#1A73E8',
+                                                  color,
                                                   border = false,
                                                   disabled = false,
+                                                  fullWidth = false,
                                               }) => {
     const isIconOnly = !!iconSrc && !children;
     const iconSize = size === 'small' ? 24 : size === 'large' ? 48 : 36;
@@ -41,8 +43,11 @@ export const Button: React.FC<ButtonProps> = ({
         <button
             onClick={onClick}
             disabled={disabled}
-            className={`${styles.button} ${border ? styles.border : ''} ${isIconOnly ? styles.iconOnly : ''} ${iconPosition === 'top' ? styles.iconTop : ''}`} // Добавили класс iconTop
-            style={{ backgroundColor: isIconOnly ? 'transparent' : color, color: isIconOnly ? '#000' : textColor }}
+            className={`${styles.button} ${border ? styles.border : ''} ${isIconOnly ? styles.iconOnly : ''} ${iconPosition === 'top' ? styles.iconTop : ''} ${fullWidth ? styles.fullWidth : styles.autoWidth}`}
+            style={{
+                backgroundColor: isIconOnly ? 'transparent' : color || 'transparent',
+                color: isIconOnly ? '#000' : textColor,
+            }}
             tabIndex={0}
         >
             {iconSrc && iconPosition === 'left' && (

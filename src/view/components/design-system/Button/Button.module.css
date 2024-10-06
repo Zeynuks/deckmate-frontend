@@ -1,6 +1,8 @@
 .button {
+    max-height: 48px;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.55em;
     padding: 12px 20px;
     border: none;
@@ -55,7 +57,16 @@
 }
 
 .iconTop {
-    flex-direction: column; /* Добавляем вертикальное расположение для иконки сверху */
+    flex-direction: column;
     justify-content: center;
-    gap: 6px; /* Устанавливаем расстояние в 6px между иконкой и текстом */
+    gap: 6px;
+}
+
+.fullWidth {
+    width: 100%;
+}
+
+.autoWidth {
+    width: auto;
+    max-width: max-content;
 }
