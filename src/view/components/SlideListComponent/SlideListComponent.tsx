@@ -89,7 +89,7 @@ export const SlideListComponent: React.FC<SlideListComponentProps> = ({
                         width={adjustedSlideWidth}
                         height={adjustedSlideHeight}
                         borderRadius={SLIDE_BORDER_RADIUS}
-                        transform={`translate(0, 0)`}
+                        transform={'translate(0, 0)'}
                     />
                 </g>
             </g>

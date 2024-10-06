@@ -14,19 +14,37 @@ type SlideProps = {
     isView?: boolean
 };
 
-export const Slide: React.FC<SlideProps> = ({slide, width, height, borderRadius, transform = '', isView = false}) => {
-    const {id, background, objects} = slide;
+export const Slide: React.FC<SlideProps> = ({
+                                                slide,
+                                                width,
+                                                height,
+                                                borderRadius,
+                                                transform = '',
+                                                isView = false
+                                            }) => {
+    const {
+        id,
+        background,
+        objects
+    } = slide;
     const {type: backgroundType} = background;
-    console.log(slide.objects)
+    console.log(slide.objects);
 
     const viewObjects = objects.map((obj) => {
         switch (obj.type) {
             case ObjectType.Text:
-                return <TextObjectComponent
-                    key={obj.id}
-                    object={obj}
-                    slideWidth={width}
-                    slideHeight={height}/>;
+                return <>
+                    <path fill="#000" fill-opacity="0" stroke="#000" stroke-opacity="0"
+                          stroke-width="100" stroke-linecap="round" stroke-linejoin="round"
+                          stroke-miterlimit="10" pointer-events="visiblePainted"
+                          d="M 100 100 L 100 100 100 100 100 100 Z"></path>
+                    <TextObjectComponent
+                        key={obj.id}
+                        object={obj}
+                        slideWidth={width}
+                        slideHeight={height}/>;
+                </>;
+
             case ObjectType.Image:
                 return <ImageObjectComponent
                     key={obj.id}
@@ -36,7 +54,7 @@ export const Slide: React.FC<SlideProps> = ({slide, width, height, borderRadius,
             default:
                 return null;
         }
-    })
+    });
 
     const rect = <rect
         x="0"
@@ -46,7 +64,7 @@ export const Slide: React.FC<SlideProps> = ({slide, width, height, borderRadius,
         fill="white"
         rx={borderRadius}
         ry={borderRadius}
-    />
+    />;
 
     return (
 

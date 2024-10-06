@@ -1,11 +1,11 @@
-import {Header} from "./view/Header/Header.tsx";
+import {Header} from './view/Header/Header.tsx';
 import {ToastProvider} from './view/components/design-system/Toast/ToastContext';
-import {ElementPanel} from "./view/ElementPanel/ElementPanel.tsx";
-import {PresentationWorkspace} from "./view/WorkSpace/WorkSpace.tsx";
-import {ObjectID, ObjectType, Presentation, Selected, SlideID} from "./source/types.ts";
+import {ElementPanel} from './view/ElementPanel/ElementPanel.tsx';
+import {PresentationWorkspace} from './view/WorkSpace/WorkSpace.tsx';
+import {ObjectID, ObjectType, Presentation, Selected, SlideID} from './source/types.ts';
 import {v4 as uuidv4} from 'uuid';
-import {SlideList} from "./view/SlideList/SlideList.tsx";
-import image from './assets/6581494373.jpg'
+import {SlideList} from './view/SlideList/SlideList.tsx';
+import image from './assets/6581494373.jpg';
 
 function App() {
     const presentation: Presentation = {
@@ -31,7 +31,7 @@ function App() {
                         type: ObjectType.Text,
                         content: 'This is a full text object',
                         fontSize: 72,
-                        fontFamily: 'Arial',
+                        fontFamily: 'Nunito',
                         fontWeight: 'bold',
                         textAlign: 'center',
                         lineHeight: 20,
@@ -56,7 +56,7 @@ function App() {
             {
                 id: uuidv4() as SlideID,
                 background: {
-                    type: "color",
+                    type: 'color',
                     color: '#FFFFFF',
                 },
                 objects: []
@@ -64,7 +64,7 @@ function App() {
             {
                 id: uuidv4() as SlideID,
                 background: {
-                    type: "color",
+                    type: 'color',
                     color: '#D9D9D9',
                 },
                 objects: []
@@ -72,7 +72,7 @@ function App() {
             {
                 id: uuidv4() as SlideID,
                 background: {
-                    type: "color",
+                    type: 'color',
                     color: '#D9D9D9',
                 },
                 objects: []
@@ -80,7 +80,7 @@ function App() {
             {
                 id: uuidv4() as SlideID,
                 background: {
-                    type: "color",
+                    type: 'color',
                     color: '#D9D9D9',
                 },
                 objects: []
@@ -88,7 +88,7 @@ function App() {
             {
                 id: uuidv4() as SlideID,
                 background: {
-                    type: "color",
+                    type: 'color',
                     color: '#D9D9D9',
                 },
                 objects: []
@@ -96,7 +96,7 @@ function App() {
             {
                 id: uuidv4() as SlideID,
                 background: {
-                    type: "image",
+                    type: 'image',
                     src: image,
                 },
                 objects: []
@@ -111,8 +111,12 @@ function App() {
 
     return (
         <ToastProvider>
-            <Header title={presentation.title} description={"Workspace"}/>
-            <div style={{height: "calc(100vh - 96px)", display: 'flex', flexDirection: 'row',}}>
+            <Header title={presentation.title} description={'Workspace'}/>
+            <div style={{
+                height: 'calc(100vh - 96px)',
+                display: 'flex',
+                flexDirection: 'row',
+            }}>
                 <ElementPanel
                     onText={() => {
                     }}
@@ -133,7 +137,7 @@ function App() {
             </div>
 
         </ToastProvider>
-    )
+    );
 }
 
 export default App;

@@ -1,16 +1,19 @@
 import React from 'react';
 import styles from './SlideList.module.css';
-import { Button } from '../components/design-system/Button/Button';
+import {Button} from '../components/design-system/Button/Button';
 import addIcon from '../../assets/icons/add.svg';
-import { Presentation, Selected } from '../../source/types';
-import { SlideListComponent } from '../components/SlideListComponent/SlideListComponent.tsx';
+import {Presentation, Selected} from '../../source/types';
+import {SlideListComponent} from '../components/SlideListComponent/SlideListComponent.tsx';
 
 type SlideListProps = {
     presentation: Presentation;
     selected: Selected;
 };
 
-export const SlideList: React.FC<SlideListProps> = ({ presentation, selected }) => {
+export const SlideList: React.FC<SlideListProps> = ({
+                                                        presentation,
+                                                        selected
+                                                    }) => {
     return (
         <section className={styles.slideMenu}>
             <Button
@@ -18,7 +21,8 @@ export const SlideList: React.FC<SlideListProps> = ({ presentation, selected }) 
                 iconPosition="right"
                 fullWidth
                 border
-                onClick={() => {}}
+                onClick={() => {
+                }}
             >
                 Add Slide
             </Button>

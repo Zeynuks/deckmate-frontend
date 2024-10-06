@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Button.module.css';
-import { Typography } from '../Typography/Typography';
+import {Typography} from '../Typography/Typography';
 
 type RequireAtLeastOne<T, Keys extends keyof T = keyof T> =
     Pick<T, Exclude<keyof T, Keys>> &
@@ -55,7 +55,10 @@ export const Button: React.FC<ButtonProps> = ({
                     src={iconSrc}
                     alt=""
                     className={styles.icon}
-                    style={{ width: `${iconSize}px`, height: `${iconSize}px` }}
+                    style={{
+                        width: `${iconSize}px`,
+                        height: `${iconSize}px`
+                    }}
                 />
             )}
             {iconSrc && iconPosition === 'top' && (
@@ -63,7 +66,10 @@ export const Button: React.FC<ButtonProps> = ({
                     src={iconSrc}
                     alt=""
                     className={styles.icon}
-                    style={{ width: `${iconSize}px`, height: `${iconSize}px` }}
+                    style={{
+                        width: `${iconSize}px`,
+                        height: `${iconSize}px`
+                    }}
                 />
             )}
             {children && (
@@ -76,7 +82,10 @@ export const Button: React.FC<ButtonProps> = ({
                     src={iconSrc}
                     alt=""
                     className={styles.icon}
-                    style={{ width: `${iconSize}px`, height: `${iconSize}px` }}
+                    style={{
+                        width: `${iconSize}px`,
+                        height: `${iconSize}px`
+                    }}
                 />
             )}
         </button>

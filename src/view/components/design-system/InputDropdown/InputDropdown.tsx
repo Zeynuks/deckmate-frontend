@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styles from './InputDropdown.module.css';
-import { Typography } from '../Typography/Typography';
+import {Typography} from '../Typography/Typography';
 
 export type DropdownOption = {
     label: string;
@@ -139,7 +139,7 @@ export const InputDropdown: React.FC<InputDropdownProps> = ({
                         fill="currentColor"
                         className={`${styles.arrowIcon} ${isOpen ? styles.arrowUp : styles.arrowDown}`}
                     >
-                        <path d="M5.516 7.548l4.484 4.484 4.484-4.484L16 8.984l-6 6-6-6z" />
+                        <path d="M5.516 7.548l4.484 4.484 4.484-4.484L16 8.984l-6 6-6-6z"/>
                     </svg>
                 </button>
             </div>

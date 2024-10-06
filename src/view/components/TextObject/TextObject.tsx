@@ -14,8 +14,8 @@ export const TextObjectComponent: React.FC<TextObjectProps> = ({
                                                                    slideWidth,
                                                                    slideHeight,
                                                                }) => {
-    const scaledX =  (object.position.x + object.size.width / 1.3) / 1920 * slideWidth;
-    const scaledY = (object.position.y + object.size.height/ 4) / 1080 * slideHeight;
+    const scaledX = (object.position.x + object.size.width / 1.3) / 1920 * slideWidth;
+    const scaledY = (object.position.y + object.size.height / 4) / 1080 * slideHeight;
     const scaledFontSize = object.fontSize * slideWidth / 1920;
 
     return (

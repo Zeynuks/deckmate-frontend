@@ -25,8 +25,7 @@ export default tseslint.config(
       ],
         "eqeqeq": ["error", "always"],
         "quotes": ["error", "single"],
-        "semi": ["error", "always"],
-        "object-curly-spacing": ["warn", "always"],
+        "semi": ["error", "always"]
     },
   },
 )

@@ -1,4 +1,4 @@
-import {Presentation, Slide, Selected, ObjectType, Background, TextObject, ImageObject} from './types';
+import { Presentation, Slide, Selected, ObjectType, Background, TextObject, ImageObject } from './types';
 
 export function addSlide(
     presentation: Presentation,

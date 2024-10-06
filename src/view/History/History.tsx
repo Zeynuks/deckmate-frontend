@@ -1,9 +1,9 @@
 import styles from './History.module.css';
 import {Button} from '../components/design-system/Button/Button';
 
-import undoIcon from "../../assets/icons/undo.svg"
-import viewIcon from "../../assets/icons/clock.svg"
-import redoIcon from "../../assets/icons/redo.svg"
+import undoIcon from '../../assets/icons/undo.svg';
+import viewIcon from '../../assets/icons/clock.svg';
+import redoIcon from '../../assets/icons/redo.svg';
 
 type HistoryProps = {
     onBack: () => void;
@@ -31,7 +31,7 @@ export const History: React.FC<HistoryProps> = ({
                     onClick={onBack}>
             </Button>
             <Button disabled={disabledView}
-                    size={"medium"}
+                    size={'medium'}
                     iconSrc={viewIcon}
                     onClick={onView}>
 

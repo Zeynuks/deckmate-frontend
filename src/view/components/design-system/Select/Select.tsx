@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import {useEffect, useRef, useState} from 'react';
 import styles from './Select.module.css';
 import exampleIcon from './SelectIcons/icon.svg';
 
@@ -23,7 +23,12 @@ type SelectProps = {
     options: SelectOption[];
 } & (SingleSelectProps | MultipleSelectProps);
 
-export function Select({ multiple, value, onChange, options }: SelectProps) {
+export function Select({
+                           multiple,
+                           value,
+                           onChange,
+                           options
+                       }: SelectProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [highlightedIndex, setHighlightedIndex] = useState(0);
     const containerRef = useRef<HTMLDivElement>(null);

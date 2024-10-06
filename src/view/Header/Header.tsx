@@ -1,8 +1,8 @@
 import styles from './Header.module.css';
 import {Button} from '../components/design-system/Button/Button';
-import {Typography} from "../components/design-system/Typography/Typography";
+import {Typography} from '../components/design-system/Typography/Typography';
 import {useToast} from '../components/design-system/Toast/ToastContext';
-import {History} from "../History/History";
+import {History} from '../History/History';
 
 import menuIcon from '../../assets/icons/menu.svg';
 import arrowDownIcon from '../../assets/icons/arrow-down.svg';
@@ -34,8 +34,8 @@ export const Header: React.FC<HeaderProps> = ({
     return (
         <header className={styles.header}>
             <section className={styles.navigation}>
-                <Button iconSrc={menuIcon} color={"none"}
-                        size={"large"}
+                <Button iconSrc={menuIcon} color={'none'}
+                        size={'large'}
                         onClick={() => handleShowToast('success')}>
                 </Button>
             </section>
@@ -45,7 +45,7 @@ export const Header: React.FC<HeaderProps> = ({
                         <Typography variant="title" as="h1">
                             {title}
                         </Typography>
-                        <Button iconSrc={arrowDownIcon} color={"none"}
+                        <Button iconSrc={arrowDownIcon} color={'none'}
                                 onClick={() => handleShowToast('success')}>
                         </Button>
                     </div>
@@ -60,25 +60,25 @@ export const Header: React.FC<HeaderProps> = ({
                 ></History>
                 <section className={styles.actions}>
                     <Button iconSrc={importIcon}
-                            color={"none"}
+                            color={'none'}
                             onClick={() => handleShowToast('success')}>
                     </Button>
                     <Button iconSrc={categoryIcon}
-                            color={"none"}
+                            color={'none'}
                             onClick={() => handleShowToast('info')}>
                     </Button>
                     <Button iconSrc={playIcon}
-                            color={"#7B61FF"}
-                            textColor={"#FFFFFF"}
+                            color={'#7B61FF'}
+                            textColor={'#FFFFFF'}
                             onClick={() => handleShowToast('error')}
-                            iconPosition={"right"}>
+                            iconPosition={'right'}>
                         Present
                     </Button>
                     <Button iconSrc={shareIcon}
-                            color={"#000000"}
-                            textColor={"#FFFFFF"}
+                            color={'#000000'}
+                            textColor={'#FFFFFF'}
                             onClick={() => handleShowToast('info')}
-                            iconPosition={"right"}>
+                            iconPosition={'right'}>
                         Share
                     </Button>
                 </section>

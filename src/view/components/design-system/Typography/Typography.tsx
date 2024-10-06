@@ -45,7 +45,7 @@ export const Typography: React.FC<TypographyProps> = ({
 
     const Tag = as || defaultTags[variant] || 'p';
 
-    const combinedStyle: React.CSSProperties = { ...style };
+    const combinedStyle: React.CSSProperties = {...style};
     if (color) combinedStyle.color = color;
     if (align) combinedStyle.textAlign = align;
 
@@ -57,7 +57,7 @@ export const Typography: React.FC<TypographyProps> = ({
         <Tag
             className={combinedClassName}
             style={combinedStyle}
-            {...(isLink ? { href } : {})}
+            {...(isLink ? {href} : {})}
             role={variant === 'buttonText' ? 'button' : undefined}
         >
             {children}

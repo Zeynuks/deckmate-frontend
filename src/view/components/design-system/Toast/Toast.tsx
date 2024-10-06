@@ -1,11 +1,11 @@
-import React, { useEffect, useState, CSSProperties } from 'react';
+import React, {useEffect, useState, CSSProperties} from 'react';
 import styles from './Toast.module.css';
 import successIcon from '../../../../assets/icons/tick-circle.svg';
 import errorIcon from '../../../../assets/icons/close-circle.svg';
 import warningIcon from '../../../../assets/icons/info-circle.svg';
 import infoIcon from '../../../../assets/icons/more-circle.svg';
-import { Typography } from "../Typography/Typography.tsx";
-import {Button} from "../Button/Button.tsx";
+import {Typography} from '../Typography/Typography.tsx';
+import {Button} from '../Button/Button.tsx';
 
 interface Message {
     id: number;
@@ -21,7 +21,12 @@ interface ToastProps {
     style?: CSSProperties;
 }
 
-const Toast: React.FC<ToastProps> = ({ message, onClose, duration = 5000, style }) => {
+const Toast: React.FC<ToastProps> = ({
+                                         message,
+                                         onClose,
+                                         duration = 5000,
+                                         style
+                                     }) => {
     const [exiting, setExiting] = useState(false);
 
     useEffect(() => {
@@ -77,10 +82,11 @@ const Toast: React.FC<ToastProps> = ({ message, onClose, duration = 5000, style 
             onClick={handleClose}
         >
             <div className={styles.toastContent}>
-                <Button iconSrc={getIcon()} size={"small"} onClick={() => {}}></Button>
+                <Button iconSrc={getIcon()} size={'small'} onClick={() => {
+                }}></Button>
                 <div className={styles.message}>
                     <Typography variant="toastTitle">{message.title}</Typography>
-                    <Typography color={"#666666"} variant="toastDescription">
+                    <Typography color={'#666666'} variant="toastDescription">
                         {message.description}
                     </Typography>
                 </div>

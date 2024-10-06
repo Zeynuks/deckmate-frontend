@@ -24,11 +24,11 @@ export const ElementPanel: React.FC<ElementPanelProps> = ({
                                                           }) => {
     return (
         <section className={styles.elementPanel}>
-            <Button iconSrc={textAreaIcon} onClick={onText} color={"none"} iconPosition={"top"}>Text</Button>
-            <Button iconSrc={imageIcon} onClick={onImage} color={"none"} iconPosition={"top"}>Image</Button>
-            <Button iconSrc={triangleIcon} onClick={onTriangle} color={"none"} iconPosition={"top"}>Triangle</Button>
-            <Button iconSrc={ellipseIcon} onClick={onEllipse} color={"none"} iconPosition={"top"}>Ellipse</Button>
-            <Button iconSrc={rectIcon} onClick={onRect} color={"none"} iconPosition={"top"}>Rect</Button>
+            <Button iconSrc={textAreaIcon} onClick={onText} color={'none'} iconPosition={'top'}>Text</Button>
+            <Button iconSrc={imageIcon} onClick={onImage} color={'none'} iconPosition={'top'}>Image</Button>
+            <Button iconSrc={triangleIcon} onClick={onTriangle} color={'none'} iconPosition={'top'}>Triangle</Button>
+            <Button iconSrc={ellipseIcon} onClick={onEllipse} color={'none'} iconPosition={'top'}>Ellipse</Button>
+            <Button iconSrc={rectIcon} onClick={onRect} color={'none'} iconPosition={'top'}>Rect</Button>
         </section>
     );
 };

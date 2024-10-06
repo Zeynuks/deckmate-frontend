@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, {useRef} from 'react';
 import styles from './Input.module.css';
 
 type InputProps = {
@@ -7,7 +7,11 @@ type InputProps = {
     placeholder?: string;
 };
 
-export const Input: React.FC<InputProps> = ({ value, onChange, placeholder }) => {
+export const Input: React.FC<InputProps> = ({
+                                                value,
+                                                onChange,
+                                                placeholder
+                                            }) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
     const handleKeyDown = (e: React.KeyboardEvent) => {

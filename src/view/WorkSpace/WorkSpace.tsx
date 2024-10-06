@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import styles from './WorkSpace.module.css';
-import {Presentation, Selected} from "../../source/types.ts";
-import {Slide} from "../components/Slide/Slide.tsx";
+import {Presentation, Selected} from '../../source/types.ts';
+import {Slide} from '../components/Slide/Slide.tsx';
 
 type WorkspaceProps = {
     presentation: Presentation;
@@ -33,7 +33,10 @@ export const PresentationWorkspace: React.FC<WorkspaceProps> = ({
     } = CONFIG;
 
     const workspaceRef = useRef<HTMLDivElement>(null);
-    const [dimensions, setDimensions] = useState({width: 0, height: 0});
+    const [dimensions, setDimensions] = useState({
+        width: 0,
+        height: 0
+    });
 
     useEffect(() => {
         const updateDimensions = () => {
@@ -66,7 +69,10 @@ export const PresentationWorkspace: React.FC<WorkspaceProps> = ({
                 <svg
                     width={dimensions.width}
                     height={dimensions.height}
-                    style={{display: 'block', backgroundColor: backgroundColor}}
+                    style={{
+                        display: 'block',
+                        backgroundColor: backgroundColor
+                    }}
                 >
                     <rect
                         transform={`translate(${SLIDE_MARGIN}, ${SLIDE_MARGIN})`}
