@@ -3,7 +3,7 @@ import styles from './SlideList.module.css';
 import { Button } from '../components/design-system/Button/Button';
 import addIcon from '../../assets/icons/add.svg';
 import { Presentation, Selected } from '../../source/types';
-import { SlideComponent } from '../components/Slide/Slide';
+import { SlideListComponent } from '../components/SlideListComponent/SlideListComponent.tsx';
 
 type SlideListProps = {
     presentation: Presentation;
@@ -25,11 +25,11 @@ export const SlideList: React.FC<SlideListProps> = ({ presentation, selected }) 
             <div className={styles.svgContainer}>
                 <svg
                     className={styles.slideList}
-                    viewBox={`0 0 1920 ${presentation.slides.length * (1080 + 100)}`}
+                    viewBox={`0 0 1920 ${presentation.slides.length * (1080)}`}
                     preserveAspectRatio="xMidYMid meet"
                 >
                     {presentation.slides.map((slide, index) => (
-                        <SlideComponent
+                        <SlideListComponent
                             key={slide.id}
                             slide={slide}
                             index={index}
