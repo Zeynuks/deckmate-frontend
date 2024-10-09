@@ -1,40 +1,54 @@
-import React, {useState} from 'react';
-import {Slide as SlideType, ObjectType} from '../../source/types.ts';
-import {TextObjectComponent} from './TextObject/TextObject.tsx';
-import {ImageObjectComponent} from './ImageObject/ImageObject.tsx';
-import {Transformable} from "../../view/components/shared/Transformable.tsx";
-import {Resizable} from "../../view/components/shared/Resizable.tsx";
+import React, { useState } from 'react';
+import { Slide as SlideType, ObjectType, Selected } from '../../source/types.ts';
+import { TextObjectComponent } from './TextObject/TextObject.tsx';
+import { ImageObjectComponent } from './ImageObject/ImageObject.tsx';
+import { Transformable } from "../../view/components/shared/Transformable.tsx";
+import { Resizable } from "../../view/components/shared/Resizable.tsx";
 
 type SlideProps = {
     slide: SlideType;
+    selected: Selected;
     borderRadius?: number;
     onView?: boolean;
 };
 
-export const Slide: React.FC<SlideProps> = ({slide, borderRadius = 0, onView = false}) => {
-    const {background, objects} = slide;
+export const Slide: React.FC<SlideProps> = ({ slide, selected, borderRadius = 0, onView = false }) => {
+    const { background, objects } = slide;
+
     const viewObjects = objects.map((obj) => {
         const [width, setWidth] = useState(obj.size.width);
         const [height, setHeight] = useState(obj.size.height);
+        const isSelected = selected && selected.objectId && selected.objectId.includes(obj.id);
+
         return (
             <Transformable
-                key={obj.id}
                 onView={onView}
                 initialX={obj.position.x}
                 initialY={obj.position.y}
             >
-                <Resizable
-                    width={width}
-                    height={height}
-                    onResize={(newWidth, newHeight) => {
-                        setWidth(newWidth);
-                        setHeight(newHeight);
-                    }}
-                    onView={onView}
-                >
-                    {obj.type === ObjectType.Text ? <TextObjectComponent height={slide.size.height} width={slide.size.width} slideObject={obj} onView={onView}/> :
-                        <ImageObjectComponent slideObject={obj} onView={onView}/>}
-                </Resizable>
+                {isSelected ? (
+                    <Resizable
+                        width={width}
+                        height={height}
+                        onResize={(newWidth, newHeight) => {
+                            setWidth(newWidth);
+                            setHeight(newHeight);
+                        }}
+                        onView={onView}
+                    >
+                        {obj.type === ObjectType.Text ? (
+                            <TextObjectComponent width={width} height={height} slideObject={obj} onView={onView} />
+                        ) : (
+                            <ImageObjectComponent width={width} height={height} slideObject={obj} onView={onView} />
+                        )}
+                    </Resizable>
+                ) : (
+                    obj.type === ObjectType.Text ? (
+                        <TextObjectComponent width={width} height={height} slideObject={obj} onView={onView} />
+                    ) : (
+                        <ImageObjectComponent width={width} height={height} slideObject={obj} onView={onView} />
+                    )
+                )}
             </Transformable>
         );
     });

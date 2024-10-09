@@ -1,17 +1,18 @@
-import React, {useState} from 'react';
 import {ImageObject} from '../../../source/types.ts';
 
 type ImageObjectProps = {
     slideObject: ImageObject;
+    width: number;
+    height: number;
     onView: boolean
 };
 
 export const ImageObjectComponent: React.FC<ImageObjectProps> = ({
                                                                      slideObject,
+                                                                     width,
+                                                                     height,
                                                                      onView = false
                                                                  }) => {
-    const [width] = useState(slideObject.size.width);
-    const [height] = useState(slideObject.size.height);
 
     return (
 

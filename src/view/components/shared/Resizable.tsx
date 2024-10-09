@@ -58,9 +58,25 @@ export const Resizable: React.FC<ResizableProps> = ({
         { x: -1, y: 0 },  // Left-center
     ];
 
+    const pathData = `
+        M0,0
+        L${width},0
+        L${width},${height}
+        L0,${height}
+        Z
+    `; // Описание пути для обводки
+
     return (
         <g>
             {children}
+            {/* Обводка */}
+            <path
+                d={pathData}
+                fill="none"
+                stroke="blue"
+                strokeWidth={2}
+                pointerEvents="none" // Чтобы избежать захвата событий мыши
+            />
             {onView && resizeDirections.map((direction, index) => (
                 <rect
                     key={index}

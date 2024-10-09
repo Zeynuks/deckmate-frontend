@@ -35,11 +35,10 @@ function App() {
                         rotation: 0,
                         type: ObjectType.Text,
                         content: 'This is a full text object',
-                        fontSize: 72,
+                        fontSize: 60,
                         fontFamily: 'Nunito',
                         fontWeight: 'bold',
                         textAlign: 'center',
-                        lineHeight: 20,
                         color: 'hsl(120, 100%, 50%)'
                     },
                     {
@@ -51,6 +50,21 @@ function App() {
                         position: {
                             x: 200,
                             y: 300
+                        },
+                        rotation: 0,
+                        type: ObjectType.Image,
+                        src: image,
+                        altText: 'Sample image'
+                    },
+                    {
+                        id: uuidv4() as ObjectID,
+                        size: {
+                            width: 500,
+                            height: 200
+                        },
+                        position: {
+                            x: 20,
+                            y: 700
                         },
                         rotation: 0,
                         type: ObjectType.Image,

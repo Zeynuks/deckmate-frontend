@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 type TransformableProps = {
     children: React.ReactNode;
@@ -13,28 +13,28 @@ export const Transformable: React.FC<TransformableProps> = ({
                                                                 initialY,
                                                                 onView = false,
                                                             }) => {
-    const [position, setPosition] = useState({ x: initialX, y: initialY });
+    const [position, setPosition] = useState({x: initialX, y: initialY});
     const [isDragging, setIsDragging] = useState(false);
-    const startMousePosition = useRef({ x: 0, y: 0 });
-    const startObjectPosition = useRef({ x: initialX, y: initialY });
+    const startMousePosition = useRef({x: 0, y: 0});
+    const startObjectPosition = useRef({x: initialX, y: initialY});
     const transformableRef = useRef<SVGGElement | null>(null);
 
     useEffect(() => {
-        setPosition({ x: initialX, y: initialY });
+        setPosition({x: initialX, y: initialY});
     }, [initialX, initialY]);
 
     const getMousePosition = (e: MouseEvent | React.MouseEvent) => {
         const svg = transformableRef.current?.ownerSVGElement;
-        if (!svg) return { x: e.clientX, y: e.clientY };
+        if (!svg) return {x: e.clientX, y: e.clientY};
         const point = svg.createSVGPoint();
         point.x = e.clientX;
         point.y = e.clientY;
         const ctm = svg.getScreenCTM()?.inverse();
         if (ctm) {
             const svgPoint = point.matrixTransform(ctm);
-            return { x: svgPoint.x, y: svgPoint.y };
+            return {x: svgPoint.x, y: svgPoint.y};
         }
-        return { x: e.clientX, y: e.clientY };
+        return {x: e.clientX, y: e.clientY};
     };
 
     const handleMouseDown = (e: React.MouseEvent) => {
@@ -42,7 +42,7 @@ export const Transformable: React.FC<TransformableProps> = ({
         e.preventDefault();
         setIsDragging(true);
         startMousePosition.current = getMousePosition(e.nativeEvent);
-        startObjectPosition.current = { ...position };
+        startObjectPosition.current = {...position};
     };
 
     useEffect(() => {
@@ -77,7 +77,7 @@ export const Transformable: React.FC<TransformableProps> = ({
             ref={transformableRef}
             transform={`translate(${position.x} ${position.y})`}
             onMouseDown={handleMouseDown}
-            style={{ cursor: onView ? 'grab' : 'default' }}
+            style={{cursor: onView ? 'grab' : 'default'}}
         >
             {children}
         </g>
