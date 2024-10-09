@@ -1,8 +1,8 @@
-import React, { useRef } from 'react';
+import React, {useRef} from 'react';
 import styles from './WorkSpace.module.css';
-import { Presentation, Selected } from '../../source/types.ts';
-import { Slide } from '../Slide/Slide.tsx';
-import { useDimensions } from '../../hooks/useDimensions';
+import {Presentation, Selected} from '../../source/types.ts';
+import {Slide} from '../Slide/Slide.tsx';
+import {useDimensions} from '../../hooks/useDimensions';
 
 type WorkspaceProps = {
     presentation: Presentation;
@@ -24,7 +24,7 @@ export const PresentationWorkspace: React.FC<WorkspaceProps> = ({
                                                                     scale,
                                                                     backgroundColor = '#FBFCFD',
                                                                 }) => {
-    const { BORDER_COLOR, BORDER_WIDTH, BORDER_RADIUS, PADDING } = CONFIG;
+    const {BORDER_COLOR, BORDER_WIDTH, BORDER_RADIUS, PADDING} = CONFIG;
     const workspaceRef = useRef<HTMLDivElement>(null);
     const dimensions = useDimensions(workspaceRef);
 
@@ -42,30 +42,31 @@ export const PresentationWorkspace: React.FC<WorkspaceProps> = ({
                     transform: `scale(${scale})`,
                 }}
             >
-                <svg
-                    width={dimensions.width}
-                    height={dimensions.height}
-                    viewBox={`0 0 ${1920 + PADDING * 2} ${1080}`}
-                    style={{ display: 'block', backgroundColor }}
-                >
-                    <g transform={`translate(${PADDING}, ${PADDING})`}>
-                        <rect
-                            x={-BORDER_WIDTH}
-                            y={-BORDER_WIDTH}
-                            width={1920 + BORDER_WIDTH * 2}
-                            height={1080 + BORDER_WIDTH * 2}
-                            fill="none"
-                            stroke={BORDER_COLOR}
-                            strokeWidth={BORDER_WIDTH * 2}
-                            rx={BORDER_RADIUS}
-                            ry={BORDER_RADIUS}
-                        />
+                {selectedSlide && (
+                    <svg
+                        width={dimensions.width}
+                        height={dimensions.height}
+                        viewBox={`0 0 ${selectedSlide.size.width + PADDING * 2} ${selectedSlide.size.width + PADDING * 2}`}
+                        style={{display: 'block', backgroundColor}}>
+                        <g transform={`translate(${PADDING}, ${PADDING})`}>
+                            <rect
+                                x={-BORDER_WIDTH}
+                                y={-BORDER_WIDTH}
+                                width={selectedSlide.size.width + BORDER_WIDTH * 2}
+                                height={selectedSlide.size.height  + BORDER_WIDTH * 2}
+                                fill="none"
+                                stroke={BORDER_COLOR}
+                                strokeWidth={BORDER_WIDTH * 2}
+                                rx={BORDER_RADIUS}
+                                ry={BORDER_RADIUS}
+                            />
 
-                        {selectedSlide && (
+
                             <Slide slide={selectedSlide} borderRadius={BORDER_RADIUS} onView={true}/>
-                        )}
-                    </g>
-                </svg>
+
+                        </g>
+                    </svg>
+                )}
             </div>
         </div>
     );

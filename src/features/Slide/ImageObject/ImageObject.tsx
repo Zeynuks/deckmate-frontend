@@ -2,16 +2,16 @@ import React, {useState} from 'react';
 import {ImageObject} from '../../../source/types.ts';
 
 type ImageObjectProps = {
-    object: ImageObject;
+    slideObject: ImageObject;
     onView: boolean
 };
 
 export const ImageObjectComponent: React.FC<ImageObjectProps> = ({
-                                                                     object,
+                                                                     slideObject,
                                                                      onView = false
                                                                  }) => {
-    const [width] = useState(object.size.width);
-    const [height] = useState(object.size.height);
+    const [width] = useState(slideObject.size.width);
+    const [height] = useState(slideObject.size.height);
 
     return (
 
@@ -22,7 +22,7 @@ export const ImageObjectComponent: React.FC<ImageObjectProps> = ({
             preserveAspectRatio="none"
         >
             <image
-                href={object.src}
+                href={slideObject.src}
                 x="0"
                 y="0"
                 width="100%"

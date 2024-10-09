@@ -56,6 +56,7 @@ export type Background = ImageBackground | ColorBackground;
 
 export type Slide = {
     id: SlideID;
+    size: Size;
     background: Background;
     objects: (TextObject | ImageObject)[];
 };

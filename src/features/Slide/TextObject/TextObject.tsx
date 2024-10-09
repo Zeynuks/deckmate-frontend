@@ -1,23 +1,36 @@
-import React from 'react';
 import {TextObject} from '../../../source/types.ts';
 
 type TextObjectProps = {
-    object: TextObject;
-    onView?: boolean
+    slideObject: TextObject;
+    height: number;
+    width: number;
+    onView?: boolean;
 };
 
 export const TextObjectComponent: React.FC<TextObjectProps> = ({
-                                                                   object,
-                                                                   onView = false
-                                                               }) => (
-    <text
-        x={0}
-        y={0}
-        fontSize={object.fontSize}
-        fontFamily={object.fontFamily}
-        textAnchor={object.textAlign === 'center' ? 'middle' : object.textAlign === 'right' ? 'end' : 'start'}
-        fill={object.color || '#000'}
-        cursor={onView ? "grab" : "default"}>
-        {object.content}
-    </text>
-);
+                                                                   slideObject,
+                                                                   height,
+                                                                   width,
+                                                                   onView = false,
+                                                               }) => {
+
+    return <svg
+        width={width}
+        height={height}
+        viewBox={`0 0 ${width} ${height}`}
+        preserveAspectRatio="none"
+    >
+        <text
+            x={0}
+            y={0}
+            fontSize={slideObject.fontSize}
+            fontFamily={slideObject.fontFamily}
+            textAnchor="left"
+            dominantBaseline="hanging"
+            fill={slideObject.color || '#000'}
+            cursor={onView ? 'grab' : 'default'}
+        >
+            {slideObject.content}
+        </text>
+    </svg>
+};

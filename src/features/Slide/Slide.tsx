@@ -1,43 +1,42 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Slide as SlideType, ObjectType} from '../../source/types.ts';
 import {TextObjectComponent} from './TextObject/TextObject.tsx';
 import {ImageObjectComponent} from './ImageObject/ImageObject.tsx';
 import {Transformable} from "../../view/components/shared/Transformable.tsx";
+import {Resizable} from "../../view/components/shared/Resizable.tsx";
 
 type SlideProps = {
     slide: SlideType;
     borderRadius?: number;
-    onView?: boolean
+    onView?: boolean;
 };
 
 export const Slide: React.FC<SlideProps> = ({slide, borderRadius = 0, onView = false}) => {
     const {background, objects} = slide;
-
     const viewObjects = objects.map((obj) => {
-        switch (obj.type) {
-            case ObjectType.Text:
-                return <Transformable
-                        onView={onView}
-                        initialX={obj.position.x}
-                        initialY={obj.position.y}
-                        initialWidth={obj.size.width}
-                        initialHeight={obj.size.height}
-                        initialRotate={obj.rotation || 0}>
-                        <TextObjectComponent object={obj} onView={onView} />
-                    </Transformable>;
-            case ObjectType.Image:
-                return <Transformable
-                        onView={onView}
-                        initialX={obj.position.x}
-                        initialY={obj.position.y}
-                        initialWidth={obj.size.width}
-                        initialHeight={obj.size.width}
-                        initialRotate={obj.rotation || 0}>
-                        <ImageObjectComponent object={obj} onView={onView} />;
-                    </Transformable>;
-            default:
-                return null;
-        }
+        const [width, setWidth] = useState(obj.size.width);
+        const [height, setHeight] = useState(obj.size.height);
+        return (
+            <Transformable
+                key={obj.id}
+                onView={onView}
+                initialX={obj.position.x}
+                initialY={obj.position.y}
+            >
+                <Resizable
+                    width={width}
+                    height={height}
+                    onResize={(newWidth, newHeight) => {
+                        setWidth(newWidth);
+                        setHeight(newHeight);
+                    }}
+                    onView={onView}
+                >
+                    {obj.type === ObjectType.Text ? <TextObjectComponent height={slide.size.height} width={slide.size.width} slideObject={obj} onView={onView}/> :
+                        <ImageObjectComponent slideObject={obj} onView={onView}/>}
+                </Resizable>
+            </Transformable>
+        );
     });
 
     return (

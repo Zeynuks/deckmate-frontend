@@ -13,6 +13,10 @@ function App() {
         slides: [
             {
                 id: uuidv4() as SlideID,
+                size: {
+                    width: 1920,
+                    height: 1080
+                },
                 background: {
                     type: 'color',
                     color: '#FFFFFF'
@@ -57,49 +61,13 @@ function App() {
             },
             {
                 id: uuidv4() as SlideID,
+                size: {
+                    width: 1920,
+                    height: 1080
+                },
                 background: {
                     type: 'color',
                     color: '#FFFFFF',
-                },
-                objects: []
-            },
-            {
-                id: uuidv4() as SlideID,
-                background: {
-                    type: 'color',
-                    color: '#D9D9D9',
-                },
-                objects: []
-            },
-            {
-                id: uuidv4() as SlideID,
-                background: {
-                    type: 'color',
-                    color: '#D9D9D9',
-                },
-                objects: []
-            },
-            {
-                id: uuidv4() as SlideID,
-                background: {
-                    type: 'color',
-                    color: '#D9D9D9',
-                },
-                objects: []
-            },
-            {
-                id: uuidv4() as SlideID,
-                background: {
-                    type: 'color',
-                    color: '#D9D9D9',
-                },
-                objects: []
-            },
-            {
-                id: uuidv4() as SlideID,
-                background: {
-                    type: 'image',
-                    src: image,
                 },
                 objects: []
             }
