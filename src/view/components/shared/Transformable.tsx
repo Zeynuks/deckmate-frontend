@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 
 type TransformableProps = {
     children: React.ReactNode;
@@ -21,10 +21,11 @@ export const Transformable: React.FC<TransformableProps> = ({
     const [y, setY] = useState(initialY);
     const [rotate, setRotate] = useState(initialRotate);
     const isDragging = useRef(false);
-    const startPosition = useRef({ x: 0, y: 0 });
     const isRotating = useRef(false);
+    const startPosition = useRef({ x: 0, y: 0 });
 
-    const handleMouseDown = (e: React.MouseEvent) => {
+    const handleMouseDown = useCallback((e: React.MouseEvent) => {
+        e.preventDefault();
         if (e.shiftKey) {
             isRotating.current = true;
         } else {
@@ -34,9 +35,12 @@ export const Transformable: React.FC<TransformableProps> = ({
                 y: e.clientY - y,
             };
         }
-    };
 
-    const handleMouseMove = (e: React.MouseEvent) => {
+        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('mouseup', handleMouseUp);
+    }, [x, y]);
+
+    const handleMouseMove = useCallback((e: MouseEvent) => {
         if (isDragging.current) {
             setX(e.clientX - startPosition.current.x);
             setY(e.clientY - startPosition.current.y);
@@ -47,25 +51,26 @@ export const Transformable: React.FC<TransformableProps> = ({
             const angle = Math.atan2(e.clientY - centerY, e.clientX - centerX) * (180 / Math.PI);
             setRotate(angle);
         }
-    };
+    }, [x, y]);
 
-    const handleMouseUp = () => {
+    const handleMouseUp = useCallback(() => {
         if (isDragging.current) {
             isDragging.current = false;
-            if (onDragEnd) onDragEnd(x, y);
+            onDragEnd?.(x, y);
         }
         if (isRotating.current) {
             isRotating.current = false;
-            if (onRotateEnd) onRotateEnd(rotate);
+            onRotateEnd?.(rotate);
         }
-    };
+
+        window.removeEventListener('mousemove', handleMouseMove);
+        window.removeEventListener('mouseup', handleMouseUp);
+    }, [x, y, rotate, onDragEnd, onRotateEnd]);
 
     return (
         <g
             transform={`translate(${x} ${y}) rotate(${rotate})`}
             onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}
             style={{ cursor: isDragging.current ? 'grabbing' : 'grab' }}
         >
             {children}
