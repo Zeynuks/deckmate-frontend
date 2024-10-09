@@ -1,6 +1,6 @@
 import {useEffect, useRef, useState} from 'react';
 import styles from './Select.module.css';
-import exampleIcon from './SelectIcons/icon.svg';
+import exampleIcon from '../../../assets/icons/arrow-down.svg';
 
 export type SelectOption = {
     label: string;

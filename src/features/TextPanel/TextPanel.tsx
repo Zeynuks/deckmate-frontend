@@ -1,11 +1,11 @@
 import styles from './History.module.css';
-import {Button} from '../components/design-system/Button/Button';
+import {Button} from '../../view/components/ui/Button/Button.tsx';
 
 import undoIcon from '../../assets/icons/undo.svg';
 import viewIcon from '../../assets/icons/clock.svg';
 import redoIcon from '../../assets/icons/redo.svg';
 
-type HistoryProps = {
+type TextPanelProps = {
     onBack: () => void;
     onView: () => void;
     onForward: () => void;
@@ -14,9 +14,7 @@ type HistoryProps = {
     disabledForward?: boolean;
 };
 
-
-// @ts-ignore
-export const History: React.FC<HistoryProps> = ({
+export const TextPanel: React.FC<TextPanelProps> = ({
                                                     onBack,
                                                     onView,
                                                     onForward,

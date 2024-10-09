@@ -1,5 +1,5 @@
 import styles from './ElementPanel.module.css';
-import {Button} from '../components/design-system/Button/Button';
+import {Button} from '../../view/components/ui/Button/Button.tsx';
 
 import imageIcon from '../../assets/icons/gallery.svg';
 import rectIcon from '../../assets/icons/rect.svg';

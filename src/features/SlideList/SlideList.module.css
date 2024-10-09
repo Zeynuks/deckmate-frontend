@@ -1,0 +1,31 @@
+.slideMenu {
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 96px);
+    width: 349px;
+    padding: 32px 32px 0 32px;
+    gap: 16px;
+    border-left: 1px solid #D9D9D9;
+}
+
+.slideListContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-y: auto;
+    height: 100%;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.slideListContainer::-webkit-scrollbar {
+    display: none;
+}
+
+.dropIndicator {
+    height: 4px;
+    background-color: #7B61FF; /* Цвет индикатора */
+    margin: 8px 0;
+    transition: background-color 0.3s ease;
+}

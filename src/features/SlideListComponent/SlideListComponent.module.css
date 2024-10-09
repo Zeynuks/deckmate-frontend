@@ -1,0 +1,22 @@
+.slideWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10%;
+    gap: 15%;
+    width: 90%;
+    transition: border-color 0.3s ease;
+}
+
+.miniature {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 30px;
+    border: #D9D9D9 1.25px solid;
+}
+
+.selectedSlide .miniature {
+    border: #7B61FF 3px solid;
+}

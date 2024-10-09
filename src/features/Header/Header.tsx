@@ -1,15 +1,15 @@
 import styles from './Header.module.css';
-import {Button} from '../components/design-system/Button/Button';
-import {Typography} from '../components/design-system/Typography/Typography';
-import {useToast} from '../components/design-system/Toast/ToastContext';
-import {History} from '../History/History';
-
+import {Button} from '../../view/components/ui/Button/Button.tsx';
+import {Typography} from '../../view/components/ui/Typography/Typography.tsx';
+import {useToast} from '../../view/components/ui/Toast/ToastContext.tsx';
+import {History} from '../History/History.tsx';
 import menuIcon from '../../assets/icons/menu.svg';
 import arrowDownIcon from '../../assets/icons/arrow-down.svg';
 import importIcon from '../../assets/icons/import.svg';
 import categoryIcon from '../../assets/icons/category.svg';
 import playIcon from '../../assets/icons/play.svg';
 import shareIcon from '../../assets/icons/send.svg';
+
 
 type HeaderProps = {
     title: string

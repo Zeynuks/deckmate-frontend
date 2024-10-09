@@ -1,10 +1,10 @@
-import {Header} from './view/Header/Header.tsx';
-import {ToastProvider} from './view/components/design-system/Toast/ToastContext';
-import {ElementPanel} from './view/ElementPanel/ElementPanel.tsx';
-import {PresentationWorkspace} from './view/WorkSpace/WorkSpace.tsx';
+import {Header} from './features/Header/Header.tsx';
+import {ToastProvider} from './view/components/ui/Toast/ToastContext';
+import {ElementPanel} from './features/ElementPanel/ElementPanel.tsx';
+import {PresentationWorkspace} from './features/WorkSpace/WorkSpace.tsx';
 import {ObjectID, ObjectType, Presentation, Selected, SlideID} from './source/types.ts';
 import {v4 as uuidv4} from 'uuid';
-import {SlideList} from './view/SlideList/SlideList.tsx';
+import {SlideList} from './features/SlideList/SlideList.tsx';
 import image from './assets/6581494373.jpg';
 
 function App() {
@@ -133,7 +133,7 @@ function App() {
                     selected={selected}
                     scale={1.0}
                 />
-                <SlideList presentation={presentation} selected={selected}/>
+                <SlideList presentation={presentation} selected={selected} onUpdatePresentation={() => {}} onAddSlide={() => {}}/>
             </div>
 
         </ToastProvider>
