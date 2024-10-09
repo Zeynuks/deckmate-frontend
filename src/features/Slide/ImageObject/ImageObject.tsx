@@ -19,6 +19,7 @@ export const ImageObjectComponent: React.FC<ImageObjectProps> = ({
         <svg
             width={width}
             height={height}
+            pointerEvents='none'
             viewBox={`0 0 ${width} ${height}`}
             preserveAspectRatio="none"
         >

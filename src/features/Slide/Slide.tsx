@@ -3,7 +3,6 @@ import { Slide as SlideType, ObjectType, Selected } from '../../source/types.ts'
 import { TextObjectComponent } from './TextObject/TextObject.tsx';
 import { ImageObjectComponent } from './ImageObject/ImageObject.tsx';
 import { Transformable } from "../../view/components/shared/Transformable.tsx";
-import { Resizable } from "../../view/components/shared/Resizable.tsx";
 
 type SlideProps = {
     slide: SlideType;
@@ -18,39 +17,46 @@ export const Slide: React.FC<SlideProps> = ({ slide, selected, borderRadius = 0,
     const viewObjects = objects.map((obj) => {
         const [width, setWidth] = useState(obj.size.width);
         const [height, setHeight] = useState(obj.size.height);
+        const [x, setX] = useState(obj.position.x);
+        const [y, setY] = useState(obj.position.y);
         const isSelected = selected && selected.objectId && selected.objectId.includes(obj.id);
 
-        return (
-            <Transformable
-                onView={onView}
-                initialX={obj.position.x}
-                initialY={obj.position.y}
-            >
-                {isSelected ? (
-                    <Resizable
-                        width={width}
-                        height={height}
-                        onResize={(newWidth, newHeight) => {
-                            setWidth(newWidth);
-                            setHeight(newHeight);
-                        }}
-                        onView={onView}
-                    >
-                        {obj.type === ObjectType.Text ? (
-                            <TextObjectComponent width={width} height={height} slideObject={obj} onView={onView} />
-                        ) : (
-                            <ImageObjectComponent width={width} height={height} slideObject={obj} onView={onView} />
-                        )}
-                    </Resizable>
-                ) : (
-                    obj.type === ObjectType.Text ? (
+        if (isSelected) {
+            return (
+                <Transformable
+                    key={obj.id}
+                    x={x}
+                    y={y}
+                    width={width}
+                    height={height}
+                    onResize={(newWidth, newHeight) => {
+                        setWidth(newWidth);
+                        setHeight(newHeight);
+                    }}
+                    onDrag={(newX, newY) => {
+                        setX(newX);
+                        setY(newY);
+                    }}
+                    onView={onView}
+                >
+                    {obj.type === ObjectType.Text ? (
                         <TextObjectComponent width={width} height={height} slideObject={obj} onView={onView} />
                     ) : (
                         <ImageObjectComponent width={width} height={height} slideObject={obj} onView={onView} />
-                    )
-                )}
-            </Transformable>
-        );
+                    )}
+                </Transformable>
+            );
+        } else {
+            return (
+                <g key={obj.id} transform={`translate(${x} ${y})`}>
+                    {obj.type === ObjectType.Text ? (
+                        <TextObjectComponent width={width} height={height} slideObject={obj} onView={onView} />
+                    ) : (
+                        <ImageObjectComponent width={width} height={height} slideObject={obj} onView={onView} />
+                    )}
+                </g>
+            );
+        }
     });
 
     return (

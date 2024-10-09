@@ -23,7 +23,6 @@ export const TextObjectComponent: React.FC<TextObjectProps> = ({
 
     const averageCharWidthFactor = 0.4;
 
-    // Максимальное количество символов в строке
     const maxCharsPerLine = useMemo(() => {
         return Math.floor(width / (fontSize * averageCharWidthFactor));
     }, [width, fontSize]);
@@ -41,9 +40,7 @@ export const TextObjectComponent: React.FC<TextObjectProps> = ({
                     lines.push(currentLine);
                 }
 
-                // Проверяем, длиннее ли слово максимальной длины строки
                 if (word.length > maxCharsPerLine) {
-                    // Разбиваем слово на части
                     let start = 0;
                     while (start < word.length) {
                         const chunk = word.substr(start, maxCharsPerLine);
@@ -70,6 +67,7 @@ export const TextObjectComponent: React.FC<TextObjectProps> = ({
         <svg
             width={width}
             height={height}
+            pointerEvents='none'
             viewBox={`0 0 ${width} ${height}`}
             preserveAspectRatio="none"
         >
