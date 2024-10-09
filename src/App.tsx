@@ -28,6 +28,7 @@ function App() {
                             x: 1000,
                             y: 20
                         },
+                        rotation: 0,
                         type: ObjectType.Text,
                         content: 'This is a full text object',
                         fontSize: 72,
@@ -47,6 +48,7 @@ function App() {
                             x: 200,
                             y: 300
                         },
+                        rotation: 0,
                         type: ObjectType.Image,
                         src: image,
                         altText: 'Sample image'
@@ -133,7 +135,7 @@ function App() {
                     selected={selected}
                     scale={1.0}
                 />
-                <SlideList presentation={presentation} selected={selected} onUpdatePresentation={() => {}} onAddSlide={() => {}}/>
+                <SlideList presentation={presentation} selected={selected} onAddSlide={() => {}}/>
             </div>
 
         </ToastProvider>

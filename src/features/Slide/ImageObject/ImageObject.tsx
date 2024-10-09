@@ -1,20 +1,35 @@
-import { ImageObject } from '../../../source/types.ts';
-import { Transformable } from '../../../view/components/shared/Transformable.tsx';
+import React, {useState} from 'react';
+import {ImageObject} from '../../../source/types.ts';
 
 type ImageObjectProps = {
     object: ImageObject;
-    onDragEnd?: (id: string, x: number, y: number) => void;
+    onView: boolean
 };
 
 export const ImageObjectComponent: React.FC<ImageObjectProps> = ({
                                                                      object,
-                                                                     onDragEnd,
-                                                                 }) => (
-    <Transformable
-        initialX={object.position.x}
-        initialY={object.position.y}
-        onDragEnd={(newX, newY) => onDragEnd && onDragEnd(object.id, newX, newY)}
-    >
-        <image href={object.src} x={0} y={0} width={object.size.width} height={object.size.height} />
-    </Transformable>
-);
+                                                                     onView = false
+                                                                 }) => {
+    const [width] = useState(object.size.width);
+    const [height] = useState(object.size.height);
+
+    return (
+
+        <svg
+            width={width}
+            height={height}
+            viewBox={`0 0 ${width} ${height}`}
+            preserveAspectRatio="none"
+        >
+            <image
+                href={object.src}
+                x="0"
+                y="0"
+                width="100%"
+                height="100%"
+                preserveAspectRatio="none"
+                cursor={onView ? "grab" : "default"}
+            />
+        </svg>
+    );
+};

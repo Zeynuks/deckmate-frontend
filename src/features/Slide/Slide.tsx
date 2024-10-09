@@ -1,22 +1,40 @@
 import React from 'react';
-import { Slide as SlideType, ObjectType } from '../../source/types.ts';
-import { TextObjectComponent } from './TextObject/TextObject.tsx';
-import { ImageObjectComponent } from './ImageObject/ImageObject.tsx';
+import {Slide as SlideType, ObjectType} from '../../source/types.ts';
+import {TextObjectComponent} from './TextObject/TextObject.tsx';
+import {ImageObjectComponent} from './ImageObject/ImageObject.tsx';
+import {Transformable} from "../../view/components/shared/Transformable.tsx";
 
 type SlideProps = {
     slide: SlideType;
     borderRadius?: number;
+    onView?: boolean
 };
 
-export const Slide: React.FC<SlideProps> = ({ slide, borderRadius = 0 }) => {
-    const { background, objects } = slide;
+export const Slide: React.FC<SlideProps> = ({slide, borderRadius = 0, onView = false}) => {
+    const {background, objects} = slide;
 
     const viewObjects = objects.map((obj) => {
         switch (obj.type) {
             case ObjectType.Text:
-                return <TextObjectComponent key={obj.id} object={obj} />;
+                return <Transformable
+                        onView={onView}
+                        initialX={obj.position.x}
+                        initialY={obj.position.y}
+                        initialWidth={obj.size.width}
+                        initialHeight={obj.size.height}
+                        initialRotate={obj.rotation || 0}>
+                        <TextObjectComponent object={obj} onView={onView} />
+                    </Transformable>;
             case ObjectType.Image:
-                return <ImageObjectComponent key={obj.id} object={obj} />;
+                return <Transformable
+                        onView={onView}
+                        initialX={obj.position.x}
+                        initialY={obj.position.y}
+                        initialWidth={obj.size.width}
+                        initialHeight={obj.size.width}
+                        initialRotate={obj.rotation || 0}>
+                        <ImageObjectComponent object={obj} onView={onView} />;
+                    </Transformable>;
             default:
                 return null;
         }
