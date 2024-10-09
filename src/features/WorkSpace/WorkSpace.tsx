@@ -48,7 +48,7 @@ export const PresentationWorkspace: React.FC<WorkspaceProps> = ({
                         height={dimensions.height}
                         viewBox={`0 0 ${selectedSlide.size.width + PADDING * 2} ${selectedSlide.size.width + PADDING * 2}`}
                         style={{display: 'block', backgroundColor}}>
-                        <g transform={`translate(${PADDING}, ${PADDING})`}>
+                        <g  transform={`translate(${PADDING}, ${PADDING})`}>
                             <rect
                                 x={-BORDER_WIDTH}
                                 y={-BORDER_WIDTH}
@@ -60,8 +60,6 @@ export const PresentationWorkspace: React.FC<WorkspaceProps> = ({
                                 rx={BORDER_RADIUS}
                                 ry={BORDER_RADIUS}
                             />
-
-
                             <Slide slide={selectedSlide} selected={selected} borderRadius={BORDER_RADIUS} onView={true}/>
 
                         </g>

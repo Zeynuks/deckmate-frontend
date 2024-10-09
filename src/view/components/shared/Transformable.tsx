@@ -8,6 +8,8 @@ type TransformableProps = {
     height: number;
     onResize: (width: number, height: number) => void;
     onDrag: (x: number, y: number) => void;
+    onRotate: (angle: number) => void;
+    rotation: number;
     onView?: boolean;
 };
 
@@ -19,6 +21,8 @@ export const Transformable: React.FC<TransformableProps> = ({
                                                                 height,
                                                                 onResize,
                                                                 onDrag,
+                                                                onRotate,
+                                                                rotation,
                                                                 onView = false,
                                                             }) => {
     const startDimensions = useRef({ width, height });
@@ -27,6 +31,9 @@ export const Transformable: React.FC<TransformableProps> = ({
     const resizeDirection = useRef<{ x: number, y: number }>({ x: 0, y: 0 });
     const isDragging = useRef(false);
     const isResizing = useRef(false);
+    const isRotating = useRef(false);
+    const startAngle = useRef(rotation);
+    const center = useRef({ x: 0, y: 0 });
     const transformableRef = useRef<SVGGElement | null>(null);
 
     const getMousePosition = (e: MouseEvent | React.MouseEvent) => {
@@ -43,7 +50,16 @@ export const Transformable: React.FC<TransformableProps> = ({
         return { x: e.clientX, y: e.clientY };
     };
 
-    // Логика перемещения
+
+    const getMouseDelta = (e: MouseEvent | React.MouseEvent) => {
+        const mousePosition = getMousePosition(e);
+        return {
+            deltaX: mousePosition.x - startMousePosition.current.x,
+            deltaY: mousePosition.y - startMousePosition.current.y,
+        };
+    };
+
+
     const handleDragMouseDown = (e: React.MouseEvent) => {
         if (!onView) return;
         e.preventDefault();
@@ -58,10 +74,7 @@ export const Transformable: React.FC<TransformableProps> = ({
     const handleDragMouseMove = (e: MouseEvent) => {
         if (!isDragging.current) return;
 
-        const mousePosition = getMousePosition(e);
-        const deltaX = mousePosition.x - startMousePosition.current.x;
-        const deltaY = mousePosition.y - startMousePosition.current.y;
-
+        const { deltaX, deltaY } = getMouseDelta(e);
         onDrag(startPosition.current.x + deltaX, startPosition.current.y + deltaY);
     };
 
@@ -71,7 +84,7 @@ export const Transformable: React.FC<TransformableProps> = ({
         window.removeEventListener('mouseup', handleDragMouseUp);
     };
 
-    // Логика изменения размера
+
     const handleResizeMouseDown = (
         e: React.MouseEvent,
         direction: { x: number, y: number }
@@ -79,7 +92,7 @@ export const Transformable: React.FC<TransformableProps> = ({
         if (!onView) return;
         e.preventDefault();
         isResizing.current = true;
-        startMousePosition.current = { x: e.clientX, y: e.clientY };
+        startMousePosition.current = getMousePosition(e.nativeEvent); // Используем getMousePosition
         startDimensions.current = { width, height };
         resizeDirection.current = direction;
 
@@ -89,10 +102,12 @@ export const Transformable: React.FC<TransformableProps> = ({
 
     const handleResizeMouseMove = (e: MouseEvent) => {
         if (!isResizing.current) return;
-        const deltaX = e.clientX - startMousePosition.current.x;
-        const deltaY = e.clientY - startMousePosition.current.y;
-        const newWidth = startDimensions.current.width + deltaX * resizeDirection.current.x;
-        const newHeight = startDimensions.current.height + deltaY * resizeDirection.current.y;
+
+        const { deltaX, deltaY } = getMouseDelta(e);
+        const newWidth =
+            startDimensions.current.width + deltaX * resizeDirection.current.x;
+        const newHeight =
+            startDimensions.current.height + deltaY * resizeDirection.current.y;
 
         onResize(Math.max(newWidth, 10), Math.max(newHeight, 10));
     };
@@ -103,15 +118,54 @@ export const Transformable: React.FC<TransformableProps> = ({
         window.removeEventListener('mouseup', handleResizeMouseUp);
     };
 
+    const handleRotateMouseDown = (e: React.MouseEvent) => {
+        if (!onView) return;
+        e.preventDefault();
+        e.stopPropagation();
+        isRotating.current = true;
+        startMousePosition.current = getMousePosition(e.nativeEvent);
+        startAngle.current = rotation;
+
+        center.current = {
+            x: x + width / 2,
+            y: y + height / 2,
+        };
+
+        window.addEventListener('mousemove', handleRotateMouseMove);
+        window.addEventListener('mouseup', handleRotateMouseUp);
+    };
+
+    const handleRotateMouseMove = (e: MouseEvent) => {
+        if (!isRotating.current) return;
+
+        const mousePosition = getMousePosition(e);
+        const dx = mousePosition.x - center.current.x;
+        const dy = mousePosition.y - center.current.y;
+        const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+
+        const startDx = startMousePosition.current.x - center.current.x;
+        const startDy = startMousePosition.current.y - center.current.y;
+        const startAngleRad = Math.atan2(startDy, startDx) * (180 / Math.PI);
+        const deltaAngle = angle - startAngleRad;
+
+        onRotate(startAngle.current + deltaAngle);
+    };
+
+    const handleRotateMouseUp = () => {
+        isRotating.current = false;
+        window.removeEventListener('mousemove', handleRotateMouseMove);
+        window.removeEventListener('mouseup', handleRotateMouseUp);
+    };
+
     const resizeDirections = [
-        { x: -1, y: -1 }, // Top-left
-        { x: 0, y: -1 },  // Top-center
-        { x: 1, y: -1 },  // Top-right
-        { x: 1, y: 0 },   // Right-center
-        { x: 1, y: 1 },   // Bottom-right
-        { x: 0, y: 1 },   // Bottom-center
-        { x: -1, y: 1 },  // Bottom-left
-        { x: -1, y: 0 },  // Left-center
+        { x: -1, y: -1 },
+        { x: 0, y: -1 },
+        { x: 1, y: -1 },
+        { x: 1, y: 0 },
+        { x: 1, y: 1 },
+        { x: 0, y: 1 },
+        { x: -1, y: 1 },
+        { x: -1, y: 0 }
     ];
 
     const pathData = `
@@ -125,34 +179,61 @@ export const Transformable: React.FC<TransformableProps> = ({
     return (
         <g
             ref={transformableRef}
-            transform={`translate(${x} ${y})`}
+            transform={`translate(${x + width / 2} ${y + height / 2}) rotate(${rotation}) translate(${-width / 2} ${-height / 2})`}
         >
+
             <rect
                 x={0}
                 y={0}
                 width={width}
                 height={height}
                 fill="transparent"
-                pointerEvents='visible'
                 onMouseDown={handleDragMouseDown}
                 style={{ cursor: onView ? 'grab' : 'default' }}
             />
             {children}
+
+            {/* Обводка */}
             <path
                 d={pathData}
                 fill="none"
-                stroke="blue"
+                stroke="#7B61FF"
                 strokeWidth={2}
                 pointerEvents="none"
             />
+
+            {onView && (
+                <>
+
+                    <line
+                        x1={width / 2}
+                        y1={0}
+                        x2={width / 2}
+                        y2={-30}
+                        stroke="#7B61FF"
+                        strokeWidth={2}
+                        pointerEvents="none"
+                    />
+
+                    <circle
+                        cx={width / 2}
+                        cy={-40}
+                        r={10}
+                        fill="#7B61FF"
+                        onMouseDown={handleRotateMouseDown}
+                        style={{ cursor: 'crosshair' }}
+                    />
+                </>
+            )}
+
             {onView && resizeDirections.map((direction, index) => (
                 <rect
                     key={index}
-                    x={(direction.x + 1) * width / 2 - 5}
-                    y={(direction.y + 1) * height / 2 - 5}
-                    width={10}
-                    height={10}
-                    fill="blue"
+                    x={(direction.x + 1) * width / 2 - 10}
+                    y={(direction.y + 1) * height / 2 - 10}
+                    width={20}
+                    height={20}
+                    fill="#7B61FF"
                     onMouseDown={(e) => handleResizeMouseDown(e, direction)}
                     style={{ cursor: `${index < 4 ? 'nesw' : 'nwse'}-resize` }}
                 />

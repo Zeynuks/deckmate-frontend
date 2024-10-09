@@ -19,6 +19,7 @@ export const Slide: React.FC<SlideProps> = ({ slide, selected, borderRadius = 0,
         const [height, setHeight] = useState(obj.size.height);
         const [x, setX] = useState(obj.position.x);
         const [y, setY] = useState(obj.position.y);
+        const [rotation, setRotation] = useState(obj.rotation || 0);
         const isSelected = selected && selected.objectId && selected.objectId.includes(obj.id);
 
         if (isSelected) {
@@ -29,6 +30,7 @@ export const Slide: React.FC<SlideProps> = ({ slide, selected, borderRadius = 0,
                     y={y}
                     width={width}
                     height={height}
+                    rotation={rotation}
                     onResize={(newWidth, newHeight) => {
                         setWidth(newWidth);
                         setHeight(newHeight);
@@ -36,6 +38,9 @@ export const Slide: React.FC<SlideProps> = ({ slide, selected, borderRadius = 0,
                     onDrag={(newX, newY) => {
                         setX(newX);
                         setY(newY);
+                    }}
+                    onRotate={(newRotation) => {
+                        setRotation(newRotation);
                     }}
                     onView={onView}
                 >
@@ -48,7 +53,10 @@ export const Slide: React.FC<SlideProps> = ({ slide, selected, borderRadius = 0,
             );
         } else {
             return (
-                <g key={obj.id} transform={`translate(${x} ${y})`}>
+                <g
+                    key={obj.id}
+                    transform={`translate(${x + width / 2} ${y + height / 2}) rotate(${rotation}) translate(${-width / 2} ${-height / 2})`}
+                >
                     {obj.type === ObjectType.Text ? (
                         <TextObjectComponent width={width} height={height} slideObject={obj} onView={onView} />
                     ) : (
@@ -65,8 +73,8 @@ export const Slide: React.FC<SlideProps> = ({ slide, selected, borderRadius = 0,
                 <rect
                     x={0}
                     y={0}
-                    width={1920}
-                    height={1080}
+                    width={slide.size.width}
+                    height={slide.size.height}
                     fill={background.color}
                     rx={borderRadius}
                     ry={borderRadius}
