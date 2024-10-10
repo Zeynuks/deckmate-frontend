@@ -65,6 +65,8 @@ export const TextObjectComponent: React.FC<TextObjectProps> = ({
 
     return (
         <svg
+            x={-width / 2}
+            y={-height / 2}
             width={width}
             height={height}
             pointerEvents='none'
@@ -73,7 +75,7 @@ export const TextObjectComponent: React.FC<TextObjectProps> = ({
         >
             <text
                 x={0}
-                y={fontSize}
+                y={0}
                 fontSize={fontSize}
                 fontFamily={fontFamily}
                 textAnchor="start"

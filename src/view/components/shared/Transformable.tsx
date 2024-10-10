@@ -1,9 +1,9 @@
-import React, {useRef} from 'react';
+import React, { useRef } from 'react';
 
 type TransformableProps = {
     children: React.ReactNode;
-    position: { x: number, y: number }
-    size: { width: number, height: number }
+    position: { x: number, y: number };
+    size: { width: number, height: number };
     onResize: (width: number, height: number) => void;
     onDrag: (x: number, y: number) => void;
     onRotate: (angle: number) => void;
@@ -23,29 +23,40 @@ export const Transformable: React.FC<TransformableProps> = ({
                                                             }) => {
     const startDimensions = useRef(size);
     const startPosition = useRef(position);
-    const startMousePosition = useRef({x: 0, y: 0});
-    const resizeDirection = useRef<{ x: number, y: number }>({x: 0, y: 0});
+    const startMousePosition = useRef({ x: 0, y: 0 });
+    const resizeDirection = useRef<{ x: number, y: number }>({ x: 0, y: 0 });
     const isDragging = useRef(false);
     const isResizing = useRef(false);
     const isRotating = useRef(false);
     const startAngle = useRef(rotation);
-    const center = useRef({x: 0, y: 0});
+    const center = useRef({ x: 0, y: 0 });
     const transformableRef = useRef<SVGGElement | null>(null);
+
+    const toRadians = (degrees: number) => degrees * (Math.PI / 180);
+
+    const rotatePoint = (x: number, y: number, angle: number) => {
+        const rad = toRadians(angle);
+        const cos = Math.cos(rad);
+        const sin = Math.sin(rad);
+        return {
+            x: x * cos - y * sin,
+            y: x * sin + y * cos,
+        };
+    };
 
     const getMousePosition = (e: MouseEvent | React.MouseEvent) => {
         const svg = transformableRef.current?.ownerSVGElement;
-        if (!svg) return {x: e.clientX, y: e.clientY};
+        if (!svg) return { x: e.clientX, y: e.clientY };
         const point = svg.createSVGPoint();
         point.x = e.clientX;
         point.y = e.clientY;
         const ctm = svg.getScreenCTM()?.inverse();
         if (ctm) {
             const svgPoint = point.matrixTransform(ctm);
-            return {x: svgPoint.x, y: svgPoint.y};
+            return { x: svgPoint.x, y: svgPoint.y };
         }
-        return {x: e.clientX, y: e.clientY};
+        return { x: e.clientX, y: e.clientY };
     };
-
 
     const getMouseDelta = (e: MouseEvent | React.MouseEvent) => {
         const mousePosition = getMousePosition(e);
@@ -55,12 +66,12 @@ export const Transformable: React.FC<TransformableProps> = ({
         };
     };
 
-
     const handleDragMouseDown = (e: React.MouseEvent) => {
         if (!onView) return;
         e.preventDefault();
         isDragging.current = true;
         startMousePosition.current = getMousePosition(e.nativeEvent);
+        startDimensions.current = size;
         startPosition.current = position;
 
         window.addEventListener('mousemove', handleDragMouseMove);
@@ -70,8 +81,11 @@ export const Transformable: React.FC<TransformableProps> = ({
     const handleDragMouseMove = (e: MouseEvent) => {
         if (!isDragging.current) return;
 
-        const {deltaX, deltaY} = getMouseDelta(e);
-        onDrag(startPosition.current.x + deltaX, startPosition.current.y + deltaY);
+        const { deltaX, deltaY } = getMouseDelta(e);
+        const localDelta = rotatePoint(deltaX, deltaY, -rotation);
+        const rotatedDelta = rotatePoint(localDelta.x, localDelta.y, rotation)
+
+        onDrag(startPosition.current.x + rotatedDelta.x, startPosition.current.y + rotatedDelta.y);
     };
 
     const handleDragMouseUp = () => {
@@ -80,13 +94,13 @@ export const Transformable: React.FC<TransformableProps> = ({
         window.removeEventListener('mouseup', handleDragMouseUp);
     };
 
-
     const handleResizeMouseDown = (
         e: React.MouseEvent,
         direction: { x: number, y: number }
     ) => {
         if (!onView) return;
         e.preventDefault();
+        e.stopPropagation();
         isResizing.current = true;
         startMousePosition.current = getMousePosition(e.nativeEvent);
         startDimensions.current = size;
@@ -99,24 +113,31 @@ export const Transformable: React.FC<TransformableProps> = ({
 
     const handleResizeMouseMove = (e: MouseEvent) => {
         if (!isResizing.current) return;
-        const {deltaX, deltaY} = getMouseDelta(e);
-        const newWidth =
-            startDimensions.current.width + deltaX * resizeDirection.current.x;
-        const newHeight =
-            startDimensions.current.height + deltaY * resizeDirection.current.y;
+        const { deltaX, deltaY } = getMouseDelta(e);
+        const localDelta = rotatePoint(deltaX, deltaY, -rotation);
 
-        const { x: dirX, y: dirY } = resizeDirection.current;
-        const { x: startX, y: startY } = startPosition.current;
+        const deltaWidth = localDelta.x * resizeDirection.current.x;
+        const deltaHeight = localDelta.y * resizeDirection.current.y;
 
+        const newWidth = startDimensions.current.width + deltaWidth;
+        const newHeight = startDimensions.current.height + deltaHeight;
 
-        const newX = dirX < 0 ? startX - deltaX * dirX : startX;
-        const newY = dirY < 0 ? startY - deltaY * dirY : startY;
+        const finalWidth = Math.max(newWidth, 10);
+        const finalHeight = Math.max(newHeight, 10);
 
-        if (dirX < 0 || dirY < 0) {
-            onDrag(newX, newY);
-        }
+        const changeWidth = finalWidth - startDimensions.current.width;
+        const changeHeight = finalHeight - startDimensions.current.height;
 
-        onResize(Math.max(newWidth, 10), Math.max(newHeight, 10));
+        const shiftX = resizeDirection.current.x === -1 ? -changeWidth / 2 : changeWidth / 2;
+        const shiftY = resizeDirection.current.y === -1 ? -changeHeight / 2 : changeHeight / 2;
+
+        const rotatedShift = rotatePoint(shiftX, shiftY, rotation);
+
+        const newX = startPosition.current.x + rotatedShift.x;
+        const newY = startPosition.current.y + rotatedShift.y;
+
+        onDrag(newX, newY);
+        onResize(finalWidth, finalHeight);
     };
 
     const handleResizeMouseUp = () => {
@@ -134,8 +155,8 @@ export const Transformable: React.FC<TransformableProps> = ({
         startAngle.current = rotation;
 
         center.current = {
-            x: position.x + size.width / 2,
-            y: position.y + size.height / 2,
+            x: position.x,
+            y: position.y,
         };
 
         window.addEventListener('mousemove', handleRotateMouseMove);
@@ -165,72 +186,81 @@ export const Transformable: React.FC<TransformableProps> = ({
     };
 
     const resizeDirections = [
-        {x: -1, y: -1},
-        {x: 0, y: -1},
-        {x: 1, y: -1},
-        {x: 1, y: 0},
-        {x: 1, y: 1},
-        {x: 0, y: 1},
-        {x: -1, y: 1},
-        {x: -1, y: 0}
+        { x: -1, y: -1 },
+        { x: 0, y: -1 },
+        { x: 1, y: -1 },
+        { x: 1, y: 0 },
+        { x: 1, y: 1 },
+        { x: 0, y: 1 },
+        { x: -1, y: 1 },
+        { x: -1, y: 0 }
     ];
 
     return (
         <g
             ref={transformableRef}
-            transform={`translate(${position.x + size.width / 2} ${position.y + size.height / 2}) rotate(${rotation}) translate(${-size.width / 2} ${-size.height / 2})`}
+            transform={`translate(${position.x} ${position.y}) rotate(${rotation})`}
         >
-
             <rect
-                x={0}
-                y={0}
+                x={-size.width / 2}
+                y={-size.height / 2}
                 width={size.width}
                 height={size.height}
                 fill="transparent"
                 onMouseDown={handleDragMouseDown}
-                style={{cursor: onView ? 'grab' : 'default'}}
+                style={{ cursor: onView ? 'grab' : 'default' }}
                 stroke="#7B61FF"
                 strokeWidth={4}
             />
             {children}
             {onView && (
                 <>
-
                     <line
-                        x1={size.width / 2}
-                        y1={0}
-                        x2={size.width / 2}
-                        y2={-30}
+                        x1={0}
+                        y1={-size.height / 2}
+                        x2={0}
+                        y2={-size.height / 2 - 30}
                         stroke="#7B61FF"
                         strokeWidth={2}
                         pointerEvents="none"
                     />
 
                     <circle
-                        cx={size.width / 2}
-                        cy={-40}
+                        cx={0}
+                        cy={-size.height / 2 - 40}
                         r={10}
                         fill="#7B61FF"
                         onMouseDown={handleRotateMouseDown}
-                        style={{cursor: 'crosshair'}}
+                        style={{ cursor: `crosshair` }}
                     />
                 </>
             )}
 
-            {onView && resizeDirections.map((direction, index) => (
-                <rect
-                    key={index}
-                    x={(direction.x + 1) * size.width / 2 - 10}
-                    y={(direction.y + 1) * size.height / 2 - 10}
-                    width={20}
-                    height={20}
-                    fill="#7B61FF"
-                    rx={3}
-                    ry={3}
-                    onMouseDown={(e) => handleResizeMouseDown(e, direction)}
-                    style={{cursor: `${index < 4 ? 'nesw' : 'nwse'}-resize`}}
-                />
-            ))}
+            {onView && resizeDirections.map((direction, index) => {
+                const markerX = (direction.x * size.width) / 2 - 10;
+                const markerY = (direction.y * size.height) / 2 - 10;
+
+                let cursorStyle = 'nwse-resize';
+                if (direction.x === 0 || direction.y === 0) {
+                    cursorStyle = 'ns-resize';
+                    if (direction.x !== 0) cursorStyle = 'ew-resize';
+                }
+
+                return (
+                    <rect
+                        key={index}
+                        x={markerX}
+                        y={markerY}
+                        width={20}
+                        height={20}
+                        fill="#7B61FF"
+                        rx={3}
+                        ry={3}
+                        onMouseDown={(e) => handleResizeMouseDown(e, direction)}
+                        style={{ cursor: cursorStyle }}
+                    />
+                );
+            })}
         </g>
     );
 };

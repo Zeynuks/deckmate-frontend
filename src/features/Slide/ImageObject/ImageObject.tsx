@@ -13,10 +13,11 @@ export const ImageObjectComponent: React.FC<ImageObjectProps> = ({
                                                                      height,
                                                                      onView = false
                                                                  }) => {
-
     return (
 
         <svg
+            x={-width / 2}
+            y={-height / 2}
             width={width}
             height={height}
             pointerEvents='none'
