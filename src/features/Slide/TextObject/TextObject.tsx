@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { TextObject } from '../../../source/types.ts';
+import { TextObject } from '../../../store/types.ts';
 
 type TextObjectProps = {
     slideObject: TextObject;

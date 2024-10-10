@@ -2,7 +2,7 @@ import {Header} from './features/Header/Header.tsx';
 import {ToastProvider} from './view/components/ui/Toast/ToastContext';
 import {ElementPanel} from './features/ElementPanel/ElementPanel.tsx';
 import {PresentationWorkspace} from './features/WorkSpace/WorkSpace.tsx';
-import {ObjectID, ObjectType, Presentation, Selected, SlideID} from './source/types.ts';
+import {ObjectID, ObjectType, Presentation, Selected, SlideID} from './store/types.ts';
 import {v4 as uuidv4} from 'uuid';
 import {SlideList} from './features/SlideList/SlideList.tsx';
 import image from './assets/6581494373.jpg';

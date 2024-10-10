@@ -1,6 +1,6 @@
 import React, {useRef} from 'react';
 import styles from './WorkSpace.module.css';
-import {Presentation, Selected} from '../../source/types.ts';
+import {Presentation, Selected} from '../../store/types.ts';
 import {Slide} from '../Slide/Slide.tsx';
 import {useDimensions} from '../../hooks/useDimensions';
 
@@ -46,7 +46,7 @@ export const PresentationWorkspace: React.FC<WorkspaceProps> = ({
                     <svg
                         width={dimensions.width}
                         height={dimensions.height}
-                        viewBox={`0 0 ${selectedSlide.size.width + PADDING * 2} ${selectedSlide.size.width + PADDING * 2}`}
+                        viewBox={`0 0 ${selectedSlide.size.width + PADDING * 2} ${selectedSlide.size.height + PADDING * 2}`}
                         style={{display: 'block', backgroundColor}}>
                         <g  transform={`translate(${PADDING}, ${PADDING})`}>
                             <rect

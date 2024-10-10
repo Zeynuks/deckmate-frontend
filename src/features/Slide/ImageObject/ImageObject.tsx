@@ -1,4 +1,4 @@
-import {ImageObject} from '../../../source/types.ts';
+import {ImageObject} from '../../../store/types.ts';
 
 type ImageObjectProps = {
     slideObject: ImageObject;

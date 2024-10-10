@@ -92,7 +92,7 @@ export const Transformable: React.FC<TransformableProps> = ({
         if (!onView) return;
         e.preventDefault();
         isResizing.current = true;
-        startMousePosition.current = getMousePosition(e.nativeEvent); // Используем getMousePosition
+        startMousePosition.current = getMousePosition(e.nativeEvent);
         startDimensions.current = { width, height };
         resizeDirection.current = direction;
 
@@ -102,7 +102,6 @@ export const Transformable: React.FC<TransformableProps> = ({
 
     const handleResizeMouseMove = (e: MouseEvent) => {
         if (!isResizing.current) return;
-
         const { deltaX, deltaY } = getMouseDelta(e);
         const newWidth =
             startDimensions.current.width + deltaX * resizeDirection.current.x;
@@ -234,6 +233,8 @@ export const Transformable: React.FC<TransformableProps> = ({
                     width={20}
                     height={20}
                     fill="#7B61FF"
+                    rx={3}
+                    ry={3}
                     onMouseDown={(e) => handleResizeMouseDown(e, direction)}
                     style={{ cursor: `${index < 4 ? 'nesw' : 'nwse'}-resize` }}
                 />

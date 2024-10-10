@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Slide as SlideType, ObjectType, Selected } from '../../source/types.ts';
+import { Slide as SlideType, ObjectType, Selected } from '../../store/types.ts';
 import { TextObjectComponent } from './TextObject/TextObject.tsx';
 import { ImageObjectComponent } from './ImageObject/ImageObject.tsx';
 import { Transformable } from "../../view/components/shared/Transformable.tsx";
@@ -7,7 +7,7 @@ import { Transformable } from "../../view/components/shared/Transformable.tsx";
 type SlideProps = {
     slide: SlideType;
     selected: Selected;
-    borderRadius?: number;
+    borderRadius?: number; //Убрать
     onView?: boolean;
 };
 
@@ -44,7 +44,7 @@ export const Slide: React.FC<SlideProps> = ({ slide, selected, borderRadius = 0,
                     }}
                     onView={onView}
                 >
-                    {obj.type === ObjectType.Text ? (
+                    {obj.type === ObjectType.Text ? (                                                                   //Добавить Switch
                         <TextObjectComponent width={width} height={height} slideObject={obj} onView={onView} />
                     ) : (
                         <ImageObjectComponent width={width} height={height} slideObject={obj} onView={onView} />

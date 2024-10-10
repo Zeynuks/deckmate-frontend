@@ -1,5 +1,5 @@
 import React from 'react';
-import { Slide as SlideType } from '../../source/types.ts';
+import { Slide as SlideType } from '../../store/types.ts';
 import { Slide } from '../Slide/Slide.tsx';
 import styles from './SlideListComponent.module.css';
 import { Typography } from "../../view/components/ui/Typography/Typography.tsx";
