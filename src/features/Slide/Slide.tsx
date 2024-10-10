@@ -26,10 +26,8 @@ export const Slide: React.FC<SlideProps> = ({ slide, selected, borderRadius = 0,
             return (
                 <Transformable
                     key={obj.id}
-                    x={x}
-                    y={y}
-                    width={width}
-                    height={height}
+                    position={{x, y}}
+                    size={{height, width}}
                     rotation={rotation}
                     onResize={(newWidth, newHeight) => {
                         setWidth(newWidth);
