@@ -52,6 +52,5 @@ export default tseslint.config({
 
 //Добавить переменные css
 //Доьбавить расширяемые стили
-//Добавить ключи
 //pointer-events: none
 /Добавить  editorType

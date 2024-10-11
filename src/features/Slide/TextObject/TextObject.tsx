@@ -6,12 +6,14 @@ type TextObjectProps = {
     height: number;
     width: number;
     onView?: boolean;
+    onClick?: () => void;
 };
 
 export const TextObjectComponent: React.FC<TextObjectProps> = ({
                                                                    slideObject,
                                                                    height,
                                                                    width,
+                                                                   onClick,
                                                                    onView = false,
                                                                }) => {
     const {
@@ -22,9 +24,10 @@ export const TextObjectComponent: React.FC<TextObjectProps> = ({
     } = slideObject;
 
     const averageCharWidthFactor = 0.4;
+    const minCharsPerLine = 1;
 
     const maxCharsPerLine = useMemo(() => {
-        return Math.floor(width / (fontSize * averageCharWidthFactor));
+        return Math.max(minCharsPerLine, Math.floor(width / (fontSize * averageCharWidthFactor)));
     }, [width, fontSize]);
 
     const lines = useMemo(() => {
@@ -72,6 +75,7 @@ export const TextObjectComponent: React.FC<TextObjectProps> = ({
             pointerEvents='none'
             viewBox={`0 0 ${width} ${height}`}
             preserveAspectRatio="none"
+            onClick={onClick}
         >
             <text
                 x={0}

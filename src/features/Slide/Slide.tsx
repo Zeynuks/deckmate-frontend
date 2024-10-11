@@ -3,6 +3,8 @@ import { Slide as SlideType } from '../../store/types.ts';
 import { TextObjectComponent } from './TextObject/TextObject.tsx';
 import { ImageObjectComponent } from './ImageObject/ImageObject.tsx';
 import { Transformable } from "../../view/components/shared/Transformable.tsx";
+import {dispatch} from "../../store/editor.ts";
+import {setSelected} from "../../store/functions/setSelected.ts";
 
 type SlideProps = {
     slide: SlideType;
@@ -33,10 +35,10 @@ export const Slide: React.FC<SlideProps> = ({ slide, selectedObjects, borderRadi
             }
         }
 
-        if (isSelected && onView) {
             return (
                 <Transformable
                     key={obj.id}
+                    hidden={isSelected && onView}
                     position={{x, y}}
                     size={{height, width}}
                     rotation={rotation}
@@ -51,21 +53,15 @@ export const Slide: React.FC<SlideProps> = ({ slide, selectedObjects, borderRadi
                     onRotate={(newRotation) => {
                         setRotation(newRotation);
                     }}
+                    onClick={() => {dispatch(setSelected, {
+                        slideId: slide.id,
+                        objectId: [obj.id],
+                    })}}
                     onView={onView}
                 >
                     {object()}
                 </Transformable>
             );
-        } else {
-            return (
-                <g
-                    key={obj.id}
-                    transform={`translate(${x + width / 2} ${y + height / 2}) rotate(${rotation}) translate(${-width / 2} ${-height / 2})`}
-                >
-                    {object()}
-                </g>
-            );
-        }
     });
 
     return (

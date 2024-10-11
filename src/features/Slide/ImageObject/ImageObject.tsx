@@ -4,6 +4,7 @@ type ImageObjectProps = {
     slideObject: ImageObject;
     width: number;
     height: number;
+    onClick?: () => void;
     onView: boolean
 };
 
@@ -11,6 +12,7 @@ export const ImageObjectComponent: React.FC<ImageObjectProps> = ({
                                                                      slideObject,
                                                                      width,
                                                                      height,
+                                                                     onClick,
                                                                      onView = false
                                                                  }) => {
     return (
@@ -23,6 +25,7 @@ export const ImageObjectComponent: React.FC<ImageObjectProps> = ({
             pointerEvents='none'
             viewBox={`0 0 ${width} ${height}`}
             preserveAspectRatio="none"
+            onClick={onClick}
         >
             <image
                 href={slideObject.src}

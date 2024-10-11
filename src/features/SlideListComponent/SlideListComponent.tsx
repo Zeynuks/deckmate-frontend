@@ -3,6 +3,8 @@ import {Selected, Slide as SlideType} from '../../store/types.ts';
 import { Slide } from '../Slide/Slide.tsx';
 import styles from './SlideListComponent.module.css';
 import { Typography } from "../../view/components/ui/Typography/Typography.tsx";
+import {dispatch} from "../../store/editor.ts";
+import {setSelected} from "../../store/functions/setSelected.ts";
 
 type SlideListComponentProps = {
     slide: SlideType;
@@ -16,7 +18,12 @@ export const SlideListComponent: React.FC<SlideListComponentProps> = ({
                                                                           selected
                                                                       }) => {
     return (
-        <div className={`${styles.slideWrapper} ${selected.slideId === slide.id ? styles.selectedSlide : ''}`}>
+        <div
+            className={`${styles.slideWrapper} ${selected.slideId === slide.id ? styles.selectedSlide : ''}`}
+            onClick={() => {dispatch(setSelected, {
+                slideId: slide.id,
+                objectId: selected.objectId,
+            })}}>
             <Typography variant="buttonText">{index + 1}</Typography>
             <svg
                 className={styles.miniature}

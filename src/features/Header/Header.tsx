@@ -22,10 +22,10 @@ export const Header: React.FC<HeaderProps> = ({
                                               }) => {
     const {addToast} = useToast();
 
-    const handleShowToast = (type: 'success' | 'error' | 'warning' | 'info') => {
+    const handleShowToast = (type: 'error') => {
         addToast({
             title: type.charAt(0).toUpperCase() + type.slice(1),
-            description: `This is a ${type} message.`,
+            description: `Данная функция находится в разработке`,
             type,
         });
     };
@@ -36,7 +36,7 @@ export const Header: React.FC<HeaderProps> = ({
             <section className={styles.navigation}>
                 <Button iconSrc={menuIcon} color={'none'}
                         size={'large'}
-                        onClick={() => handleShowToast('success')}>
+                        onClick={() => handleShowToast('error')}>
                 </Button>
             </section>
             <section className={styles.topPanel}>
@@ -46,7 +46,7 @@ export const Header: React.FC<HeaderProps> = ({
                             {title}
                         </Typography>
                         <Button iconSrc={arrowDownIcon} color={'none'}
-                                onClick={() => handleShowToast('success')}>
+                                onClick={() => handleShowToast('error')}>
                         </Button>
                     </div>
                     <Typography variant="description">
@@ -54,18 +54,18 @@ export const Header: React.FC<HeaderProps> = ({
                     </Typography>
                 </section>
                 <History
-                    onBack={() => handleShowToast('warning')}
-                    onView={() => handleShowToast('warning')}
-                    onForward={() => handleShowToast('warning')}
+                    onBack={() => handleShowToast('error')}
+                    onView={() => handleShowToast('error')}
+                    onForward={() => handleShowToast('error')}
                 ></History>
                 <section className={styles.actions}>
                     <Button iconSrc={importIcon}
                             color={'none'}
-                            onClick={() => handleShowToast('success')}>
+                            onClick={() => handleShowToast('error')}>
                     </Button>
                     <Button iconSrc={categoryIcon}
                             color={'none'}
-                            onClick={() => handleShowToast('info')}>
+                            onClick={() => handleShowToast('error')}>
                     </Button>
                     <Button iconSrc={playIcon}
                             color={'#7B61FF'}
@@ -77,7 +77,7 @@ export const Header: React.FC<HeaderProps> = ({
                     <Button iconSrc={shareIcon}
                             color={'#000000'}
                             textColor={'#FFFFFF'}
-                            onClick={() => handleShowToast('info')}
+                            onClick={() => handleShowToast('error')}
                             iconPosition={'right'}>
                         Share
                     </Button>

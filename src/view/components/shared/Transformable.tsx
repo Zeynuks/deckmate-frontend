@@ -1,34 +1,38 @@
 // Transformable.tsx
-import React, { useRef } from 'react';
-import { useDrag } from '../../../hooks/useDrag';
-import { useResize } from '../../../hooks/useResize';
-import { useRotate } from '../../../hooks/useRotate';
+import React, {useRef} from 'react';
+import {useDrag} from '../../../hooks/useDrag';
+import {useResize} from '../../../hooks/useResize';
+import {useRotate} from '../../../hooks/useRotate';
 
 type TransformableProps = {
     children: React.ReactNode;
+    hidden: boolean;
     position: { x: number; y: number };
     size: { width: number; height: number };
     onResize: (width: number, height: number) => void;
     onDrag: (x: number, y: number) => void;
     onRotate: (angle: number) => void;
     rotation: number;
+    onClick?: () => void;
     onView?: boolean;
 };
 
 export const Transformable: React.FC<TransformableProps> = ({
                                                                 children,
+                                                                hidden,
                                                                 position,
                                                                 size,
                                                                 onResize,
                                                                 onDrag,
                                                                 onRotate,
                                                                 rotation,
+                                                                onClick,
                                                                 onView = false,
                                                             }) => {
     const transformableRef = useRef<SVGGElement | null>(null);
 
     // Initialize hooks
-    const { handleDragMouseDown } = useDrag({
+    const {handleDragMouseDown} = useDrag({
         position,
         onDrag,
         onView,
@@ -36,7 +40,7 @@ export const Transformable: React.FC<TransformableProps> = ({
         rotation,
     });
 
-    const { handleResizeMouseDown } = useResize({
+    const {handleResizeMouseDown} = useResize({
         size,
         position,
         onResize,
@@ -46,7 +50,7 @@ export const Transformable: React.FC<TransformableProps> = ({
         rotation,
     });
 
-    const { handleRotateMouseDown } = useRotate({
+    const {handleRotateMouseDown} = useRotate({
         position,
         rotation,
         onRotate,
@@ -55,16 +59,16 @@ export const Transformable: React.FC<TransformableProps> = ({
     });
 
     const resizeDirections = [
-        { x: -1, y: -1 },
-        { x: 0, y: -1 },
-        { x: 1, y: -1 },
-        { x: 1, y: 0 },
-        { x: 1, y: 1 },
-        { x: 0, y: 1 },
-        { x: -1, y: 1 },
-        { x: -1, y: 0 },
+        {x: -1, y: -1},
+        {x: 0, y: -1},
+        {x: 1, y: -1},
+        {x: 1, y: 0},
+        {x: 1, y: 1},
+        {x: 0, y: 1},
+        {x: -1, y: 1},
+        {x: -1, y: 0},
     ];
-
+    const newOnClick = onClick || (() => {});
     return (
         <g
             ref={transformableRef}
@@ -77,12 +81,13 @@ export const Transformable: React.FC<TransformableProps> = ({
                 height={size.height}
                 fill="transparent"
                 onMouseDown={handleDragMouseDown}
-                style={{ cursor: onView ? 'grab' : 'default' }}
-                stroke="#7B61FF"
-                strokeWidth={4}
+                style={{cursor: onView ? 'grab' : 'default'}}
+                stroke={hidden? "#7B61FF" : ''}
+                strokeWidth={hidden? "4px" : ""}
+                onMouseDownCapture = {newOnClick}
             />
             {children}
-            {onView && (
+            {onView && hidden && (
                 <>
                     <line
                         x1={0}
@@ -100,12 +105,12 @@ export const Transformable: React.FC<TransformableProps> = ({
                         r={10}
                         fill="#7B61FF"
                         onMouseDown={handleRotateMouseDown}
-                        style={{ cursor: `crosshair` }}
+                        style={{cursor: `crosshair`}}
                     />
                 </>
             )}
 
-            {onView &&
+            {onView && hidden &&
                 resizeDirections.map((direction, index) => {
                     const markerX = (direction.x * size.width) / 2 - 10;
                     const markerY = (direction.y * size.height) / 2 - 10;
@@ -127,7 +132,7 @@ export const Transformable: React.FC<TransformableProps> = ({
                             rx={3}
                             ry={3}
                             onMouseDown={(e) => handleResizeMouseDown(e, direction)}
-                            style={{ cursor: cursorStyle }}
+                            style={{cursor: cursorStyle}}
                         />
                     );
                 })}

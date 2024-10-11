@@ -29,3 +29,10 @@
     margin: 8px 0;
     transition: background-color 0.3s ease;
 }
+
+
+.slideButtons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px
+}

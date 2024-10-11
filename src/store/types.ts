@@ -71,4 +71,8 @@ export type Selected = {
     objectId: ObjectID[];
 };
 
+export type Editor = {
+    presentation: Presentation;
+    selected: Selected;
+}
 

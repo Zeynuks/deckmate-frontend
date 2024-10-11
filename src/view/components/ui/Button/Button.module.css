@@ -18,6 +18,10 @@
     border: 1px solid #000000;
 }
 
+.border:hover {
+    border: 2px solid #7B61FF;
+}
+
 .button:disabled {
     background-color: #ddd;
     color: #aaa;

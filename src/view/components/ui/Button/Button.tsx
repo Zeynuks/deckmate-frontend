@@ -14,7 +14,7 @@ type ButtonBaseProps = {
     children?: React.ReactNode;
     size?: 'small' | 'medium' | 'large';
     iconSrc?: string;
-    iconPosition?: 'left' | 'right' | 'top';
+    iconPosition?: 'left' | 'right' | 'top' | 'middle';
     textColor?: string;
     color?: string;
     border?: boolean;
