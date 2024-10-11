@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Slide as SlideType, ObjectType } from '../../store/types.ts';
+import { Slide as SlideType } from '../../store/types.ts';
 import { TextObjectComponent } from './TextObject/TextObject.tsx';
 import { ImageObjectComponent } from './ImageObject/ImageObject.tsx';
 import { Transformable } from "../../view/components/shared/Transformable.tsx";
@@ -22,6 +22,17 @@ export const Slide: React.FC<SlideProps> = ({ slide, selectedObjects, borderRadi
         const [rotation, setRotation] = useState(obj.rotation || 0);
         const isSelected = selectedObjects && selectedObjects.includes(obj.id);
 
+        const object = () => {
+            switch (obj.type) {
+                case 'text':
+                    return <TextObjectComponent width={width} height={height} slideObject={obj} onView={onView} />
+                case 'image':
+                    return <ImageObjectComponent width={width} height={height} slideObject={obj} onView={onView} />
+                default:
+                    return null;
+            }
+        }
+
         if (isSelected && onView) {
             return (
                 <Transformable
@@ -42,11 +53,7 @@ export const Slide: React.FC<SlideProps> = ({ slide, selectedObjects, borderRadi
                     }}
                     onView={onView}
                 >
-                    {obj.type === ObjectType.Text ? (                                                                   //Добавить Switch
-                        <TextObjectComponent width={width} height={height} slideObject={obj} onView={onView} />
-                    ) : (
-                        <ImageObjectComponent width={width} height={height} slideObject={obj} onView={onView} />
-                    )}
+                    {object()}
                 </Transformable>
             );
         } else {
@@ -55,11 +62,7 @@ export const Slide: React.FC<SlideProps> = ({ slide, selectedObjects, borderRadi
                     key={obj.id}
                     transform={`translate(${x + width / 2} ${y + height / 2}) rotate(${rotation}) translate(${-width / 2} ${-height / 2})`}
                 >
-                    {obj.type === ObjectType.Text ? (
-                        <TextObjectComponent width={width} height={height} slideObject={obj} onView={onView} />
-                    ) : (
-                        <ImageObjectComponent width={width} height={height} slideObject={obj} onView={onView} />
-                    )}
+                    {object()}
                 </g>
             );
         }
