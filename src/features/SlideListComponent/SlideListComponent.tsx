@@ -1,5 +1,5 @@
 import React from 'react';
-import { Slide as SlideType } from '../../store/types.ts';
+import {Selected, Slide as SlideType} from '../../store/types.ts';
 import { Slide } from '../Slide/Slide.tsx';
 import styles from './SlideListComponent.module.css';
 import { Typography } from "../../view/components/ui/Typography/Typography.tsx";
@@ -7,16 +7,16 @@ import { Typography } from "../../view/components/ui/Typography/Typography.tsx";
 type SlideListComponentProps = {
     slide: SlideType;
     index: number;
-    isSelected: boolean;
+    selected: Selected;
 };
 
 export const SlideListComponent: React.FC<SlideListComponentProps> = ({
                                                                           slide,
                                                                           index,
-                                                                          isSelected,
+                                                                          selected
                                                                       }) => {
     return (
-        <div className={`${styles.slideWrapper} ${isSelected ? styles.selectedSlide : ''}`}>
+        <div className={`${styles.slideWrapper} ${selected.slideId === slide.id ? styles.selectedSlide : ''}`}>
             <Typography variant="buttonText">{index + 1}</Typography>
             <svg
                 className={styles.miniature}
@@ -29,10 +29,10 @@ export const SlideListComponent: React.FC<SlideListComponentProps> = ({
                     width={1920}
                     height={1080}
                     fill="none"
-                    stroke={isSelected ? '#7B61FF' : '#D9D9D9'}
-                    strokeWidth={isSelected ? 4 : 2}
+                    stroke={selected.slideId === slide.id ? '#7B61FF' : '#D9D9D9'}
+                    strokeWidth={selected.slideId === slide.id ? 4 : 2}
                 />
-                <Slide slide={slide} borderRadius={10} />
+                <Slide slide={slide} borderRadius={10} selectedObjects={selected.objectId} />
             </svg>
         </div>
     );

@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { Slide as SlideType, ObjectType, Selected } from '../../store/types.ts';
+import { Slide as SlideType, ObjectType } from '../../store/types.ts';
 import { TextObjectComponent } from './TextObject/TextObject.tsx';
 import { ImageObjectComponent } from './ImageObject/ImageObject.tsx';
 import { Transformable } from "../../view/components/shared/Transformable.tsx";
 
 type SlideProps = {
     slide: SlideType;
-    selected: Selected;
+    selectedObjects: Object[];
     borderRadius?: number; //Убрать
     onView?: boolean;
 };
 
-export const Slide: React.FC<SlideProps> = ({ slide, selected, borderRadius = 0, onView = false }) => {
+export const Slide: React.FC<SlideProps> = ({ slide, selectedObjects, borderRadius = 0, onView = false }) => {
     const { background, objects } = slide;
 
     const viewObjects = objects.map((obj) => {
@@ -20,9 +20,9 @@ export const Slide: React.FC<SlideProps> = ({ slide, selected, borderRadius = 0,
         const [x, setX] = useState(obj.position.x);
         const [y, setY] = useState(obj.position.y);
         const [rotation, setRotation] = useState(obj.rotation || 0);
-        const isSelected = selected && selected.objectId && selected.objectId.includes(obj.id);
+        const isSelected = selectedObjects && selectedObjects.includes(obj.id);
 
-        if (isSelected) {
+        if (isSelected && onView) {
             return (
                 <Transformable
                     key={obj.id}

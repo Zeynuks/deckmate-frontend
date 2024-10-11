@@ -32,8 +32,7 @@ export const SlideList: React.FC<SlideListProps> = ({
                     key={slide.id}
                     slide={slide}
                     index={index}
-                    // onClick={() => {}}
-                    isSelected={slide.id === selected.slideId}
+                    selected={selected}
                 />
             ))}
         </div>
