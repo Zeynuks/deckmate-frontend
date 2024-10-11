@@ -34,7 +34,7 @@ export const ImageObjectComponent: React.FC<ImageObjectProps> = ({
                 width="100%"
                 height="100%"
                 preserveAspectRatio="none"
-                cursor={onView ? "grab" : "default"}
+                cursor={onView ? 'grab' : 'default'}
             />
         </svg>
     );

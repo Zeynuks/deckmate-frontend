@@ -31,7 +31,6 @@ export const Transformable: React.FC<TransformableProps> = ({
                                                             }) => {
     const transformableRef = useRef<SVGGElement | null>(null);
 
-    // Initialize hooks
     const {handleDragMouseDown} = useDrag({
         position,
         onDrag,
@@ -82,8 +81,8 @@ export const Transformable: React.FC<TransformableProps> = ({
                 fill="transparent"
                 onMouseDown={handleDragMouseDown}
                 style={{cursor: onView ? 'grab' : 'default'}}
-                stroke={hidden? "#7B61FF" : ''}
-                strokeWidth={hidden? "4px" : ""}
+                stroke={hidden? '#7B61FF' : ''}
+                strokeWidth={hidden? '4px' : ''}
                 onMouseDownCapture = {newOnClick}
             />
             {children}
@@ -105,7 +104,7 @@ export const Transformable: React.FC<TransformableProps> = ({
                         r={10}
                         fill="#7B61FF"
                         onMouseDown={handleRotateMouseDown}
-                        style={{cursor: `crosshair`}}
+                        style={{cursor: 'crosshair'}}
                     />
                 </>
             )}

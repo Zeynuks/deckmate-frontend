@@ -1,5 +1,5 @@
-import {Editor, ObjectID, ObjectType, ImageObject} from "../types.ts";
-import { v4 as uuidv4 } from "uuid";
+import {Editor, ObjectID, ObjectType, ImageObject} from '../types.ts';
+import { v4 as uuidv4 } from 'uuid';
 
 export function addImageObject(editor: Editor): Editor {
     if (!editor) {

@@ -1,5 +1,5 @@
-import {Editor, Slide, SlideID} from "../types.ts";
-import {v4 as uuidv4} from "uuid";
+import {Editor, Slide, SlideID} from '../types.ts';
+import {v4 as uuidv4} from 'uuid';
 
 export function addSlide(editor: Editor): Editor {
     if (!editor) {
@@ -13,7 +13,7 @@ export function addSlide(editor: Editor): Editor {
             color: '#ffffff'
         },
         objects: []
-    }
+    };
     return <Editor>{
         presentation: {
             ...editor.presentation,

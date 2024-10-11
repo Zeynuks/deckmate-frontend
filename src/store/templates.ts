@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import {SlideID, ObjectType, ObjectID, Presentation, Selected} from './types';
-import image from "../assets/6581494373.jpg";
+import image from '../assets/6581494373.jpg';
 
 const presentation: Presentation = {
     title: 'Full Presentation',

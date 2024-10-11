@@ -3,8 +3,8 @@ import {ToastProvider} from './view/components/ui/Toast/ToastContext';
 import {ElementPanel} from './features/ElementPanel/ElementPanel.tsx';
 import {PresentationWorkspace} from './features/WorkSpace/WorkSpace.tsx';
 import {SlideList} from './features/SlideList/SlideList.tsx';
-import {Editor} from "./store/types.ts";
-import React from "react";
+import {Editor} from './store/types.ts';
+import React from 'react';
 
 type AppProps = {
     editor: Editor
@@ -36,9 +36,8 @@ export const App: React.FC<AppProps> = ({editor}: AppProps) => {
                         selected={editor.selected}
                         scale={1.0}
                     />
-                    <SlideList slides={editor.presentation.slides} selected={editor.selected} onAddSlide={() => {
-                    }}/>
+                    <SlideList slides={editor.presentation.slides} selected={editor.selected}/>
                 </div>
         </ToastProvider>
     );
-}
+};

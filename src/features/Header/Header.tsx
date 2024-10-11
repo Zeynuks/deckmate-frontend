@@ -25,7 +25,7 @@ export const Header: React.FC<HeaderProps> = ({
     const handleShowToast = (type: 'error') => {
         addToast({
             title: type.charAt(0).toUpperCase() + type.slice(1),
-            description: `Данная функция находится в разработке`,
+            description: 'Данная функция находится в разработке',
             type,
         });
     };

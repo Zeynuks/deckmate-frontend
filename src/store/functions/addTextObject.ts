@@ -1,5 +1,5 @@
-import {Editor, ObjectID, ObjectType, TextObject} from "../types.ts";
-import { v4 as uuidv4 } from "uuid";
+import {Editor, ObjectID, ObjectType, TextObject} from '../types.ts';
+import { v4 as uuidv4 } from 'uuid';
 
 export function addTextObject(editor: Editor): Editor {
     if (!editor) {
@@ -40,7 +40,7 @@ export function addTextObject(editor: Editor): Editor {
         },
         selected: {
             ...editor.selected,
-            objectId: [...editor.selected.objectId, newTextObject.id],
+            objectId: [newTextObject.id],
         }
     };
 }

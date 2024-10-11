@@ -1,4 +1,4 @@
-import { Editor } from "../types.ts";
+import { Editor } from '../types.ts';
 
 export function removeObject(editor: Editor): Editor {
     if (!editor) {
