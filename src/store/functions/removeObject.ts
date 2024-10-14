@@ -4,7 +4,7 @@ export function removeObject(editor: Editor): Editor {
     if (!editor) {
         return editor;
     }
-
+    console.log('remove')
     const slideId = editor.selected.slideId;
     const slide = editor.presentation.slides.find(slide => slide.id === slideId);
 

@@ -20,7 +20,7 @@ export type SlideObject = {
     id: ObjectID;
     size: Size;
     position: Position;
-    rotation: number
+    angle: number
 };
 
 export type TextObject = SlideObject & {

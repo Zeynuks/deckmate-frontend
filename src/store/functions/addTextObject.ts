@@ -1,42 +1,40 @@
-import {Editor, ObjectID, ObjectType, TextObject} from '../types.ts';
+import { Editor, ObjectID, ObjectType, TextObject } from '../types.ts';
 import { v4 as uuidv4 } from 'uuid';
 
 export function addTextObject(editor: Editor): Editor {
-    if (!editor) {
+    if (!editor || !editor.selected?.slideId) {
         return editor;
     }
 
-    const slideId = editor.selected.slideId;
-    const slide = editor.presentation.slides.find(slide => slide.id === slideId);
+    const { slideId } = editor.selected;
+    const slideIndex = editor.presentation.slides.findIndex(slide => slide.id === slideId);
 
-    if (!slide) {
+    if (slideIndex === -1) {
         return editor;
     }
 
     const newTextObject: TextObject = {
         id: uuidv4() as ObjectID,
         type: ObjectType.Text,
-        size: {
-            width: 0,
-            height: 0
-        },
-        position: {
-            x: 0,
-            y: 0
-        },
+        size: { width: 100, height: 100 },
+        position: { x: 0, y: 0 },
         rotation: 0,
         content: 'Text template',
-        fontSize: 16,
+        fontSize: 96,
         fontFamily: 'Arial'
+    };
+
+    const updatedSlides = [...editor.presentation.slides];
+    updatedSlides[slideIndex] = {
+        ...updatedSlides[slideIndex],
+        objects: [...updatedSlides[slideIndex].objects, newTextObject]
     };
 
     return {
         ...editor,
         presentation: {
             ...editor.presentation,
-            slides: editor.presentation.slides.map(slide =>
-                slide.id === slideId ? { ...slide, objects: [...slide.objects, newTextObject] } : slide
-            )
+            slides: updatedSlides
         },
         selected: {
             ...editor.selected,

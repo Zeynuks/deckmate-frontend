@@ -23,7 +23,7 @@ export const TextObjectComponent: React.FC<TextObjectProps> = ({
         color = '#000',
     } = slideObject;
 
-    const averageCharWidthFactor = 0.4;
+    const averageCharWidthFactor = 0.48;
     const minCharsPerLine = 1;
 
     const maxCharsPerLine = useMemo(() => {

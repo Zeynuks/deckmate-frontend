@@ -33,14 +33,13 @@ export const SlideList: React.FC<SlideListProps> = ({
                 iconPosition="right"
                 color='#FF7B61'
                 textColor='#FFFFFF'
-                onClick={() => {dispatch(removeSlide);}}
+                onClick={() => {dispatch(removeSlide)}}
             >
                 Remove
             </Button>
         </div>
         <div className={styles.slideListContainer}>
                 {slides.map((slide, index) => (
-
                     <SlideListComponent
                         key={slide.id}
                         slide={slide}

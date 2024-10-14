@@ -10,13 +10,13 @@ export const getEditor = () => {
     return _editor;
 };
 
-export const setEditor = (newEditor: Editor) => {
-    _editor = newEditor;
+export const setEditor = (editor: Editor) => {
+    _editor = editor;
 };
 
-export const dispatch = (modifyFunction: Function, payload?: object) => {
-    const newEditor = modifyFunction(_editor, payload);
-    setEditor(newEditor);
+export const dispatch = (modifyFunction: Function, payload?: object | number) => {
+    const editor = modifyFunction(_editor, payload);
+    setEditor(editor);
 
     if (_handler) {
         _handler();

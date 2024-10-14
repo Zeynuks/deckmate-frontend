@@ -1,8 +1,8 @@
-import {Header} from './features/Header/Header.tsx';
+import {Header} from './view/Header/Header.tsx';
 import {ToastProvider} from './view/components/ui/Toast/ToastContext';
-import {ElementPanel} from './features/ElementPanel/ElementPanel.tsx';
-import {PresentationWorkspace} from './features/WorkSpace/WorkSpace.tsx';
-import {SlideList} from './features/SlideList/SlideList.tsx';
+import {ElementPanel} from './view/ElementPanel/ElementPanel.tsx';
+import {PresentationWorkspace} from './view/WorkSpace/WorkSpace.tsx';
+import {SlideList} from './view/SlideList/SlideList.tsx';
 import {Editor} from './store/types.ts';
 import React from 'react';
 
@@ -11,7 +11,7 @@ type AppProps = {
 }
 
 export const App: React.FC<AppProps> = ({editor}: AppProps) => {
-
+    const e = {...editor}
     return (
         <ToastProvider>
                 <Header title={editor.presentation.title} description={'Workspace'}/>
@@ -36,7 +36,7 @@ export const App: React.FC<AppProps> = ({editor}: AppProps) => {
                         selected={editor.selected}
                         scale={1.0}
                     />
-                    <SlideList slides={editor.presentation.slides} selected={editor.selected}/>
+                    <SlideList slides={e.presentation.slides} selected={editor.selected}/>
                 </div>
         </ToastProvider>
     );

@@ -23,7 +23,7 @@ export const SlideListComponent: React.FC<SlideListComponentProps> = ({
             onClick={() => {dispatch(setSelected, {
                 slideId: slide.id,
                 objectId: selected.objectId,
-            });}}>
+            })}}>
             <Typography variant="buttonText">{index + 1}</Typography>
             <svg
                 className={styles.miniature}

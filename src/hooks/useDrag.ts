@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import { useMousePosition } from './useMousePosition';
 
 type UseDragProps = {
@@ -6,7 +6,6 @@ type UseDragProps = {
     onDrag: (x: number, y: number) => void;
     onView: boolean;
     transformableRef: React.RefObject<SVGGElement>;
-    rotation: number;
 };
 
 export const useDrag = ({
@@ -15,18 +14,19 @@ export const useDrag = ({
                             onView,
                             transformableRef,
                         }: UseDragProps) => {
+    const [, setPosition] = useState(position);
     const isDragging = useRef(false);
     const startMousePosition = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
     const startPosition = useRef(position);
 
     const { getMousePosition } = useMousePosition(transformableRef);
+
     const handleDragMouseDown = (e: React.MouseEvent) => {
         if (!onView) return;
         e.preventDefault();
         isDragging.current = true;
         startMousePosition.current = getMousePosition(e.nativeEvent);
         startPosition.current = position;
-
         window.addEventListener('mousemove', handleDragMouseMove);
         window.addEventListener('mouseup', handleDragMouseUp);
     };
@@ -38,7 +38,11 @@ export const useDrag = ({
         const deltaX = mousePosition.x - startMousePosition.current.x;
         const deltaY = mousePosition.y - startMousePosition.current.y;
 
-        onDrag(startPosition.current.x + deltaX, startPosition.current.y + deltaY);
+        const newX = startPosition.current.x + deltaX;
+        const newY = startPosition.current.y + deltaY;
+
+        setPosition({ x: newX, y: newY });
+        onDrag(newX, newY);
     };
 
     const handleDragMouseUp = () => {
@@ -46,13 +50,6 @@ export const useDrag = ({
         window.removeEventListener('mousemove', handleDragMouseMove);
         window.removeEventListener('mouseup', handleDragMouseUp);
     };
-
-    useEffect(() => {
-        return () => {
-            window.removeEventListener('mousemove', handleDragMouseMove);
-            window.removeEventListener('mouseup', handleDragMouseUp);
-        };
-    }, []);
 
     return { handleDragMouseDown };
 };

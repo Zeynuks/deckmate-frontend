@@ -17,8 +17,8 @@ export function addImageObject(editor: Editor): Editor {
         id: uuidv4() as ObjectID,
         type: ObjectType.Image,
         size: {
-            width: 0,
-            height: 0
+            width: 100,
+            height: 100
         },
         position: {
             x: 0,

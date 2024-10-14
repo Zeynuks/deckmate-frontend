@@ -9,7 +9,7 @@ type UseResizeProps = {
     onDrag: (x: number, y: number) => void;
     onView: boolean;
     transformableRef: React.RefObject<SVGGElement>;
-    rotation: number;
+    angle: number;
 };
 
 type Direction = { x: number; y: number };
@@ -21,7 +21,7 @@ export const useResize = ({
                               onDrag,
                               onView,
                               transformableRef,
-                              rotation,
+                              angle,
                           }: UseResizeProps) => {
     const isResizing = useRef(false);
     const startMousePosition = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
@@ -66,7 +66,7 @@ export const useResize = ({
         const deltaX = mousePosition.x - startMousePosition.current.x;
         const deltaY = mousePosition.y - startMousePosition.current.y;
 
-        const localDelta = rotatePoint(deltaX, deltaY, -rotation);
+        const localDelta = rotatePoint(deltaX, deltaY, -angle);
 
         const deltaWidth = localDelta.x * resizeDirection.current.x;
         const deltaHeight = localDelta.y * resizeDirection.current.y;
@@ -83,7 +83,7 @@ export const useResize = ({
         const shiftX = resizeDirection.current.x === -1 ? -changeWidth / 2 : changeWidth / 2;
         const shiftY = resizeDirection.current.y === -1 ? -changeHeight / 2 : changeHeight / 2;
 
-        const rotatedShift = rotatePoint(shiftX, shiftY, rotation);
+        const rotatedShift = rotatePoint(shiftX, shiftY, angle);
 
         const newX = startPosition.current.x + rotatedShift.x;
         const newY = startPosition.current.y + rotatedShift.y;

@@ -4,7 +4,7 @@ import { useMousePosition } from './useMousePosition';
 
 type UseRotateProps = {
     position: { x: number; y: number };
-    rotation: number;
+    angle: number;
     onRotate: (angle: number) => void;
     onView: boolean;
     transformableRef: React.RefObject<SVGGElement>;
@@ -12,14 +12,14 @@ type UseRotateProps = {
 
 export const useRotate = ({
                               position,
-                              rotation,
+                              angle,
                               onRotate,
                               onView,
                               transformableRef,
                           }: UseRotateProps) => {
     const isRotating = useRef(false);
     const startMousePosition = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
-    const startAngle = useRef(rotation);
+    const startAngle = useRef(angle);
     const center = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
     const { getMousePosition } = useMousePosition(transformableRef);
@@ -30,7 +30,7 @@ export const useRotate = ({
         e.stopPropagation();
         isRotating.current = true;
         startMousePosition.current = getMousePosition(e.nativeEvent);
-        startAngle.current = rotation;
+        startAngle.current = angle;
 
         center.current = {
             x: position.x,

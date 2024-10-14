@@ -26,7 +26,7 @@ const presentation: Presentation = {
                         x: 1000,
                         y: 20
                     },
-                    rotation: 0,
+                    angle: 0,
                     type: ObjectType.Text,
                     content: 'This is a full text object',
                     fontSize: 60,
@@ -45,7 +45,7 @@ const presentation: Presentation = {
                         x: 200,
                         y: 300
                     },
-                    rotation: 0,
+                    angle: 0,
                     type: ObjectType.Image,
                     src: image,
                     altText: 'Sample image'
@@ -60,7 +60,7 @@ const presentation: Presentation = {
                         x: 20,
                         y: 700
                     },
-                    rotation: 0,
+                    angle: 0,
                     type: ObjectType.Image,
                     src: image,
                     altText: 'Sample image'
