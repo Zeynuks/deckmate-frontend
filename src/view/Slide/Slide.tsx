@@ -6,21 +6,22 @@ import { Transformable } from '../components/shared/Transformable.tsx';
 import { dispatch } from '../../store/editor.ts';
 import { setSelected } from '../../store/functions/setSelected.ts';
 import { removeObject } from '../../store/functions/removeObject.ts';
-import { setObjectPos } from "../../store/functions/setObjectPos.ts";
-import { setObjectSize } from "../../store/functions/setObjectSize.ts";
-import { setObjectAngle } from "../../store/functions/setObjectAngle.ts";
+import { setObjectPos } from '../../store/functions/setObjectPos.ts';
+import { setObjectSize } from '../../store/functions/setObjectSize.ts';
+import { setObjectAngle } from '../../store/functions/setObjectAngle.ts';
 
 type SlideProps = {
     slide: SlideType;
-    selectedObjects: object[];
+    selectedObjectsId: object[];
+    borderRadius?: number;
     onView?: boolean;
 };
 
-export const Slide: React.FC<SlideProps> = ({ slide, selectedObjects, onView = false }) => {
+export const Slide: React.FC<SlideProps> = ({ slide, selectedObjectsId, borderRadius, onView = false }) => {
     const { background, objects } = slide;
 
     const viewObjects = objects.map((obj) => {
-        const isSelected = selectedObjects && selectedObjects.includes(obj.id);
+        const isSelected = selectedObjectsId && selectedObjectsId.includes(obj.id);
 
         if (obj.position.x + obj.size.width < 0 || obj.position.y + obj.size.height < 0) {
             dispatch(removeObject, { objectId: obj.id });
@@ -30,7 +31,12 @@ export const Slide: React.FC<SlideProps> = ({ slide, selectedObjects, onView = f
         const object = () => {
             switch (obj.type) {
                 case 'text':
-                    return <TextObjectComponent width={obj.size.width} height={obj.size.height} slideObject={obj} onView={onView} />;
+                    return <TextObjectComponent width={obj.size.width} height={obj.size.height} slideObject={obj} onView={onView}   onMouseDown={() => {
+                        dispatch(setSelected, {
+                            slideId: slide.id,
+                            objectId: [obj.id],
+                        });
+                    }} />;
                 case 'image':
                     return <ImageObjectComponent width={obj.size.width} height={obj.size.height} slideObject={obj} onView={onView} />;
                 default:
@@ -76,6 +82,8 @@ export const Slide: React.FC<SlideProps> = ({ slide, selectedObjects, onView = f
                     width={slide.size.width}
                     height={slide.size.height}
                     fill={background.color}
+                    rx={borderRadius}
+                    ry={borderRadius}
                     onClick={() => {
                         dispatch(setSelected, {
                             slideId: slide.id,

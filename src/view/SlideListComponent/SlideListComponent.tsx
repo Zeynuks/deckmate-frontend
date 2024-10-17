@@ -2,7 +2,7 @@ import React from 'react';
 import {Selected, Slide as SlideType} from '../../store/types.ts';
 import { Slide } from '../Slide/Slide.tsx';
 import styles from './SlideListComponent.module.css';
-import { Typography } from '../../view/components/ui/Typography/Typography.tsx';
+import { Typography } from '../components/ui/Typography/Typography.tsx';
 import {dispatch} from '../../store/editor.ts';
 import {setSelected} from '../../store/functions/setSelected.ts';
 
@@ -23,7 +23,7 @@ export const SlideListComponent: React.FC<SlideListComponentProps> = ({
             onClick={() => {dispatch(setSelected, {
                 slideId: slide.id,
                 objectId: selected.objectId,
-            })}}>
+            });}}>
             <Typography variant="buttonText">{index + 1}</Typography>
             <svg
                 className={styles.miniature}
@@ -38,7 +38,7 @@ export const SlideListComponent: React.FC<SlideListComponentProps> = ({
                     stroke={selected.slideId === slide.id ? '#7B61FF' : '#D9D9D9'}
                     strokeWidth={selected.slideId === slide.id ? 4 : 2}
                 />
-                <Slide slide={slide} borderRadius={10} selectedObjects={selected.objectId} />
+                <Slide slide={slide} selectedObjectsId={selected.objectId} />
             </svg>
         </div>
     );

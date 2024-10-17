@@ -40,6 +40,8 @@
 }
 
 .dropdown {
+    overflow: hidden;
+    z-index: 1000;
     position: absolute;
     border-radius: 20px;
     padding: 0;

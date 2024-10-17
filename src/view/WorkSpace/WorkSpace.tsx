@@ -56,11 +56,11 @@ export const PresentationWorkspace: React.FC<WorkspaceProps> = ({
                                 height={selectedSlide.size.height  + BORDER_WIDTH * 2}
                                 fill="none"
                                 stroke={BORDER_COLOR}
-                                strokeWidth={BORDER_WIDTH * 2}
+                                strokeWidth={BORDER_WIDTH * 5}
                                 rx={BORDER_RADIUS}
                                 ry={BORDER_RADIUS}
                             />
-                            <Slide slide={selectedSlide} selectedObjects={selected.objectId} borderRadius={BORDER_RADIUS} onView={true}/>
+                            <Slide slide={selectedSlide} selectedObjectsId={selected.objectId} borderRadius={BORDER_RADIUS} onView={true}/>
 
                         </g>
                     </svg>

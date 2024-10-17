@@ -24,7 +24,7 @@ export function addImageObject(editor: Editor): Editor {
             x: 0,
             y: 0
         },
-        rotation: 0,
+        angle: 0,
         src: '',
     };
 

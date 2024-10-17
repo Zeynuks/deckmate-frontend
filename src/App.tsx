@@ -11,7 +11,7 @@ type AppProps = {
 }
 
 export const App: React.FC<AppProps> = ({editor}: AppProps) => {
-    const e = {...editor}
+    const e = {...editor};
     return (
         <ToastProvider>
                 <Header title={editor.presentation.title} description={'Workspace'}/>
@@ -31,6 +31,7 @@ export const App: React.FC<AppProps> = ({editor}: AppProps) => {
                         }}
                         onTriangle={() => {
                         }}/>
+                    {/*<TextPanel textObject={editor.presentation.slides[0].objects[0]}/>*/}
                     <PresentationWorkspace
                         presentation={editor.presentation}
                         selected={editor.selected}

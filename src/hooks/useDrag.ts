@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import {useEffect, useRef, useState} from 'react';
 import { useMousePosition } from './useMousePosition';
 
 type UseDragProps = {
@@ -38,8 +38,28 @@ export const useDrag = ({
         const deltaX = mousePosition.x - startMousePosition.current.x;
         const deltaY = mousePosition.y - startMousePosition.current.y;
 
-        const newX = startPosition.current.x + deltaX;
-        const newY = startPosition.current.y + deltaY;
+        let newX = startPosition.current.x + deltaX;
+        let newY = startPosition.current.y + deltaY;
+
+        const slideWidth = 1920;  // Предположительный размер слайда
+        const slideHeight = 1080; // Предположительный размер слайда
+
+        const centerX = slideWidth / 2;
+        const centerY = slideHeight / 2;
+
+        const snapDistance = 50; // Расстояние для привязки
+
+        if (e.shiftKey) {
+            // Привязка к центру по ширине
+            if (Math.abs(newX - centerX) < snapDistance) {
+                newX = centerX;
+            }
+
+            // Привязка к центру по высоте
+            if (Math.abs(newY - centerY) < snapDistance) {
+                newY = centerY;
+            }
+        }
 
         setPosition({ x: newX, y: newY });
         onDrag(newX, newY);
@@ -50,6 +70,13 @@ export const useDrag = ({
         window.removeEventListener('mousemove', handleDragMouseMove);
         window.removeEventListener('mouseup', handleDragMouseUp);
     };
+
+    useEffect(() => {
+        return () => {
+            window.removeEventListener('mousemove', handleDragMouseMove);
+            window.removeEventListener('mouseup', handleDragMouseUp);
+        };
+    }, []);
 
     return { handleDragMouseDown };
 };

@@ -1,4 +1,12 @@
-import { Editor, ObjectID, ObjectType, TextObject } from '../types.ts';
+import {
+    Editor,
+    FontWeight,
+    ObjectID,
+    ObjectType,
+    TextHorizontalAlign,
+    TextObject,
+    TextVerticalAlign
+} from '../types.ts';
 import { v4 as uuidv4 } from 'uuid';
 
 export function addTextObject(editor: Editor): Editor {
@@ -18,10 +26,16 @@ export function addTextObject(editor: Editor): Editor {
         type: ObjectType.Text,
         size: { width: 100, height: 100 },
         position: { x: 0, y: 0 },
-        rotation: 0,
-        content: 'Text template',
-        fontSize: 96,
-        fontFamily: 'Arial'
+        angle: 0,
+        content: [{text: 'Text template'}],
+        style: {
+            fontSize: 60,
+            fontFamily: 'Nunito',
+            fontWeight: FontWeight.Normal,
+            textHorizontalAlign: TextHorizontalAlign.Left,
+            textVerticalAlign: TextVerticalAlign.Start,
+            color: '#000000'
+        }
     };
 
     const updatedSlides = [...editor.presentation.slides];

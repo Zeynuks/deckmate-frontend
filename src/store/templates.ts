@@ -1,5 +1,16 @@
-import { v4 as uuidv4 } from 'uuid';
-import {SlideID, ObjectType, ObjectID, Presentation, Selected} from './types';
+import {v4 as uuidv4} from 'uuid';
+import {
+    FontWeight,
+    ImageObject,
+    ObjectID,
+    ObjectType,
+    Presentation,
+    Selected,
+    SlideID,
+    TextHorizontalAlign,
+    TextObject,
+    TextVerticalAlign
+} from './types';
 import image from '../assets/6581494373.jpg';
 
 const presentation: Presentation = {
@@ -28,13 +39,31 @@ const presentation: Presentation = {
                     },
                     angle: 0,
                     type: ObjectType.Text,
-                    content: 'This is a full text object',
-                    fontSize: 60,
-                    fontFamily: 'Nunito',
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    color: 'hsl(120, 100%, 50%)'
-                },
+                    content: [
+                        {
+                            text: 'This is a full text object.'
+                        },
+                        {
+                            text: 'I\'m not Frontender',
+                            style: {
+                                fontSize: 96,
+                                fontFamily: 'Nunito',
+                                fontWeight: FontWeight.Bold,
+                                textHorizontalAlign: TextHorizontalAlign.Left,
+                                textVerticalAlign: TextVerticalAlign.Start,
+                                color: 'hsl(0,100%,50%)'
+                            }
+                        }
+                    ],
+                    style: {
+                        fontSize: 60,
+                        fontFamily: 'Nunito',
+                        fontWeight: FontWeight.Bold,
+                        textHorizontalAlign: TextHorizontalAlign.Middle,
+                        textVerticalAlign: TextVerticalAlign.Start,
+                        color: 'hsl(120, 100%, 50%)'
+                    }
+                } as TextObject,
                 {
                     id: uuidv4() as ObjectID,
                     size: {
@@ -49,7 +78,7 @@ const presentation: Presentation = {
                     type: ObjectType.Image,
                     src: image,
                     altText: 'Sample image'
-                },
+                } as ImageObject,
                 {
                     id: uuidv4() as ObjectID,
                     size: {
@@ -64,7 +93,7 @@ const presentation: Presentation = {
                     type: ObjectType.Image,
                     src: image,
                     altText: 'Sample image'
-                }
+                } as ImageObject
             ]
         },
         {
@@ -75,7 +104,7 @@ const presentation: Presentation = {
             },
             background: {
                 type: 'color',
-                color: '#FFFFFF',
+                color: '#FFFFFF'
             },
             objects: []
         }
@@ -84,7 +113,7 @@ const presentation: Presentation = {
 
 const selected: Selected = {
     slideId: presentation.slides[0].id as SlideID,
-    objectId: [presentation.slides[0].objects[0].id, presentation.slides[0].objects[1].id] as ObjectID[]
+    objectId: [] as ObjectID[]
 };
 
 export const editor = {

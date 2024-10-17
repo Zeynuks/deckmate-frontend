@@ -68,8 +68,18 @@ export const useResize = ({
 
         const localDelta = rotatePoint(deltaX, deltaY, -angle);
 
-        const deltaWidth = localDelta.x * resizeDirection.current.x;
-        const deltaHeight = localDelta.y * resizeDirection.current.y;
+        let deltaWidth = localDelta.x * resizeDirection.current.x;
+        let deltaHeight = localDelta.y * resizeDirection.current.y;
+
+        if (e.shiftKey) {
+            const aspectRatio = startDimensions.current.width / startDimensions.current.height;
+
+            if (Math.abs(deltaWidth) > Math.abs(deltaHeight)) {
+                deltaHeight = deltaWidth / aspectRatio;
+            } else {
+                deltaWidth = deltaHeight * aspectRatio;
+            }
+        }
 
         const newWidth = startDimensions.current.width + deltaWidth;
         const newHeight = startDimensions.current.height + deltaHeight;

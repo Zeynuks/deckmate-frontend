@@ -23,16 +23,72 @@ export type SlideObject = {
     angle: number
 };
 
-export type TextObject = SlideObject & {
-    type: ObjectType.Text;
-    content: string;
-    fontSize: number;
-    fontFamily: string;
-    fontWeight?: 'normal' | 'bold' | 'lighter' | 'bolder' | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
-    textAlign?: 'left' | 'center' | 'right' | 'justify';
+export interface TextStyle {
+    fontSize?: number;
+    fontFamily?: string;
+    fontWeight?: FontWeight;
+    fontStyle?: FontStyle;
+    textDecoration?: TextDecoration;
+    textHorizontalAlign?: TextHorizontalAlign;
+    textVerticalAlign?: TextVerticalAlign;
     lineHeight?: number;
+    letterSpacing?: number;
     color?: CSSColor;
+    backgroundColor?: CSSColor;
+}
+
+export type TextSpan = {
+    text: string;
+    style?: TextStyle;
 };
+
+export interface TextObject extends SlideObject {
+    type: ObjectType.Text;
+    content: TextSpan[];
+    style: TextStyle;
+}
+
+export enum FontWeight {
+    Normal = 'normal',
+    Bold = 'bold',
+    Lighter = 'lighter',
+    Bolder = 'bolder',
+    W100 = 100,
+    W200 = 200,
+    W300 = 300,
+    W400 = 400,
+    W500 = 500,
+    W600 = 600,
+    W700 = 700,
+    W800 = 800,
+    W900 = 900,
+}
+
+export enum FontStyle {
+    Normal = 'normal',
+    Italic = 'italic',
+    Oblique = 'oblique',
+}
+
+export enum TextDecoration {
+    None = 'none',
+    Underline = 'underline',
+    Overline = 'overline',
+    LineThrough = 'line-through',
+}
+
+export enum TextHorizontalAlign {
+    Left = 'left',
+    Middle = 'middle',
+    Right = 'right',
+}
+
+export enum TextVerticalAlign {
+    Justify = 'justify',
+    Start = 'start',
+    End = 'end',
+}
+
 
 export type Image = {
     src: string;

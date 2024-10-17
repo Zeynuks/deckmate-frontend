@@ -54,7 +54,13 @@ export const useRotate = ({
         const startAngleRad = Math.atan2(startDy, startDx) * (180 / Math.PI);
         const deltaAngle = angle - startAngleRad;
 
-        onRotate(startAngle.current + deltaAngle);
+        let newAngle = startAngle.current + deltaAngle;
+
+        if (e.shiftKey) {
+            newAngle = Math.round(newAngle / 15) * 15;
+        }
+
+        onRotate(newAngle);
     };
 
     const handleRotateMouseUp = () => {
