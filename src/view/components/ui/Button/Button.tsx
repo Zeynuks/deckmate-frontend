@@ -1,112 +1,111 @@
-import React from 'react';
+import React from "react";
 import styles from './Button.module.css';
 import {Typography} from '../Typography/Typography';
 
-type RequireAtLeastOne<T, Keys extends keyof T = keyof T> =
-    Pick<T, Exclude<keyof T, Keys>> &
-    {
-        [K in Keys]-?: Required<Pick<T, K>> &
-        Partial<Pick<T, Exclude<Keys, K>>>;
-    }[Keys];
-
-type ButtonBaseProps = {
-    onClick: () => void;
-    children?: React.ReactNode;
-    size?: 'small' | 'medium' | 'large';
-    iconSrc?: string;
-    iconPosition?: 'left' | 'right' | 'top' | 'middle';
-    textColor?: string;
-    color?: string;
-    border?: boolean;
-    disabled?: boolean;
-    fullWidth?: boolean;
-};
-
-type ButtonProps = RequireAtLeastOne<ButtonBaseProps, 'iconSrc' | 'children'>;
+/**
+ * Утилитный тип, который требует наличие хотя бы одного указанного свойства.
+ *
+ * @template T - Тип объекта.
+ * @template K - Ключи, из которых хотя бы одно свойство должно быть обязательным.
+ */
+type RequireAtLeastOne<T, K extends keyof T = keyof T> =
+    Omit<T, K> & { [P in K]-?: Required<Pick<T, P>> & Partial<Omit<T, P>> }[K];
 
 /**
- * Компонент кнопки, который может содержать текст, иконку, настраиваемый цвет и размер.
- * Требует наличия хотя бы одного из свойств `iconSrc` или `children`.
+ * Позиции иконки относительно текста в кнопке.
+ */
+enum IconPosition {
+    Left = 'left',
+    Right = 'right',
+    Top = 'top',
+}
+
+/**
+ * Общие свойства для кнопки.
  *
- * @component
- * @param {Object} props - Свойства компонента
- * @param {() => void} props.onClick - Обработчик клика по кнопке
- * @param {React.ReactNode} [props.children] - Текст или контент, который будет отображаться внутри кнопки
- * @param {'small' | 'medium' | 'large'} [props.size='small'] - Размер кнопки
- * @param {string} [props.iconSrc] - Путь к изображению иконки
- * @param {'left' | 'right' | 'top' | 'middle'} [props.iconPosition='left'] - Положение иконки относительно текста
- * @param {string} [props.textColor] - Цвет текста внутри кнопки
- * @param {string} [props.color] - Цвет фона кнопки
- * @param {boolean} [props.border=false] - Показывать ли границу вокруг кнопки
- * @param {boolean} [props.disabled=false] - Состояние отключенной кнопки
- * @param {boolean} [props.fullWidth=false] - Растягивать ли кнопку на всю ширину контейнера
+ * @property {React.CSSProperties} [style] - Стили кнопки.
+ * @property {boolean} [disabled] - Флаг, указывающий на неактивное состояние кнопки.
+ * @property {() => void} onClick - Обработчик события клика по кнопке.
+ */
+interface CommonButtonProps {
+    style?: React.CSSProperties;
+    disabled?: boolean;
+    onClick: () => void;
+}
+
+/**
+ * Свойства, относящиеся к иконке.
  *
- * @returns {JSX.Element} JSX элемент кнопки
+ * @property {string} iconSrc - URL-адрес изображения иконки.
+ * @property {IconPosition} iconPosition - Позиция иконки относительно текста.
+ * @property {number} iconSize - Размер иконки в пикселях.
+ */
+interface IconProps {
+    iconSrc: string;
+    iconPosition: IconPosition;
+    iconSize: number;
+}
+
+/**
+ * Свойства для кнопки с текстом.
+ *
+ * @property {React.ReactNode} children - Текст кнопки или её дочерние элементы.
+ */
+interface TextProps {
+    children: React.ReactNode;
+}
+
+/**
+ * Свойства для компонента Button, включающие хотя бы одно из свойств: иконку или текст.
+ *
+ */
+type ButtonProps = RequireAtLeastOne<CommonButtonProps & Partial<IconProps & TextProps>, 'iconSrc' | 'children'>;
+
+/**
+ * Компонент кнопки, поддерживающий наличие иконки и/или текста.
+ *
+ * @param {ButtonProps} props Свойства компонента.
+ * @param {string} [props.iconSrc] - URL-адрес изображения иконки (если задано).
+ * @param {number} [props.iconSize] - Размер иконки (если задано).
+ * @param {IconPosition} [props.iconPosition] - Позиция иконки относительно текста (если задано).
+ * @param {React.ReactNode} [props.children] - Текст кнопки или её дочерние элементы.
+ * @param {React.CSSProperties} [props.style] - Стили для кнопки.
+ * @param {boolean} [props.disabled=false] - Флаг, указывающий на неактивное состояние кнопки.
+ * @param {() => void} props.onClick - Обработчик события клика по кнопке.
  */
 export const Button: React.FC<ButtonProps> = ({
-                                                  onClick,
-                                                  children,
-                                                  size = 'small',
                                                   iconSrc,
-                                                  iconPosition = 'left',
-                                                  textColor,
-                                                  color,
-                                                  border = false,
+                                                  iconSize,
+                                                  iconPosition,
+                                                  children,
+                                                  style,
                                                   disabled = false,
-                                                  fullWidth = false,
-                                              }) => {
-    const isIconOnly = !!iconSrc && !children;
-    const iconSize = size === 'small' ? 24 : size === 'large' ? 48 : 36;
+                                                  onClick,
+                                              }: ButtonProps) => {
+    // Создание иконки
+    const icon = <img
+        src={iconSrc}
+        alt=""
+        className={styles.icon}
+        style={{
+            width: `${iconSize}px`,
+            height: `${iconSize}px`
+        }}
+    />;
 
     return (
         <button
             onClick={onClick}
             disabled={disabled}
-            className={`${styles.button} ${border ? styles.border : ''} ${isIconOnly ? styles.iconOnly : ''} ${iconPosition === 'top' ? styles.iconTop : ''} ${fullWidth ? styles.fullWidth : styles.autoWidth}`}
-            style={{
-                backgroundColor: isIconOnly ? 'transparent' : color || 'transparent',
-                color: isIconOnly ? '#000' : textColor,
-            }}
-            tabIndex={0}
+            className={`${styles.button} ${style}`}
         >
-            {iconSrc && iconPosition === 'left' && (
-                <img
-                    src={iconSrc}
-                    alt=""
-                    className={styles.icon}
-                    style={{
-                        width: `${iconSize}px`,
-                        height: `${iconSize}px`
-                    }}
-                />
-            )}
-            {iconSrc && iconPosition === 'top' && (
-                <img
-                    src={iconSrc}
-                    alt=""
-                    className={styles.icon}
-                    style={{
-                        width: `${iconSize}px`,
-                        height: `${iconSize}px`
-                    }}
-                />
-            )}
+            {iconSrc && iconPosition !== IconPosition.Right ? icon : <></>}
             {children && (
-                <Typography color={textColor} variant="buttonText">
+                <Typography color={style ? style.color : undefined} variant="buttonText">
                     {children}
                 </Typography>
             )}
-            {iconSrc && iconPosition === 'right' && (
-                <img
-                    src={iconSrc}
-                    alt=""
-                    className={styles.icon}
-                    style={{
-                        width: `${iconSize}px`,
-                        height: `${iconSize}px`
-                    }}
-                />
-            )}
+            {iconSrc && iconPosition === IconPosition.Right ? icon : <></>}
         </button>
     );
 };
