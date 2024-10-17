@@ -13,6 +13,8 @@ type RequireAtLeastOne<T, K extends keyof T = keyof T> =
 
 /**
  * Позиции иконки относительно текста в кнопке.
+ *
+ * @enum {string}
  */
 enum IconPosition {
     Left = 'left',
@@ -21,14 +23,14 @@ enum IconPosition {
 }
 
 /**
- * Общие свойства для кнопки.
+ * Общие свойства для компонента кнопки.
  *
- * @property {React.CSSProperties} [style] - Стили кнопки.
- * @property {boolean} [disabled] - Флаг, указывающий на неактивное состояние кнопки.
- * @property {() => void} onClick - Обработчик события клика по кнопке.
+ * @property {string} [className] - Дополнительный CSS-класс для стилизации кнопки.
+ * @property {boolean} [disabled] - Флаг, указывающий, является ли кнопка неактивной.
+ * @property {() => void} onClick - Функция-обработчик события клика по кнопке.
  */
 interface CommonButtonProps {
-    style?: React.CSSProperties;
+    className?: string;
     disabled?: boolean;
     onClick: () => void;
 }
@@ -49,10 +51,13 @@ interface IconProps {
 /**
  * Свойства для кнопки с текстом.
  *
+ * @typedef {Object} TextProps
  * @property {React.ReactNode} children - Текст кнопки или её дочерние элементы.
+ * @property {string} textColor - Цвет текста кнопки.
  */
 interface TextProps {
     children: React.ReactNode;
+    textColor: string;
 }
 
 /**
@@ -66,23 +71,25 @@ type ButtonProps = RequireAtLeastOne<CommonButtonProps & Partial<IconProps & Tex
  *
  * @param {ButtonProps} props Свойства компонента.
  * @param {string} [props.iconSrc] - URL-адрес изображения иконки (если задано).
- * @param {number} [props.iconSize] - Размер иконки (если задано).
- * @param {IconPosition} [props.iconPosition] - Позиция иконки относительно текста (если задано).
+ * @param {number} [props.iconSize=24] - Размер иконки (если задано).
+ * @param {IconPosition} [props.iconPosition=IconPosition.Left] - Позиция иконки относительно текста (если задано).
  * @param {React.ReactNode} [props.children] - Текст кнопки или её дочерние элементы.
- * @param {React.CSSProperties} [props.style] - Стили для кнопки.
+ * @param {string} [props.textColor] - Цвет текста кнопки.
+ * @param {string} [props.className] - Дополнительный CSS-класс для стилизации кнопки.
  * @param {boolean} [props.disabled=false] - Флаг, указывающий на неактивное состояние кнопки.
  * @param {() => void} props.onClick - Обработчик события клика по кнопке.
+ * @returns {JSX.Element} Компонент кнопки.
  */
 export const Button: React.FC<ButtonProps> = ({
                                                   iconSrc,
-                                                  iconSize,
-                                                  iconPosition,
+                                                  iconSize = 24,
+                                                  iconPosition = IconPosition.Left,
                                                   children,
-                                                  style,
+                                                  className,
+                                                  textColor,
                                                   disabled = false,
                                                   onClick,
-                                              }: ButtonProps) => {
-    // Создание иконки
+                                              }: ButtonProps): JSX.Element => {
     const icon = <img
         src={iconSrc}
         alt=""
@@ -97,11 +104,11 @@ export const Button: React.FC<ButtonProps> = ({
         <button
             onClick={onClick}
             disabled={disabled}
-            className={`${styles.button} ${style}`}
+            className={`${styles.button} ${className}`}
         >
             {iconSrc && iconPosition !== IconPosition.Right ? icon : <></>}
             {children && (
-                <Typography color={style ? style.color : undefined} variant="buttonText">
+                <Typography color={textColor} variant="buttonText">
                     {children}
                 </Typography>
             )}
