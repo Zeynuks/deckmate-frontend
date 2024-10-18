@@ -1,5 +1,5 @@
 import styles from './History.module.css';
-import {Button} from '../../view/components/ui/Button/Button.tsx';
+import {Button} from '../components/ui/Button/Button.tsx';
 
 import undoIcon from '../../assets/icons/undo.svg';
 import viewIcon from '../../assets/icons/clock.svg';
@@ -14,6 +14,8 @@ type HistoryProps = {
     disabledForward?: boolean;
 };
 
+// TODO: Добавить реализацию истории действий
+
 export const History: React.FC<HistoryProps> = ({
                                                     onBack,
                                                     onView,
@@ -24,20 +26,9 @@ export const History: React.FC<HistoryProps> = ({
                                                 }) => {
     return (
         <section className={styles.history}>
-            <Button disabled={disabledBack}
-                    iconSrc={undoIcon}
-                    onClick={onBack}>
-            </Button>
-            <Button disabled={disabledView}
-                    size={'medium'}
-                    iconSrc={viewIcon}
-                    onClick={onView}>
-
-            </Button>
-            <Button disabled={disabledForward}
-                    iconSrc={redoIcon}
-                    onClick={onForward}>
-            </Button>
+            <Button iconSrc={undoIcon} className={styles.historyButton} disabled={disabledBack} onClick={onBack}/>
+            <Button iconSrc={viewIcon} iconSize={36} className={styles.historyButton} disabled={disabledView} onClick={onView}/>
+            <Button iconSrc={redoIcon} className={styles.historyButton} disabled={disabledForward} onClick={onForward}/>
         </section>
     );
 };
