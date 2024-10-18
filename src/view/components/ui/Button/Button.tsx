@@ -11,6 +11,8 @@ import {Typography} from '../Typography/Typography';
 type RequireAtLeastOne<T, K extends keyof T = keyof T> =
     Omit<T, K> & { [P in K]-?: Required<Pick<T, P>> & Partial<Omit<T, P>> }[K];
 
+
+// TODO: Узнать как лучше обработать IconPosition
 /**
  * Позиции иконки относительно текста в кнопке.
  *
@@ -103,7 +105,7 @@ export const Button: React.FC<ButtonProps> = ({
         <button
             onClick={onClick}
             disabled={disabled}
-            className={`${styles.button} ${className? className: styles.defaultButton}`}
+            className={`${iconPosition === IconPosition.Top? styles.topIcon: ''} ${styles.button} ${className? className: styles.defaultButton}`}
         >
             {iconSrc && iconPosition !== IconPosition.Right ? icon : <></>}
             {children && (
