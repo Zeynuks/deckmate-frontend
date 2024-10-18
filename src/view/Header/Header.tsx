@@ -1,3 +1,4 @@
+import React from "react";
 import styles from './Header.module.css';
 import {Button, IconPosition} from '../components/ui/Button/Button.tsx';
 import {Typography} from '../components/ui/Typography/Typography.tsx';

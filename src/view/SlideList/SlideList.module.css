@@ -8,6 +8,18 @@
     border-left: 1px solid #D9D9D9;
 }
 
+.addButton {
+    width: 100%;
+    padding: 12px 20px;
+    background: none;
+    border: 1px solid #000000;
+}
+
+.removeButton {
+    padding: 12px 20px;
+    background-color: #FF7B61;
+}
+
 .slideListContainer {
     display: flex;
     flex-direction: column;

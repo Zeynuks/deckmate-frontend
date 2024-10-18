@@ -1,14 +1,16 @@
+import React from "react";
 import styles from './ElementPanel.module.css';
 import {Button, IconPosition} from '../components/ui/Button/Button.tsx';
+
+import {dispatch} from '../../store/editor.ts';
+import {addTextObject} from '../../store/functions/addTextObject.ts';
+import {addImageObject} from '../../store/functions/addImageObject.ts';
 
 import imageIcon from '../../assets/icons/gallery.svg';
 import rectIcon from '../../assets/icons/rect.svg';
 import ellipseIcon from '../../assets/icons/ellipse.svg';
 import triangleIcon from '../../assets/icons/triangle.svg';
 import textAreaIcon from '../../assets/icons/text-area.svg';
-import {dispatch} from '../../store/editor.ts';
-import {addTextObject} from '../../store/functions/addTextObject.ts';
-import {addImageObject} from '../../store/functions/addImageObject.ts';
 
 type ElementPanelProps = {
     onRect: () => void;
