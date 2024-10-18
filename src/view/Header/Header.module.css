@@ -3,9 +3,26 @@
     height: 96px;
 }
 
+.menuButton {
+    padding: 0;
+    background: none;
+}
+
+
+.presentButton {
+    color: #FFFFFF;
+    padding: 12px 20px;
+    background-color: #7B61FF;
+}
+
+.shareButton {
+    color: #FFFFFF;
+    padding: 12px 20px;
+    background-color: #000000;
+}
+
 .navigation {
     padding: 24px;
-
     border: 0.25px solid #D9D9D9;
 }
 

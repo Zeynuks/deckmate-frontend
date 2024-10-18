@@ -1,7 +1,7 @@
 import styles from './Header.module.css';
-import {Button} from '../../view/components/ui/Button/Button.tsx';
-import {Typography} from '../../view/components/ui/Typography/Typography.tsx';
-import {useToast} from '../../view/components/ui/Toast/ToastContext.tsx';
+import {Button, IconPosition} from '../components/ui/Button/Button.tsx';
+import {Typography} from '../components/ui/Typography/Typography.tsx';
+import {useToast} from '../components/ui/Toast/ToastContext.tsx';
 import {History} from '../History/History.tsx';
 import menuIcon from '../../assets/icons/menu.svg';
 import arrowDownIcon from '../../assets/icons/arrow-down.svg';
@@ -16,6 +16,11 @@ type HeaderProps = {
     description: string,
 };
 
+// TODO: Добавить меню
+// TODO: Добавить изменение названия презентации
+// TODO: Добавить меню презентации
+// TODO: Добавить функционал кнопкам событий
+
 export const Header: React.FC<HeaderProps> = ({
                                                   title,
                                                   description,
@@ -25,19 +30,16 @@ export const Header: React.FC<HeaderProps> = ({
     const handleShowToast = (type: 'error') => {
         addToast({
             title: type.charAt(0).toUpperCase() + type.slice(1),
-            description: 'Данная функция находится в разработке',
+            description: 'Данная функция в разработке',
             type,
         });
     };
 
-
     return (
         <header className={styles.header}>
             <section className={styles.navigation}>
-                <Button iconSrc={menuIcon} color={'none'}
-                        size={'large'}
-                        onClick={() => handleShowToast('error')}>
-                </Button>
+                <Button iconSrc={menuIcon} iconSize={48} className={styles.menuButton}
+                        onClick={() => handleShowToast('error')}/>
             </section>
             <section className={styles.topPanel}>
                 <section>
@@ -45,7 +47,7 @@ export const Header: React.FC<HeaderProps> = ({
                         <Typography variant="title" as="h1">
                             {title}
                         </Typography>
-                        <Button iconSrc={arrowDownIcon} color={'none'}
+                        <Button iconSrc={arrowDownIcon} className={styles.menuButton}
                                 onClick={() => handleShowToast('error')}>
                         </Button>
                     </div>
@@ -59,26 +61,16 @@ export const Header: React.FC<HeaderProps> = ({
                     onForward={() => handleShowToast('error')}
                 ></History>
                 <section className={styles.actions}>
-                    <Button iconSrc={importIcon}
-                            color={'none'}
+                    <Button iconSrc={importIcon} className={styles.menuButton}
+                            onClick={() => handleShowToast('error')}/>
+                    <Button iconSrc={categoryIcon} className={styles.menuButton}
+                            onClick={() => handleShowToast('error')}/>
+                    <Button iconSrc={playIcon} className={styles.presentButton} iconPosition={IconPosition.Right}
                             onClick={() => handleShowToast('error')}>
-                    </Button>
-                    <Button iconSrc={categoryIcon}
-                            color={'none'}
-                            onClick={() => handleShowToast('error')}>
-                    </Button>
-                    <Button iconSrc={playIcon}
-                            color={'#7B61FF'}
-                            textColor={'#FFFFFF'}
-                            onClick={() => handleShowToast('error')}
-                            iconPosition={'right'}>
                         Present
                     </Button>
-                    <Button iconSrc={shareIcon}
-                            color={'#000000'}
-                            textColor={'#FFFFFF'}
-                            onClick={() => handleShowToast('error')}
-                            iconPosition={'right'}>
+                    <Button iconSrc={shareIcon} className={styles.shareButton} iconPosition={IconPosition.Right}
+                            onClick={() => handleShowToast('error')}>
                         Share
                     </Button>
                 </section>
