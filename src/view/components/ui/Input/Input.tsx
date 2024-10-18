@@ -22,14 +22,14 @@ export const Input: React.FC<InputProps> = ({
 
     return (
         <input
-            ref={inputRef}
-            type="text"
-            value={value}
-            onChange={e => onChange(e.target.value)}
-            placeholder={placeholder}
-            onKeyDown={handleKeyDown}
-            className={styles.input}
-            tabIndex={0}
-        />
+                ref={inputRef}
+                type="text"
+                value={value}
+                onChange={e => onChange(e.target.value)}
+                placeholder={placeholder}
+                onKeyDown={handleKeyDown}
+                className={`${styles.title} ${styles.input}`}
+                tabIndex={0}
+            />
     );
 };

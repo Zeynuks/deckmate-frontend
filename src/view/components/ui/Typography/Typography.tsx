@@ -2,7 +2,6 @@ import React from 'react';
 import styles from './Typography.module.css';
 
 type TypographyVariant =
-    | 'title'
     | 'description'
     | 'buttonText'
     | 'menuTitle'
@@ -33,7 +32,6 @@ export const Typography: React.FC<TypographyProps> = ({
                                                           style,
                                                       }) => {
     const defaultTags: Record<TypographyVariant, keyof JSX.IntrinsicElements> = {
-        title: 'h1',
         description: 'p',
         buttonText: 'span',
         menuTitle: 'h2',

@@ -10,7 +10,9 @@ import importIcon from '../../assets/icons/import.svg';
 import categoryIcon from '../../assets/icons/category.svg';
 import playIcon from '../../assets/icons/play.svg';
 import shareIcon from '../../assets/icons/send.svg';
-
+import {Input} from "../components/ui/Input/Input.tsx";
+import {dispatch} from "../../store/editor.ts";
+import {setPresentationTitle} from '../../store/functions/setPresentationTitle.ts'
 
 type HeaderProps = {
     title: string
@@ -45,12 +47,11 @@ export const Header: React.FC<HeaderProps> = ({
             <section className={styles.topPanel}>
                 <section>
                     <div className={styles.titleBar}>
-                        <Typography variant="title" as="h1">
-                            {title}
-                        </Typography>
-                        <Button iconSrc={arrowDownIcon} className={styles.menuButton}
-                                onClick={() => handleShowToast('error')}>
-                        </Button>
+                        {/*// TODO: Разобраться с длинной Input*/}
+                        <Input value={title} onChange={(value) => dispatch(setPresentationTitle, value)}/>
+                        {/*<Button iconSrc={arrowDownIcon} className={styles.menuButton}*/}
+                        {/*        onClick={() => handleShowToast('error')}>*/}
+                        {/*</Button>*/}
                     </div>
                     <Typography variant="description">
                         {description}
