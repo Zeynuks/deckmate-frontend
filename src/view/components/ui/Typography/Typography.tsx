@@ -19,6 +19,7 @@ type TypographyProps = {
     align?: 'left' | 'center' | 'right' | 'justify';
     href?: string;
     style?: React.CSSProperties;
+    onClick?: () => void;
 };
 
 export const Typography: React.FC<TypographyProps> = ({
@@ -30,6 +31,7 @@ export const Typography: React.FC<TypographyProps> = ({
                                                           align,
                                                           href,
                                                           style,
+                                                          onClick
                                                       }) => {
     const defaultTags: Record<TypographyVariant, keyof JSX.IntrinsicElements> = {
         description: 'p',
@@ -57,6 +59,7 @@ export const Typography: React.FC<TypographyProps> = ({
             style={combinedStyle}
             {...(isLink ? {href} : {})}
             role={variant === 'buttonText' ? 'button' : undefined}
+            onClick={onClick}
         >
             {children}
         </Tag>

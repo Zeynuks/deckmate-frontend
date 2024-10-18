@@ -33,7 +33,6 @@ export function Select({
     const [highlightedIndex, setHighlightedIndex] = useState(0);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    // Функция сравнения опций
     function areOptionsEqual(
         o1: SelectOption | undefined,
         o2: SelectOption | undefined

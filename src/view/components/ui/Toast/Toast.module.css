@@ -27,6 +27,10 @@
     cursor: pointer;
 }
 
+.toastButton {
+    padding: 0;
+}
+
 @keyframes slideIn {
     to {
         transform: translateY(0);

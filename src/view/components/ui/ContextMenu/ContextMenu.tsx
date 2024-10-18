@@ -1,33 +1,25 @@
 import React from 'react';
-import {Button} from '../Button/Button.tsx';
-import trashIcon from '../../../../assets/icons/trash.svg';
+import styles from './ContextMenu.module.css'
+import {Button} from "../Button/Button.tsx";
 
-interface ContextMenuProps {
+type ContextMenuProps = {
     position: { x: number; y: number } | null;
-    onClose: () => void;
+    onRemove: () => void;
 }
 
-export const ContextMenu: React.FC<ContextMenuProps> = ({ position, onClose }) => {
+export const ContextMenu: React.FC<ContextMenuProps> = ({ position,onRemove }) => {
     if (!position) return null;
 
     return (
         <div
-            style={{
-                position: 'absolute',
-                top: position.y,
-                left: position.x,
-                zIndex: 1000,
-            }}
-            onClick={onClose} // Закрываем меню при клике внутри него
-        >
-            <Button
-                iconSrc={trashIcon}
-                iconPosition="right"
-                color='#FF7B61'
-                textColor='#FFFFFF'
-            >
-                Remove
-            </Button>
+           className={styles.contextMenu}
+           style={{
+               position: 'absolute',
+               zIndex: 1000,
+               top: position.y,
+               left: position.x
+           }}>
+            <Button onClick={onRemove}>Remove</Button>
         </div>
     );
 };

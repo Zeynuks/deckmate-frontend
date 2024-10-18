@@ -82,7 +82,7 @@ const Toast: React.FC<ToastProps> = ({
             onClick={handleClose}
         >
             <div className={styles.toastContent}>
-                <Button iconSrc={getIcon()} size={'small'} onClick={() => {
+                <Button iconSrc={getIcon()} className={styles.toastButton} iconSize={24} onClick={() => {
                 }}></Button>
                 <div className={styles.message}>
                     <Typography variant="toastTitle">{message.title}</Typography>
