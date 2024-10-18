@@ -16,7 +16,7 @@ type RequireAtLeastOne<T, K extends keyof T = keyof T> =
  *
  * @enum {string}
  */
-enum IconPosition {
+export enum IconPosition {
     Left = 'left',
     Right = 'right',
     Top = 'top',
@@ -51,7 +51,6 @@ interface IconProps {
 /**
  * Свойства для кнопки с текстом.
  *
- * @typedef {Object} TextProps
  * @property {React.ReactNode} children - Текст кнопки или её дочерние элементы.
  * @property {string} textColor - Цвет текста кнопки.
  */
@@ -104,7 +103,7 @@ export const Button: React.FC<ButtonProps> = ({
         <button
             onClick={onClick}
             disabled={disabled}
-            className={`${styles.button} ${className}`}
+            className={`${styles.button} ${className? className: styles.defaultButton}`}
         >
             {iconSrc && iconPosition !== IconPosition.Right ? icon : <></>}
             {children && (

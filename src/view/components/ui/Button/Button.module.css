@@ -4,12 +4,15 @@
     align-items: center;
     justify-content: center;
     gap: 0.55em;
-    padding: 12px 20px;
     border: none;
     border-radius: 20px;
     cursor: pointer;
     transition: filter 0.3s, background-color 0.3s;
+}
+
+.defaultButton {
     background: none;
+    padding: 12px 20px;
 }
 
 .button:disabled {
