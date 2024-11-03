@@ -3,9 +3,9 @@ import styles from './WorkSpace.module.css';
 import {Presentation, Selected} from '../../store/types.ts';
 import {Slide} from '../Slide/Slide.tsx';
 import {useDimensions} from '../../hooks/useDimensions';
-import {ContextMenu} from "../components/ui/ContextMenu/ContextMenu.tsx";
-import {dispatch} from "../../store/editor.ts";
-import {removeObject} from "../../store/functions/removeObject.ts";
+import {ContextMenu} from '../components/ui/ContextMenu/ContextMenu.tsx';
+import {dispatch} from '../../store/editor.ts';
+import {removeObject} from '../../store/functions/removeObject.ts';
 
 type WorkspaceProps = {
     presentation: Presentation;
@@ -80,7 +80,7 @@ export const PresentationWorkspace: React.FC<WorkspaceProps> = ({
                     </svg>
                 )}
             </div>
-            <ContextMenu position={menuPosition} onRemove={()=> dispatch(removeObject)} onClose={closeMenu}/>
+            <ContextMenu position={menuPosition} onRemove={()=> dispatch(removeObject)}/>
         </div>
     );
 };

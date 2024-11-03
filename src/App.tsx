@@ -20,17 +20,7 @@ export const App: React.FC<AppProps> = ({editor}: AppProps) => {
                     display: 'flex',
                     flexDirection: 'row',
                 }}>
-                    <ElementPanel
-                        onText={() => {
-                        }}
-                        onImage={() => {
-                        }}
-                        onRect={() => {
-                        }}
-                        onEllipse={() => {
-                        }}
-                        onTriangle={() => {
-                        }}/>
+                    <ElementPanel/>
                     {/*<TextPanel textObject={editor.presentation.slides[0].objects[0]}/>*/}
                     <PresentationWorkspace
                         presentation={editor.presentation}

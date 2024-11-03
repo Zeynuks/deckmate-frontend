@@ -1,16 +1,17 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, {useRef, useEffect, useState, ReactNode} from 'react';
 import { useDrag } from '../../../hooks/useDrag';
 import { useResize } from '../../../hooks/useResize';
 import { useRotate } from '../../../hooks/useRotate';
+import {dispatch} from "../../../store/editor.ts";
+import {setObjectPos} from "../../../store/functions/setObjectPos.ts";
+import {setObjectSize} from "../../../store/functions/setObjectSize.ts";
+import {setObjectAngle} from "../../../store/functions/setObjectAngle.ts";
 
 type TransformableProps = {
-    children: React.ReactNode;
+    children: (data: { width: number, height: number }) => ReactNode;
     hidden: boolean;
     position: { x: number; y: number };
     size: { width: number; height: number };
-    onResize: (width: number, height: number) => void;
-    onDrag: (x: number, y: number) => void;
-    onRotate: (angle: number) => void;
     angle: number;
     onClick?: () => void;
     onView?: boolean;
@@ -21,14 +22,12 @@ export const Transformable: React.FC<TransformableProps> = ({
                                                                 hidden,
                                                                 position,
                                                                 size,
-                                                                onResize,
-                                                                onDrag,
-                                                                onRotate,
                                                                 angle,
                                                                 onClick,
                                                                 onView = false,
                                                             }) => {
-    const transformableRef = useRef<SVGGElement | null>(null);
+    console.log(position);
+    const objectRef = useRef<SVGGElement | null>(null);
     const [localPosition, setLocalPosition] = useState(position);
     const [localSize, setLocalSize] = useState(size);
     const [localRotation, setLocalRotation] = useState(angle);
@@ -49,10 +48,11 @@ export const Transformable: React.FC<TransformableProps> = ({
         position: localPosition,
         onDrag: (x, y) => {
             setLocalPosition({ x, y });
-            onDrag(x, y);
         },
-        onView,
-        transformableRef,
+        onDragEnd: (x, y) => {
+            dispatch(setObjectPos, { x, y });
+        },
+        objectRef,
     });
 
     const { handleResizeMouseDown } = useResize({
@@ -60,14 +60,17 @@ export const Transformable: React.FC<TransformableProps> = ({
         position: localPosition,
         onResize: (width, height) => {
             setLocalSize({ width, height });
-            onResize(width, height);
+        },
+        onResizeEnd: (width, height) => {
+            dispatch(setObjectSize, { width, height });
         },
         onDrag: (x, y) => {
             setLocalPosition({ x, y });
-            onDrag(x, y);
         },
-        onView,
-        transformableRef,
+        onDragEnd: (x, y) => {
+            dispatch(setObjectPos, { x, y });
+        },
+        objectRef,
         angle: localRotation,
     });
 
@@ -76,10 +79,11 @@ export const Transformable: React.FC<TransformableProps> = ({
         angle: localRotation,
         onRotate: (angle) => {
             setLocalRotation(angle);
-            onRotate(angle);
         },
-        onView,
-        transformableRef,
+        onRotateEnd: (angle) => {
+            dispatch(setObjectAngle, angle);
+        },
+        objectRef,
     });
 
     const resizeDirections = [
@@ -97,9 +101,10 @@ export const Transformable: React.FC<TransformableProps> = ({
 
     return (
         <g
-            ref={transformableRef}
+            ref={objectRef}
             transform={`translate(${localPosition.x} ${localPosition.y}) rotate(${localRotation})`}
         >
+            {children(localSize)}
             <rect
                 x={-localSize.width / 2}
                 y={-localSize.height / 2}
@@ -112,7 +117,7 @@ export const Transformable: React.FC<TransformableProps> = ({
                 strokeWidth={hidden ? '4px' : ''}
                 onMouseDownCapture={newOnClick}
             />
-            {children}
+
             {onView && hidden && (
                 <>
                     <line
@@ -121,8 +126,7 @@ export const Transformable: React.FC<TransformableProps> = ({
                         x2={0}
                         y2={-localSize.height / 2 - 30}
                         stroke="#7B61FF"
-                        strokeWidth={2}
-                        pointerEvents="none"
+                        strokeWidth={4}
                     />
 
                     <circle

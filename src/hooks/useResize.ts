@@ -1,35 +1,38 @@
-// useResize.ts
-import { useRef, useEffect } from 'react';
+import {useRef, useEffect, startTransition, useState} from 'react';
 import { useMousePosition } from './useMousePosition';
 
 type UseResizeProps = {
     size: { width: number; height: number };
     position: { x: number; y: number };
-    onResize: (width: number, height: number) => void;
-    onDrag: (x: number, y: number) => void;
-    onView: boolean;
-    transformableRef: React.RefObject<SVGGElement>;
     angle: number;
+    onResize: (width: number, height: number) => void;
+    onResizeEnd: (width: number, height: number) => void;
+    onDrag: (x: number, y: number) => void;
+    onDragEnd: (x: number, y: number) => void;
+    objectRef: React.RefObject<SVGGElement>;
 };
-
-type Direction = { x: number; y: number };
 
 export const useResize = ({
                               size,
                               position,
-                              onResize,
-                              onDrag,
-                              onView,
-                              transformableRef,
                               angle,
+                              onResize,
+                              onResizeEnd,
+                              onDrag,
+                              onDragEnd,
+                              objectRef
                           }: UseResizeProps) => {
+    const [, setPosition] = useState(position);
+    const [, setSize] = useState(size);
     const isResizing = useRef(false);
     const startMousePosition = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
     const startDimensions = useRef(size);
     const startPosition = useRef(position);
-    const resizeDirection = useRef<Direction>({ x: 0, y: 0 });
+    const resizeDirection = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+    const latestPositionRef = useRef(position);
+    const latestSizeRef = useRef(size);
 
-    const { getMousePosition } = useMousePosition(transformableRef);
+    const { getMousePosition } = useMousePosition(objectRef);
 
     const toRadians = (degrees: number) => degrees * (Math.PI / 180);
 
@@ -43,11 +46,7 @@ export const useResize = ({
         };
     };
 
-    const handleResizeMouseDown = (
-        e: React.MouseEvent,
-        direction: Direction
-    ) => {
-        if (!onView) return;
+    const handleResizeMouseDown = (e: React.MouseEvent, direction: { x: number; y: number }) => {
         e.preventDefault();
         e.stopPropagation();
         isResizing.current = true;
@@ -84,11 +83,11 @@ export const useResize = ({
         const newWidth = startDimensions.current.width + deltaWidth;
         const newHeight = startDimensions.current.height + deltaHeight;
 
-        const finalWidth = Math.max(newWidth, 10);
-        const finalHeight = Math.max(newHeight, 10);
+        const width = Math.max(newWidth, 10);
+        const height = Math.max(newHeight, 10);
 
-        const changeWidth = finalWidth - startDimensions.current.width;
-        const changeHeight = finalHeight - startDimensions.current.height;
+        const changeWidth = width - startDimensions.current.width;
+        const changeHeight = height - startDimensions.current.height;
 
         const shiftX = resizeDirection.current.x === -1 ? -changeWidth / 2 : changeWidth / 2;
         const shiftY = resizeDirection.current.y === -1 ? -changeHeight / 2 : changeHeight / 2;
@@ -98,12 +97,23 @@ export const useResize = ({
         const newX = startPosition.current.x + rotatedShift.x;
         const newY = startPosition.current.y + rotatedShift.y;
 
+        latestPositionRef.current = { x: newX, y: newY };
+        latestSizeRef.current = { width: width, height: height };
+
+        startTransition(() => {
+            setPosition({ x: newX, y: newY });
+            setSize({ height: height, width: width });
+        });
         onDrag(newX, newY);
-        onResize(finalWidth, finalHeight);
+        onResize(width, height);
     };
 
     const handleResizeMouseUp = () => {
+        const { x, y } = latestPositionRef.current;
+        const { width, height } = latestSizeRef.current;
         isResizing.current = false;
+        onDragEnd(x, y);
+        onResizeEnd(width, height);
         window.removeEventListener('mousemove', handleResizeMouseMove);
         window.removeEventListener('mouseup', handleResizeMouseUp);
     };

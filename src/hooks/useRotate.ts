@@ -6,26 +6,26 @@ type UseRotateProps = {
     position: { x: number; y: number };
     angle: number;
     onRotate: (angle: number) => void;
-    onView: boolean;
-    transformableRef: React.RefObject<SVGGElement>;
+    onRotateEnd: (angle: number) => void;
+    objectRef: React.RefObject<SVGGElement>;
 };
 
 export const useRotate = ({
                               position,
                               angle,
                               onRotate,
-                              onView,
-                              transformableRef,
+                              onRotateEnd,
+                              objectRef,
                           }: UseRotateProps) => {
     const isRotating = useRef(false);
     const startMousePosition = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
     const startAngle = useRef(angle);
     const center = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
-
-    const { getMousePosition } = useMousePosition(transformableRef);
+    const latestAngleRef = useRef(angle);
+    
+    const { getMousePosition } = useMousePosition(objectRef);
 
     const handleRotateMouseDown = (e: React.MouseEvent) => {
-        if (!onView) return;
         e.preventDefault();
         e.stopPropagation();
         isRotating.current = true;
@@ -64,6 +64,7 @@ export const useRotate = ({
     };
 
     const handleRotateMouseUp = () => {
+        onRotateEnd(latestAngleRef.current);
         isRotating.current = false;
         window.removeEventListener('mousemove', handleRotateMouseMove);
         window.removeEventListener('mouseup', handleRotateMouseUp);

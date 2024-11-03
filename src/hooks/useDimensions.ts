@@ -14,6 +14,7 @@ export const useDimensions = (ref: RefObject<HTMLElement>) => {
         };
 
         updateDimensions();
+
         window.addEventListener('resize', updateDimensions);
 
         return () => window.removeEventListener('resize', updateDimensions);

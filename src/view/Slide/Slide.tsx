@@ -1,14 +1,9 @@
-import React from 'react';
-import { Slide as SlideType } from '../../store/types.ts';
-import { TextObjectComponent } from './TextObject/TextObject.tsx';
-import { ImageObjectComponent } from './ImageObject/ImageObject.tsx';
-import { Transformable } from '../components/shared/Transformable.tsx';
-import { dispatch } from '../../store/editor.ts';
-import { setSelected } from '../../store/functions/setSelected.ts';
-import { removeObject } from '../../store/functions/removeObject.ts';
-import { setObjectPos } from '../../store/functions/setObjectPos.ts';
-import { setObjectSize } from '../../store/functions/setObjectSize.ts';
-import { setObjectAngle } from '../../store/functions/setObjectAngle.ts';
+import {Slide as SlideType} from '../../store/types.ts';
+import {TextComponent} from './TextObject/TextObject.tsx';
+import {ImageComponent} from './ImageObject/ImageObject.tsx';
+import {Transformable} from '../components/ux/Transformable.tsx';
+import {dispatch} from '../../store/editor.ts';
+import {setSelected} from '../../store/functions/setSelected.ts';
 
 type SlideProps = {
     slide: SlideType;
@@ -17,30 +12,26 @@ type SlideProps = {
     onView?: boolean;
 };
 
-export const Slide: React.FC<SlideProps> = ({ slide, selectedObjectsId, borderRadius, onView = false }) => {
-    const { background, objects } = slide;
+//TODO: Переработать Transformable
 
+export const Slide: React.FC<SlideProps> = ({
+                                                slide,
+                                                selectedObjectsId,
+                                                borderRadius,
+                                                onView = false
+                                            }) => {
+    const {background, objects} = slide;
     const viewObjects = objects.map((obj) => {
         const isSelected = selectedObjectsId && selectedObjectsId.includes(obj.id);
 
-        if (obj.position.x + obj.size.width < 0 || obj.position.y + obj.size.height < 0) {
-            dispatch(removeObject, { objectId: obj.id });
-            return null;
-        }
-
-        const object = () => {
+        const object = (data: { width: number, height: number }) => {
             switch (obj.type) {
                 case 'text':
-                    return <TextObjectComponent width={obj.size.width} height={obj.size.height} slideObject={obj} onView={onView}   onMouseDown={() => {
-                        dispatch(setSelected, {
-                            slideId: slide.id,
-                            objectId: [obj.id],
-                        });
-                    }} />;
+                    return <TextComponent object={obj} data={data}/>;
                 case 'image':
-                    return <ImageObjectComponent width={obj.size.width} height={obj.size.height} slideObject={obj} onView={onView} />;
+                    return <ImageComponent object={obj} data={data}/>;
                 default:
-                    return null;
+                    return <></>;
             }
         };
 
@@ -48,27 +39,20 @@ export const Slide: React.FC<SlideProps> = ({ slide, selectedObjectsId, borderRa
             <Transformable
                 key={obj.id}
                 hidden={isSelected && onView}
-                position={{ x: obj.position.x, y: obj.position.y }}
-                size={{ height: obj.size.height, width: obj.size.width }}
+                position={{x: obj.position.x, y: obj.position.y}}
+                size={{height: obj.size.height, width: obj.size.width}}
                 angle={obj.angle || 0}
-                onResize={(newWidth, newHeight) => {
-                    dispatch(setObjectSize, { width: newWidth, height: newHeight });
-                }}
-                onDrag={(newX, newY) => {
-                    dispatch(setObjectPos, { x: newX, y: newY });
-                }}
-                onRotate={(angle) => {
-                    dispatch(setObjectAngle, angle);
-                }}
                 onClick={() => {
-                    dispatch(setSelected, {
-                        slideId: slide.id,
-                        objectId: [obj.id],
-                    });
+                    if (onView) {
+                        dispatch(setSelected, {
+                            slideId: slide.id,
+                            objectId: [obj.id],
+                        });
+                    }
                 }}
                 onView={onView}
             >
-                {object()}
+                {(data: { width: number, height: number }) => object(data)}
             </Transformable>
         );
     });
@@ -102,7 +86,7 @@ export const Slide: React.FC<SlideProps> = ({ slide, selectedObjectsId, borderRa
                     preserveAspectRatio="xMidYMid slice"
                 />
             )}
-            {viewObjects}
+            {viewObjects.length != 0 ? viewObjects : <></>}
         </g>
     );
 };

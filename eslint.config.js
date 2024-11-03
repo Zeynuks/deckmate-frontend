@@ -23,8 +23,9 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
+        "no-unsafe-function-type": ["off", "always"],
         "eqeqeq": ["error", "always"],
-        "quotes": ["error", "single"],
+        "quotes": ["warn", "single"],
         "semi": ["error", "always"]
     },
   },

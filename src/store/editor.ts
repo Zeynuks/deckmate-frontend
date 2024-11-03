@@ -14,7 +14,7 @@ export const setEditor = (editor: Editor) => {
     _editor = editor;
 };
 
-export const dispatch = (modifyFunction: Function, payload?: object | number) => {
+export const dispatch = (modifyFunction: Function, payload?: object | number | string) => {
     const editor = modifyFunction(_editor, payload);
     setEditor(editor);
 

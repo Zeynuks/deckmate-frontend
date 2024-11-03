@@ -1,18 +1,18 @@
-import React from "react";
+import React from 'react';
 import styles from './Header.module.css';
 import {Button, IconPosition} from '../components/ui/Button/Button.tsx';
 import {Typography} from '../components/ui/Typography/Typography.tsx';
 import {useToast} from '../components/ui/Toast/ToastContext.tsx';
 import {History} from '../History/History.tsx';
 import menuIcon from '../../assets/icons/menu.svg';
-import arrowDownIcon from '../../assets/icons/arrow-down.svg';
+// import arrowDownIcon from '../../assets/icons/arrow-down.svg';
 import importIcon from '../../assets/icons/import.svg';
 import categoryIcon from '../../assets/icons/category.svg';
 import playIcon from '../../assets/icons/play.svg';
 import shareIcon from '../../assets/icons/send.svg';
-import {Input} from "../components/ui/Input/Input.tsx";
-import {dispatch} from "../../store/editor.ts";
-import {setPresentationTitle} from '../../store/functions/setPresentationTitle.ts'
+import {Input} from '../components/ui/Input/Input.tsx';
+import {dispatch} from '../../store/editor.ts';
+import {setPresentationTitle} from '../../store/functions/setPresentationTitle.ts';
 
 type HeaderProps = {
     title: string

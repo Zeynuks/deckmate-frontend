@@ -44,7 +44,7 @@ const presentation: Presentation = {
                             text: 'This is a full text object.'
                         },
                         {
-                            text: 'I\'m not Frontender',
+                            text: 'I\'m do drag&drop',
                             style: {
                                 fontSize: 96,
                                 fontFamily: 'Nunito',

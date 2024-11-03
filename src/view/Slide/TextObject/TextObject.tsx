@@ -1,35 +1,21 @@
-import React from 'react';
 import {
     TextObject,
     TextSpan,
     TextStyle,
 } from '../../../store/types';
-import useEditableContent from '../../../hooks/useEditableContent.ts'; // Путь к хуку
+
+//TODO: Переработать TextObject
 
 type TextObjectProps = {
-    slideObject: TextObject;
-    height: number;
-    width: number;
-    onView?: boolean;
-    onMouseDown?: () => void;
+    object: TextObject,
+    data: { width: number, height: number }
+    onEdit?: () => void,
 };
 
-export const TextObjectComponent: React.FC<TextObjectProps> = ({
-                                                                   slideObject,
-                                                                   height,
-                                                                   width,
-                                                                   onMouseDown,
-                                                                   onView = false,
-                                                               }) => {
-    const {content = [], style = {}} = slideObject;
-    const {
-        editedContent,
-        isEditing,
-        contentEditableRef,
-        startEditing,
-        stopEditing,
-        handleInput,
-    } = useEditableContent(content);
+export const TextComponent: React.FC<TextObjectProps> = ({
+                                                             object,
+                                                             data
+                                                         }) => {
 
     const contentToHTML = (content: TextSpan[]): string => {
         return content
@@ -51,65 +37,48 @@ export const TextObjectComponent: React.FC<TextObjectProps> = ({
         return css.join('; ');
     };
 
-    const handleTextDoubleClick = () => {
-        if (!onView) {
-            return;
-        }
-        startEditing();
-    };
-
-    const handleBlur = () => {
-        stopEditing();
-        slideObject.content = editedContent;
-    };
-
     return (
         <svg
-            x={-width / 2}
-            y={-height / 2}
-            width={width}
-            height={height}
+            x={-data.width / 2}
+            y={-data.height / 2}
+            width={data.width}
+            height={data.height}
             pointerEvents="all"
-            viewBox={`0 0 ${width} ${height}`}
+            viewBox={`0 0 ${data.width} ${data.height}`}
             preserveAspectRatio="none"
-            onDoubleClick={handleTextDoubleClick}
         >
-            {isEditing ? (
-                <foreignObject
-                    x={0}
-                    y={0}
-                    width={width}
-                    height={height}
+            <g>
+                {<foreignObject
+                    width={data.width}
+                    height={data.height}
+                    style={{pointerEvents: 'none'}}
+                    onDoubleClick={() => alert()}
                 >
-                    <div
-                        ref={contentEditableRef}
+                    <p
                         contentEditable
-                        onInput={handleInput}
-                        onBlur={handleBlur}
                         style={{
-                            width: '100%',
-                            height: '100%',
                             outline: 'none',
                             whiteSpace: 'pre-wrap',
                             wordWrap: 'break-word',
-                            ...styleToCSSObject(style),
+                            ...styleToCSSObject(object.style),
                         }}
-                        dangerouslySetInnerHTML={{__html: contentToHTML(editedContent)}}
+                        dangerouslySetInnerHTML={{__html: contentToHTML(object.content)}}
                     />
-                </foreignObject>
-            ) : (
-                <foreignObject width={width}
-                               height={height} style={{
-                    outline: 'none',
-                    whiteSpace: 'pre-wrap',
-                    wordWrap: 'break-word',
-                    ...styleToCSSObject(style),
-                }}
-                onMouseDown={onMouseDown}
+                </foreignObject>}
+
+                <foreignObject
+                    width={data.width}
+                    height={data.height}
+                    style={{
+                        outline: 'none',
+                        whiteSpace: 'pre-wrap',
+                        wordWrap: 'break-word',
+                        ...styleToCSSObject(object.style),
+                    }}
                 >
-                    <div dangerouslySetInnerHTML={{__html: contentToHTML(editedContent)}}/>
+                    <p dangerouslySetInnerHTML={{__html: contentToHTML(object.content)}}/>
                 </foreignObject>
-            )}
+            </g>
         </svg>
     );
 };
