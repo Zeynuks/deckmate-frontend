@@ -2,10 +2,10 @@ import { Editor } from '../types.ts';
 
 export function setObjectAngle(editor: Editor, angle: number): Editor {
     if (!editor) return editor;
-    const slide = editor.presentation.slides.find(slide => slide.id === editor.selected.slideId);
+    const slide = editor.presentation.slides.find(slide => slide.id === editor.selected.slide);
     if (!slide) return editor;
     const updatedObjects = slide.objects.map(object =>
-        editor.selected.objectId.includes(object.id)
+        editor.selected.objects.includes(object.id)
             ? { ...object, angle: Math.round(angle) }
             : object
     );

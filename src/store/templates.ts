@@ -112,8 +112,8 @@ const presentation: Presentation = {
 };
 
 const selected: Selected = {
-    slideId: presentation.slides[0].id as SlideID,
-    objectId: [] as ObjectID[]
+    slide: presentation.slides[0].id as SlideID,
+    objects: [] as ObjectID[]
 };
 
 export const editor = {

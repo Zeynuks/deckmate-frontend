@@ -21,7 +21,7 @@ export function addSlide(editor: Editor): Editor {
         },
         selected: {
             ...editor.selected,
-            slideId: emptySlideTemplate.id,
+            slides: emptySlideTemplate.id,
         }
     };
 }

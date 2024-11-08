@@ -2,11 +2,11 @@ import { Editor, Size } from '../types.ts';
 
 export function setObjectSize(editor: Editor, newSize: Size): Editor {
     if (!editor) return editor;
-    const slide = editor.presentation.slides.find(slide => slide.id === editor.selected.slideId);
+    const slide = editor.presentation.slides.find(slide => slide.id === editor.selected.slide);
     if (!slide) return editor;
 
     const updatedObjects = slide.objects.map(object =>
-        editor.selected.objectId.includes(object.id)
+        editor.selected.objects.includes(object.id)
             ? { ...object, size: {width: Math.round(newSize.width), height: Math.round(newSize.height) } }
             : object
     );

@@ -123,8 +123,8 @@ export type Presentation = {
 };
 
 export type Selected = {
-    slideId: SlideID;
-    objectId: ObjectID[];
+    slide: SlideID;
+    objects: ObjectID[];
 };
 
 export type Editor = {

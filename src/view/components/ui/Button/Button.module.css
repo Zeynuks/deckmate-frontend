@@ -27,6 +27,10 @@
     outline: none;
 }
 
+.button:disabled {
+    cursor: not-allowed;
+}
+
 .button:hover:not(:disabled) {
     filter: brightness(1.2);
 }

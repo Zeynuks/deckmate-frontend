@@ -10,12 +10,11 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 
 export function addTextObject(editor: Editor): Editor {
-    if (!editor || !editor.selected?.slideId) {
+    if (!editor || !editor.selected?.slide) {
         return editor;
     }
 
-    const { slideId } = editor.selected;
-    const slideIndex = editor.presentation.slides.findIndex(slide => slide.id === slideId);
+    const slideIndex = editor.presentation.slides.findIndex(slide => slide.id === editor.selected.slide);
 
     if (slideIndex === -1) {
         return editor;
@@ -52,7 +51,7 @@ export function addTextObject(editor: Editor): Editor {
         },
         selected: {
             ...editor.selected,
-            objectId: [newTextObject.id],
+            objects: [newTextObject.id],
         }
     };
 }

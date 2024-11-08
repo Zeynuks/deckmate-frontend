@@ -1,8 +1,8 @@
-import {ImageObject} from '../../../store/types.ts';
+import {ImageObject, Size} from '../../../store/types.ts';
 
 type ImageObjectProps = {
     object: ImageObject;
-    data: { width: number, height: number }
+    data: Size
 };
 
 export const ImageComponent: React.FC<ImageObjectProps> = ({

@@ -4,7 +4,7 @@ export function removeSlide(editor: Editor): Editor {
     if(!editor) {
         return editor;
     }
-    const removedSlideId = editor.selected.slideId;
+    const removedSlideId = editor.selected.slide;
     const slides = editor.presentation.slides || [];
     const removeSlideIndex = slides.findIndex(slide => slide.id === removedSlideId);
     const newSlides = editor.presentation.slides.filter(slide => slide.id !== removedSlideId);
@@ -19,8 +19,8 @@ export function removeSlide(editor: Editor): Editor {
             slides: newSlides
         },
         selected: {
-            slideId: newSelectedSlideId,
-
+            ...editor.selected,
+            slide: newSelectedSlideId,
         }
     };
 }

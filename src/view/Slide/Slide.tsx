@@ -4,7 +4,6 @@ import {ImageComponent} from './ImageObject/ImageObject.tsx';
 import {Transformable} from '../components/ux/Transformable.tsx';
 import {dispatch} from '../../store/editor.ts';
 import {setSelected} from '../../store/functions/setSelected.ts';
-import {ShapeComponent} from './ShapeObject/ShapeObject.tsx';
 
 type SlideProps = {
     slide: SlideType;
@@ -13,25 +12,20 @@ type SlideProps = {
     onView?: boolean;
 };
 
-//TODO: Переработать Transformable
-
 export const Slide: React.FC<SlideProps> = ({
                                                 slide,
                                                 selectedObjectsId,
                                                 borderRadius,
                                                 onView = false
                                             }) => {
-    const {background, objects} = slide;
-    const viewObjects = objects.map((obj) => {
-        const isSelected = selectedObjectsId && selectedObjectsId.includes(obj.id);
-        const object = (data: { width: number, height: number }) => {
-            switch (obj.type) {
+    const objects = slide.objects.map((object) => {
+
+        const slideObject = (data: { width: number, height: number }) => {
+            switch (object.type) {
                 case  ObjectType.Text:
-                    return <TextComponent object={obj} data={data}/>;
+                    return <TextComponent object={object} data={data}/>;
                 case ObjectType.Image:
-                    return <ImageComponent object={obj} data={data}/>;
-                case ObjectType.Shape:
-                    return <ShapeComponent object={obj} data={data}/>;
+                    return <ImageComponent object={object} data={data}/>;
                 default:
                     return <></>;
             }
@@ -39,47 +33,47 @@ export const Slide: React.FC<SlideProps> = ({
 
         return (
             <Transformable
-                key={obj.id}
-                isHidden={isSelected && onView}
-                position={{x: obj.position.x, y: obj.position.y}}
-                size={{height: obj.size.height, width: obj.size.width}}
-                angle={obj.angle || 0}
+                key={object.id}
+                isHidden={selectedObjectsId && selectedObjectsId.includes(object.id) && onView}
+                position={{x: object.position.x, y: object.position.y}}
+                size={{height: object.size.height, width: object.size.width}}
+                angle={object.angle || 0}
                 onClick={() => {
                     if (onView) {
                         dispatch(setSelected, {
-                            slideId: slide.id,
-                            objectId: [obj.id],
+                            slide: slide.id,
+                            objects: [object.id],
                         });
                     }
                 }}
             >
-                {(data: { width: number, height: number }) => object(data)}
+                {(data: { width: number, height: number }) => slideObject(data)}
             </Transformable>
         );
     });
 
     return (
         <g>
-            {background.type === 'color' && (
+            {slide.background.type === 'color' && (
                 <rect
                     x={0}
                     y={0}
                     width={slide.size.width}
                     height={slide.size.height}
-                    fill={background.color}
+                    fill={slide.background.color}
                     rx={borderRadius}
                     ry={borderRadius}
                     onClick={() => {
                         dispatch(setSelected, {
-                            slideId: slide.id,
-                            objectId: [],
+                            slide: slide.id,
+                            objects: [],
                         });
                     }}
                 />
             )}
-            {background.type === 'image' && (
+            {slide.background.type === 'image' && (
                 <image
-                    href={background.src}
+                    href={slide.background.src}
                     x={0}
                     y={0}
                     width={1920}
@@ -87,7 +81,7 @@ export const Slide: React.FC<SlideProps> = ({
                     preserveAspectRatio="xMidYMid slice"
                 />
             )}
-            {viewObjects.length !== 0 ? viewObjects : <></>}
+            {objects.length !== 0 ? objects : <></>}
         </g>
     );
 };

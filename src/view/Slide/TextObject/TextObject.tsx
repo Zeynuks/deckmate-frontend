@@ -1,4 +1,5 @@
 import {
+    Size,
     TextObject,
     TextSpan,
     TextStyle,
@@ -8,7 +9,7 @@ import {
 
 type TextObjectProps = {
     object: TextObject,
-    data: { width: number, height: number }
+    data: Size,
     onEdit?: () => void,
 };
 

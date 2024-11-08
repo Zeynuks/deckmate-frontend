@@ -6,7 +6,7 @@ export function addImageObject(editor: Editor): Editor {
         return editor;
     }
 
-    const slideId = editor.selected.slideId;
+    const slideId = editor.selected.slide;
     const slide = editor.presentation.slides.find(slide => slide.id === slideId);
 
     if (!slide) {
@@ -38,7 +38,7 @@ export function addImageObject(editor: Editor): Editor {
         },
         selected: {
             ...editor.selected,
-            objectId: [...editor.selected.objectId, newImageObject.id],
+            objects: [...editor.selected.objects, newImageObject.id],
         }
     };
 }

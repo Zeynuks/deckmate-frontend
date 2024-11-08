@@ -1,19 +1,18 @@
 import { Editor } from '../types';
 
-export function reorderSlides(
+export function reorderSlide(
     editor: Editor,
-    payload: { fromIndex: number; toIndex: number }
+    toIndex: number
 ): Editor {
-    if (!editor) {
+    if (!editor || !editor.selected?.slide) {
         return editor;
     }
 
     const slides = editor.presentation.slides || [];
-    const { fromIndex, toIndex } = payload;
+    const fromIndex = slides.findIndex(slide => slide.id === editor.selected.slide);
 
     if (
-        fromIndex < 0 ||
-        fromIndex >= slides.length ||
+        fromIndex === -1 ||
         toIndex < 0 ||
         toIndex >= slides.length
     ) {
@@ -32,6 +31,7 @@ export function reorderSlides(
         },
         selected: {
             ...editor.selected,
+            slide: movedSlide.id,
         },
     };
 }

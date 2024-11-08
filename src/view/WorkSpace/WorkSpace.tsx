@@ -14,6 +14,8 @@ type WorkspaceProps = {
     backgroundColor?: string;
 };
 
+// TODO: Убрать использование глобальных переменных
+
 const CONFIG = {
     BORDER_COLOR: '#D9D9D9',
     BORDER_WIDTH: 1,
@@ -43,7 +45,7 @@ export const PresentationWorkspace: React.FC<WorkspaceProps> = ({
     const dimensions = useDimensions(workspaceRef);
 
     const selectedSlide = presentation.slides.find(
-        (slide) => slide.id === selected.slideId
+        (slide) => slide.id === selected.slide
     );
 
     return (
@@ -74,7 +76,7 @@ export const PresentationWorkspace: React.FC<WorkspaceProps> = ({
                                 rx={BORDER_RADIUS}
                                 ry={BORDER_RADIUS}
                             />
-                            <Slide slide={selectedSlide} selectedObjectsId={selected.objectId} borderRadius={BORDER_RADIUS} onView={true}/>
+                            <Slide slide={selectedSlide} selectedObjectsId={selected.objects} borderRadius={BORDER_RADIUS} onView={true}/>
 
                         </g>
                     </svg>

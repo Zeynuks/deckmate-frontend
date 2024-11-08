@@ -22,6 +22,8 @@ type TypographyProps = {
     onClick?: () => void;
 };
 
+//TODO: Убрать Typography
+
 export const Typography: React.FC<TypographyProps> = ({
                                                           variant,
                                                           children,
