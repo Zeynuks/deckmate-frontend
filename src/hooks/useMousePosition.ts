@@ -1,8 +1,8 @@
 type MousePosition = { x: number; y: number };
 
-export const useMousePosition = (transformableRef: React.RefObject<SVGGElement>) => {
+export const useMousePosition = (objectRef: React.RefObject<SVGGElement>) => {
     const getMousePosition = (e: MouseEvent | React.MouseEvent): MousePosition => {
-        const svg = transformableRef.current?.ownerSVGElement;
+        const svg = objectRef.current?.ownerSVGElement;
         if (!svg) return { x: e.clientX, y: e.clientY };
         const point = svg.createSVGPoint();
         point.x = e.clientX;

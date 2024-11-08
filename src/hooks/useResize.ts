@@ -54,6 +54,7 @@ export const useResize = ({
         startDimensions.current = size;
         startPosition.current = position;
         resizeDirection.current = direction;
+        latestPositionRef.current = position;
 
         window.addEventListener('mousemove', handleResizeMouseMove);
         window.addEventListener('mouseup', handleResizeMouseUp);

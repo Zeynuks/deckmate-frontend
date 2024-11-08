@@ -24,9 +24,12 @@ export const useDrag = ({
 
     const handleDragMouseDown = (e: React.MouseEvent) => {
         e.preventDefault();
+        e.stopPropagation();
         isDragging.current = true;
         startMousePosition.current = getMousePosition(e.nativeEvent);
         startPosition.current = position;
+        latestPositionRef.current = position;
+
         window.addEventListener('mousemove', handleDragMouseMove);
         window.addEventListener('mouseup', handleDragMouseUp);
     };

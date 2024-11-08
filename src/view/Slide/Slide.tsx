@@ -1,9 +1,10 @@
-import {Slide as SlideType} from '../../store/types.ts';
+import {ObjectType, Slide as SlideType} from '../../store/types.ts';
 import {TextComponent} from './TextObject/TextObject.tsx';
 import {ImageComponent} from './ImageObject/ImageObject.tsx';
 import {Transformable} from '../components/ux/Transformable.tsx';
 import {dispatch} from '../../store/editor.ts';
 import {setSelected} from '../../store/functions/setSelected.ts';
+import {ShapeComponent} from './ShapeObject/ShapeObject.tsx';
 
 type SlideProps = {
     slide: SlideType;
@@ -23,13 +24,14 @@ export const Slide: React.FC<SlideProps> = ({
     const {background, objects} = slide;
     const viewObjects = objects.map((obj) => {
         const isSelected = selectedObjectsId && selectedObjectsId.includes(obj.id);
-
         const object = (data: { width: number, height: number }) => {
             switch (obj.type) {
-                case 'text':
+                case  ObjectType.Text:
                     return <TextComponent object={obj} data={data}/>;
-                case 'image':
+                case ObjectType.Image:
                     return <ImageComponent object={obj} data={data}/>;
+                case ObjectType.Shape:
+                    return <ShapeComponent object={obj} data={data}/>;
                 default:
                     return <></>;
             }
@@ -38,7 +40,7 @@ export const Slide: React.FC<SlideProps> = ({
         return (
             <Transformable
                 key={obj.id}
-                hidden={isSelected && onView}
+                isHidden={isSelected && onView}
                 position={{x: obj.position.x, y: obj.position.y}}
                 size={{height: obj.size.height, width: obj.size.width}}
                 angle={obj.angle || 0}
@@ -50,7 +52,6 @@ export const Slide: React.FC<SlideProps> = ({
                         });
                     }
                 }}
-                onView={onView}
             >
                 {(data: { width: number, height: number }) => object(data)}
             </Transformable>
@@ -86,7 +87,7 @@ export const Slide: React.FC<SlideProps> = ({
                     preserveAspectRatio="xMidYMid slice"
                 />
             )}
-            {viewObjects.length != 0 ? viewObjects : <></>}
+            {viewObjects.length !== 0 ? viewObjects : <></>}
         </g>
     );
 };
