@@ -14,14 +14,10 @@ type WorkspaceProps = {
     backgroundColor?: string;
 };
 
-// TODO: Убрать использование глобальных переменных
-
-const CONFIG = {
-    BORDER_COLOR: '#D9D9D9',
-    BORDER_WIDTH: 1,
-    BORDER_RADIUS: 20,
-    PADDING: 48
-};
+const BORDER_COLOR = '#D9D9D9';
+const BORDER_WIDTH = 1;
+const BORDER_RADIUS = 20;
+const PADDING = 48;
 
 export const PresentationWorkspace: React.FC<WorkspaceProps> = ({
                                                                     presentation,
@@ -40,7 +36,6 @@ export const PresentationWorkspace: React.FC<WorkspaceProps> = ({
         setMenuPosition(null);
     };
 
-    const {BORDER_COLOR, BORDER_WIDTH, BORDER_RADIUS, PADDING} = CONFIG;
     const workspaceRef = useRef<HTMLDivElement>(null);
     const dimensions = useDimensions(workspaceRef);
 
@@ -62,21 +57,21 @@ export const PresentationWorkspace: React.FC<WorkspaceProps> = ({
                     <svg
                         width={dimensions.width}
                         height={dimensions.height}
-                        viewBox={`0 0 ${selectedSlide.size.width + PADDING * 2} ${selectedSlide.size.height + PADDING * 2}`}
+                        viewBox={`0 0 ${1920 + PADDING * 2} ${1080 + PADDING * 2}`}
                         style={{display: 'block', backgroundColor}}>
                         <g  transform={`translate(${PADDING}, ${PADDING})`}>
                             <rect
                                 x={-BORDER_WIDTH}
                                 y={-BORDER_WIDTH}
-                                width={selectedSlide.size.width + BORDER_WIDTH * 2}
-                                height={selectedSlide.size.height  + BORDER_WIDTH * 2}
-                                fill="none"
+                                width={1920 + BORDER_WIDTH * 2}
+                                height={1080 + BORDER_WIDTH * 2}
+                                fill="transparent"
                                 stroke={BORDER_COLOR}
                                 strokeWidth={BORDER_WIDTH * 5}
                                 rx={BORDER_RADIUS}
                                 ry={BORDER_RADIUS}
                             />
-                            <Slide slide={selectedSlide} selectedObjectsId={selected.objects} borderRadius={BORDER_RADIUS} onView={true}/>
+                            <Slide slide={selectedSlide} selectedObjectsId={selected.objects} onView={true}/>
 
                         </g>
                     </svg>

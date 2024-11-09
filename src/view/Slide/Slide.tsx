@@ -1,21 +1,19 @@
 import {ObjectType, Slide as SlideType} from '../../store/types.ts';
-import {TextComponent} from './TextObject/TextObject.tsx';
-import {ImageComponent} from './ImageObject/ImageObject.tsx';
-import {Transformable} from '../components/ux/Transformable.tsx';
+import {TextComponent} from '../components/ux/TextObject/TextObject.tsx';
+import {ImageComponent} from '../components/ux/ImageObject/ImageObject.tsx';
+import {Transformable} from '../components/ux/Transformable/Transformable.tsx';
 import {dispatch} from '../../store/editor.ts';
 import {setSelected} from '../../store/functions/setSelected.ts';
 
 type SlideProps = {
     slide: SlideType;
     selectedObjectsId: object[];
-    borderRadius?: number;
     onView?: boolean;
 };
 
 export const Slide: React.FC<SlideProps> = ({
                                                 slide,
                                                 selectedObjectsId,
-                                                borderRadius,
                                                 onView = false
                                             }) => {
     const objects = slide.objects.map((object) => {
@@ -61,8 +59,8 @@ export const Slide: React.FC<SlideProps> = ({
                     width={slide.size.width}
                     height={slide.size.height}
                     fill={slide.background.color}
-                    rx={borderRadius}
-                    ry={borderRadius}
+                    rx={20}
+                    ry={20}
                     onClick={() => {
                         dispatch(setSelected, {
                             slide: slide.id,
