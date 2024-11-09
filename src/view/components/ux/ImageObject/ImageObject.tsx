@@ -1,4 +1,4 @@
-import {ImageObject, Size} from '../../../store/types.ts';
+import {ImageObject, Size} from '../../../../store/types.ts';
 
 type ImageObjectProps = {
     object: ImageObject;

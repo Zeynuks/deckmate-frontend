@@ -3,7 +3,7 @@ import {
     TextObject,
     TextSpan,
     TextStyle,
-} from '../../../store/types';
+} from '../../../../store/types.ts';
 
 //TODO: Переработать TextObject
 
