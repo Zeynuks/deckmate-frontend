@@ -1,11 +1,11 @@
 import React, {useRef, useEffect, useState, ReactNode} from 'react';
-import { useDrag } from '../../../hooks/useDrag';
-import { useResize } from '../../../hooks/useResize';
-import { useRotate } from '../../../hooks/useRotate';
-import {dispatch} from '../../../store/editor.ts';
-import {setObjectPos} from '../../../store/functions/setObjectPos.ts';
-import {setObjectSize} from '../../../store/functions/setObjectSize.ts';
-import {setObjectAngle} from '../../../store/functions/setObjectAngle.ts';
+import { useDrag } from '../../../../hooks/useDrag.ts';
+import { useResize } from '../../../../hooks/useResize.ts';
+import { useRotate } from '../../../../hooks/useRotate.ts';
+import {dispatch} from '../../../../store/editor.ts';
+import {setObjectPos} from '../../../../store/functions/setObjectPos.ts';
+import {setObjectSize} from '../../../../store/functions/setObjectSize.ts';
+import {setObjectAngle} from '../../../../store/functions/setObjectAngle.ts';
 
 type TransformableProps = {
     children: (data: { width: number, height: number }) => ReactNode;
