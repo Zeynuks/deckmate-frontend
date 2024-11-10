@@ -11,11 +11,11 @@ import categoryIcon from '../../assets/icons/category.svg';
 import playIcon from '../../assets/icons/play.svg';
 import shareIcon from '../../assets/icons/send.svg';
 import {Input} from '../components/ui/Input/Input.tsx';
-import {useDispatch} from 'react-redux';
+import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import {ActionTypes} from '../../store/actionTypes.ts';
+import {RootState} from '../../store/store.ts';
 
 type HeaderProps = {
-    title: string
     description: string,
 };
 
@@ -25,11 +25,48 @@ type HeaderProps = {
 // TODO: Добавить функционал кнопкам событий
 
 export const Header: React.FC<HeaderProps> = ({
-                                                  title,
                                                   description,
                                               }) => {
+    const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+    const title = useAppSelector((state: RootState) => state.presentation.title);
+
     const {addToast} = useToast();
     const dispatch = useDispatch();
+
+    const handleImport = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const content = e.target?.result;
+                if (typeof content === 'string') {
+                    const importedState = JSON.parse(content);
+                    dispatch({
+                        type: ActionTypes.IMPORT_DOCUMENT,
+                        payload: importedState
+                    });
+                }
+            } catch (error) {
+                console.error('Ошибка при импорте документа', error);
+            }
+        };
+        reader.readAsText(file);
+    };
+
+    const handleExport = () => {
+        addToast({
+            title: 'Экспорт',
+            description: 'Документ экспортирован в JSON.',
+            type: 'info',
+        });
+        dispatch({
+            type: ActionTypes.EXPORT_DOCUMENT,
+        });
+
+    };
+
 
     const handleShowToast = (type: 'error') => {
         addToast({
@@ -70,9 +107,9 @@ export const Header: React.FC<HeaderProps> = ({
                 ></History>
                 <section className={styles.actions}>
                     <Button iconSrc={importIcon} className={styles.menuButton}
-                            onClick={() => handleShowToast('error')}/>
+                            onClick={() => handleExport()}/>
                     <Button iconSrc={categoryIcon} className={styles.menuButton}
-                            onClick={() => handleShowToast('error')}/>
+                            onClick={() => handleImport}/>
                     <Button iconSrc={playIcon} className={styles.presentButton} iconPosition={IconPosition.Right}
                             onClick={() => handleShowToast('error')}>
                         Present

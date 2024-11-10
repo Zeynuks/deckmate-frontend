@@ -1,5 +1,14 @@
 import {ActionTypes} from './actionTypes';
-import {ObjectID, SlideID} from './types';
+import {Editor, ObjectID, SlideID} from './types';
+
+export interface ImportDocumentAction {
+    type: ActionTypes.IMPORT_DOCUMENT;
+    payload: Editor;
+}
+
+export interface ExportDocumentAction {
+    type: ActionTypes.EXPORT_DOCUMENT;
+}
 
 export interface AddSlideAction {
     type: ActionTypes.ADD_SLIDE;
@@ -69,4 +78,6 @@ export type EditorActions =
     | SetObjectPositionAction
     | SetObjectSizeAction
     | SetPresentationTitleAction
-    | SetSelectedAction;
+    | SetSelectedAction
+    | ImportDocumentAction
+    | ExportDocumentAction;

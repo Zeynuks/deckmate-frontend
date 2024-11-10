@@ -1,16 +1,15 @@
 import React, {useRef, useState} from 'react';
 import styles from './WorkSpace.module.css';
-import {Presentation, Selected} from '../../store/types.ts';
 import {Slide} from '../Slide/Slide.tsx';
 import {useDimensions} from '../../hooks/useDimensions';
 import {ContextMenu} from '../components/ui/ContextMenu/ContextMenu.tsx';
-import { useDispatch } from 'react-redux';
+import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import {ActionTypes} from '../../store/actionTypes.ts';
+import {RootState} from '../../store/store.ts';
+
 
 type WorkspaceProps = {
-    presentation: Presentation;
-    selected: Selected;
-    scale: number;
+    scale?: number;
     backgroundColor?: string;
 };
 
@@ -20,11 +19,13 @@ const BORDER_RADIUS = 20;
 const PADDING = 48;
 
 export const PresentationWorkspace: React.FC<WorkspaceProps> = ({
-                                                                    presentation,
-                                                                    selected,
                                                                     scale,
                                                                     backgroundColor = '#FBFCFD',
                                                                 }) => {
+    const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+    const selected = useAppSelector((state: RootState) => state.selected);
+    const slides = useAppSelector((state: RootState) => state.presentation.slides);
+
     const dispatch = useDispatch();
     const [menuPosition, setMenuPosition] = useState<{ x: number; y: number } | null>(null);
 
@@ -41,7 +42,7 @@ export const PresentationWorkspace: React.FC<WorkspaceProps> = ({
     const dimensions = useDimensions(workspaceRef);
 
     const selectedSlide = selected && selected.slide ?
-        presentation.slides.find(
+        slides.find(
             (slide) => slide.id === selected.slide
         ) : null;
 

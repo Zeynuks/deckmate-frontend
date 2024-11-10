@@ -3,26 +3,32 @@ import {Button, IconPosition} from '../components/ui/Button/Button';
 import addIcon from '../../assets/icons/add.svg';
 import trashIcon from '../../assets/icons/trash.svg';
 import {Selected, Slide as SlideType} from '../../store/types';
-import {useDispatch} from 'react-redux';
+import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import {SlideListComponent} from '../SlideListComponent/SlideListComponent.tsx';
-import {useCallback, useRef} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {ActionTypes} from '../../store/actionTypes.ts';
-
-type SlideListProps = {
-    slides: SlideType[];
-    selected: Selected;
-};
+import {RootState} from '../../store/store.ts';
 
 const SLIDE_HEIGHT = 1080 + 40;
 const SCROLL_SPEED = 10;
 //Магические числа
 const SCALE_FACTOR = 5.67;
 
-export const SlideList: React.FC<SlideListProps> = ({slides, selected}) => {
+export const SlideList: React.FC = () => {
+    const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+    const selected = useAppSelector((state: RootState) => state.selected);
+    const slides = useAppSelector((state: RootState) => state.presentation.slides);
+
     const dispatch = useDispatch();
     const containerRef = useRef<HTMLDivElement | null>(null);
     const selectedSlide = getSelectedSlide(slides, selected);
-    const listHeight = calculateListHeight(containerRef, slides.length);
+    const [listHeight, setListHeight] = useState(0);
+
+    useEffect(() => {
+        if (containerRef.current) {
+            setListHeight(calculateListHeight(containerRef, slides.length));
+        }
+    }, [slides.length]);
 
     const scrollMove = useCallback(
         (y: number) => {
@@ -34,7 +40,6 @@ export const SlideList: React.FC<SlideListProps> = ({slides, selected}) => {
         },
         [listHeight]
     );
-
 
     return (
         <section className={styles.slideMenu}>
@@ -72,7 +77,7 @@ export const SlideList: React.FC<SlideListProps> = ({slides, selected}) => {
                     preserveAspectRatio="xMinYMin meet"
                 >
                     {slides.map((slide, index) =>
-                        slide.id !== selected.slide ? (
+                        selected.slide && slide.id !== selected.slide ? (
                             <SlideListComponent
                                 key={slide.id}
                                 index={index}
@@ -108,7 +113,6 @@ function isScrollAboveHalf(y: number, listHeight: number, containerHeight: numbe
 
 function calculateListHeight(containerRef: React.RefObject<HTMLDivElement>, slideCount: number): number {
     if (!containerRef.current) return SLIDE_HEIGHT;
-
     const totalSlideHeight = SLIDE_HEIGHT * slideCount;
     const scaledContainerHeight = containerRef.current.clientHeight * SCALE_FACTOR;
     return scaledContainerHeight < totalSlideHeight ? totalSlideHeight : scaledContainerHeight;

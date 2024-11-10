@@ -14,6 +14,8 @@ import {setObjectSize} from './functions/setObjectSize';
 import {setPresentationTitle} from './functions/setPresentationTitle';
 import {setSelected} from './functions/setSelected';
 import {defaultEditor} from './templates.ts';
+import {importDocument} from "./functions/importDocument.ts";
+import {exportDocument} from "./functions/exportDocument.ts";
 
 const loadState = (): Editor | undefined => {
     try {
@@ -78,6 +80,13 @@ const editorReducer = (state = getInitialState(), action: EditorActions): Editor
 
             case ActionTypes.SET_SELECTED:
                 return setSelected(state, action.payload);
+
+            case ActionTypes.IMPORT_DOCUMENT:
+                return importDocument(state, action.payload);
+
+            case ActionTypes.EXPORT_DOCUMENT:
+                exportDocument(state);
+                return state;
 
             default:
                 return state;

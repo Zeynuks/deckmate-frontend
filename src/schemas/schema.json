@@ -1,0 +1,181 @@
+{
+  "type": "object",
+  "properties": {
+    "presentation": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "slides": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "size": {
+                "type": "object",
+                "properties": {
+                  "width": {
+                    "type": "number"
+                  },
+                  "height": {
+                    "type": "number"
+                  }
+                },
+                "required": ["width", "height"]
+              },
+              "background": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": ["image"]
+                      },
+                      "src": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["type", "src"]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": ["color"]
+                      },
+                      "color": {
+                        "type": "string",
+                        "pattern": "^#([0-9A-Fa-f]{3}){1,2}$|^rgb\\(\\d{1,3},\\d{1,3},\\d{1,3}\\)$|^rgba\\(\\d{1,3},\\d{1,3},\\d{1,3},[0-1](?:\\.\\d+)?\\)$|^hsl\\(\\d{1,3},\\d{1,3}%,\\d{1,3}%\\)$|^hsla\\(\\d{1,3},\\d{1,3}%,\\d{1,3}%,[0-1](?:\\.\\d+)?\\)$"
+                      }
+                    },
+                    "required": ["type", "color"]
+                  }
+                ]
+              },
+              "objects": {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": ["text"]
+                        },
+                        "content": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "text": {
+                                "type": "string"
+                              },
+                              "style": {
+                                "type": "object",
+                                "properties": {
+                                  "fontSize": {
+                                    "type": "number"
+                                  },
+                                  "fontFamily": {
+                                    "type": "string"
+                                  },
+                                  "fontWeight": {
+                                    "type": "string",
+                                    "enum": ["normal", "bold", "lighter", "bolder", "100", "200", "300", "400", "500", "600", "700", "800", "900"]
+                                  },
+                                  "fontStyle": {
+                                    "type": "string",
+                                    "enum": ["normal", "italic", "oblique"]
+                                  },
+                                  "textDecoration": {
+                                    "type": "string",
+                                    "enum": ["none", "underline", "overline", "line-through"]
+                                  },
+                                  "textHorizontalAlign": {
+                                    "type": "string",
+                                    "enum": ["left", "middle", "right"]
+                                  },
+                                  "textVerticalAlign": {
+                                    "type": "string",
+                                    "enum": ["justify", "start", "end"]
+                                  },
+                                  "lineHeight": {
+                                    "type": "number"
+                                  },
+                                  "letterSpacing": {
+                                    "type": "number"
+                                  },
+                                  "color": {
+                                    "type": "string",
+                                    "pattern": "^#([0-9A-Fa-f]{3}){1,2}$|^rgb\\(\\d{1,3},\\d{1,3},\\d{1,3}\\)$|^rgba\\(\\d{1,3},\\d{1,3},\\d{1,3},[0-1](?:\\.\\d+)?\\)$|^hsl\\(\\d{1,3},\\d{1,3}%,\\d{1,3}%\\)$|^hsla\\(\\d{1,3},\\d{1,3}%,\\d{1,3}%,[0-1](?:\\.\\d+)?\\)$"
+                                  },
+                                  "backgroundColor": {
+                                    "type": "string",
+                                    "pattern": "^#([0-9A-Fa-f]{3}){1,2}$|^rgb\\(\\d{1,3},\\d{1,3},\\d{1,3}\\)$|^rgba\\(\\d{1,3},\\d{1,3},\\d{1,3},[0-1](?:\\.\\d+)?\\)$|^hsl\\(\\d{1,3},\\d{1,3}%,\\d{1,3}%\\)$|^hsla\\(\\d{1,3},\\d{1,3}%,\\d{1,3}%,[0-1](?:\\.\\d+)?\\)$"
+                                  }
+                                }
+                              }
+                            },
+                            "required": ["text"]
+                          }
+                        }
+                      },
+                      "required": ["id", "type", "content", "style"]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": ["image"]
+                        },
+                        "src": {
+                          "type": "string"
+                        },
+                        "altText": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["id", "type", "src"]
+                    }
+                  ]
+                }
+              }
+            },
+            "required": ["id", "size", "background", "objects"]
+          }
+        },
+        "required": ["title", "slides"]
+      }
+    },
+    "selected": {
+      "type": "object",
+      "properties": {
+        "slide": {
+          "type": "string"
+        },
+        "objects": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["objects"]
+    }
+  },
+  "required": ["presentation", "selected"]
+}
