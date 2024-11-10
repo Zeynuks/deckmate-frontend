@@ -12,7 +12,7 @@ import playIcon from '../../assets/icons/play.svg';
 import shareIcon from '../../assets/icons/send.svg';
 import {Input} from '../components/ui/Input/Input.tsx';
 import {useDispatch} from 'react-redux';
-import {ActionTypes} from "../../store/actionTypes.ts";
+import {ActionTypes} from '../../store/actionTypes.ts';
 
 type HeaderProps = {
     title: string

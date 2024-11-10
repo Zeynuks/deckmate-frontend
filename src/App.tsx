@@ -3,12 +3,13 @@ import { ToastProvider } from './view/components/ui/Toast/ToastContext';
 import { ElementPanel } from './view/ElementPanel/ElementPanel';
 import { PresentationWorkspace } from './view/WorkSpace/WorkSpace';
 import { SlideList } from './view/SlideList/SlideList';
-import { useSelector } from 'react-redux';
+import {TypedUseSelectorHook, useSelector} from 'react-redux';
 import { RootState } from './store/store';
 import React from 'react';
 
 export const App: React.FC = () => {
-    const editor = useSelector((state: RootState) => state);
+    const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+    const editor = useAppSelector((state: RootState) => state);
 
     return (
         <ToastProvider>

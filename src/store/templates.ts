@@ -116,7 +116,7 @@ const selected: Selected = {
     objects: [] as ObjectID[]
 };
 
-export const editor = {
+export const defaultEditor = {
     presentation,
     selected
 };

@@ -9,7 +9,7 @@ import rectIcon from '../../assets/icons/rect.svg';
 import ellipseIcon from '../../assets/icons/ellipse.svg';
 import triangleIcon from '../../assets/icons/triangle.svg';
 import textAreaIcon from '../../assets/icons/text-area.svg';
-import {ActionTypes} from "../../store/actionTypes.ts";
+import {ActionTypes} from '../../store/actionTypes.ts';
 
 export const ElementPanel: React.FC = () => {
     const dispatch = useDispatch();
