@@ -2,8 +2,8 @@ import {ObjectType, Slide as SlideType} from '../../store/types.ts';
 import {TextComponent} from '../components/ux/TextObject/TextObject.tsx';
 import {ImageComponent} from '../components/ux/ImageObject/ImageObject.tsx';
 import {Transformable} from '../components/ux/Transformable/Transformable.tsx';
-import {dispatch} from '../../store/editor.ts';
-import {setSelected} from '../../store/functions/setSelected.ts';
+import {useDispatch} from 'react-redux';
+import {ActionTypes} from '../../store/actionTypes.ts';
 
 type SlideProps = {
     slide: SlideType;
@@ -16,6 +16,7 @@ export const Slide: React.FC<SlideProps> = ({
                                                 selectedObjectsId,
                                                 onView = false
                                             }) => {
+    const dispatch = useDispatch();
     const objects = slide.objects.map((object) => {
 
         const slideObject = (data: { width: number, height: number }) => {
@@ -38,9 +39,12 @@ export const Slide: React.FC<SlideProps> = ({
                 angle={object.angle || 0}
                 onClick={() => {
                     if (onView) {
-                        dispatch(setSelected, {
-                            slide: slide.id,
-                            objects: [object.id],
+                        dispatch({
+                            type: ActionTypes.SET_SELECTED,
+                            payload: {
+                                slide: slide.id,
+                                objects: [object.id]
+                            }
                         });
                     }
                 }}
@@ -61,12 +65,15 @@ export const Slide: React.FC<SlideProps> = ({
                     fill={slide.background.color}
                     rx={20}
                     ry={20}
-                    onClick={() => {
-                        dispatch(setSelected, {
-                            slide: slide.id,
-                            objects: [],
-                        });
-                    }}
+                    onClick={() =>
+                        dispatch({
+                            type: ActionTypes.SET_SELECTED,
+                            payload: {
+                                slide: slide.id,
+                                objects: []
+                            }
+                        })
+                    }
                 />
             )}
             {slide.background.type === 'image' && (

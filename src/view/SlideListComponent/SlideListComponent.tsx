@@ -1,10 +1,9 @@
 import {Selected, Slide as SlideType} from '../../store/types';
 import {Slide} from '../Slide/Slide';
-import {dispatch} from '../../store/editor.ts';
-import {setSelected} from '../../store/functions/setSelected.ts';
+import {useDispatch} from 'react-redux';
 import {useLayoutEffect, useRef, useState} from 'react';
 import {useDrag} from '../../hooks/useDrag.ts';
-import {reorderSlide} from '../../store/functions/reorderSlide.ts';
+import {ActionTypes} from '../../store/actionTypes.ts';
 
 type SlideListComponentProps = {
     index: number;
@@ -23,32 +22,34 @@ export const SlideListComponent: React.FC<SlideListComponentProps> = ({
                                                                           selected,
                                                                           scrollMove
                                                                       }) => {
+    const dispatch = useDispatch();
     const isSelected = selected.slide === slide.id;
-    const initialPosition = { x: 0, y: (SVG_HEIGHT + 40) * index };
+    const initialPosition = {x: 0, y: (SVG_HEIGHT + 40) * index};
     const slideRef = useRef<SVGGElement | null>(null);
     const [localPosition, setLocalPosition] = useState(initialPosition);
 
     useLayoutEffect(() => {
-        setLocalPosition({ x: 0, y: (1080 + 40) * index });
+        setLocalPosition({x: 0, y: (1080 + 40) * index});
     }, [index]);
 
-    const { handleDragMouseDown } = useDrag({
+    const {handleDragMouseDown} = useDrag({
         position: localPosition,
         onDrag: (x, y) => {
             x = 0;
             y = Math.max(0, y);
-            setLocalPosition({ x, y });
+            setLocalPosition({x, y});
             scrollMove(y);
         },
         onDragEnd: (_x, y) => {
-            const newIndex = Math.round(y /  (SVG_HEIGHT + 40) );
-            setLocalPosition({ x: 0, y: (SVG_HEIGHT + 40) * index });
-            dispatch(reorderSlide, newIndex);
+            const toIndex = Math.round(y / (SVG_HEIGHT + 40));
+            setLocalPosition({x: 0, y: (SVG_HEIGHT + 40) * index});
+            dispatch({
+                type: ActionTypes.REORDER_SLIDE,
+                payload: toIndex
+            });
         },
         objectRef: slideRef,
     });
-
-
     return (
         <g ref={slideRef}>
             <svg
@@ -57,13 +58,17 @@ export const SlideListComponent: React.FC<SlideListComponentProps> = ({
                 width={SVG_WIDTH}
                 height={SVG_HEIGHT}
                 viewBox={VIEWBOX}
-                onMouseDown={isSelected? handleDragMouseDown: () => {}}
-                onClick={() =>
-                    dispatch(setSelected, {
-                        ...selected,
-                        slide: slide.id,
-                    })
-                }
+                onMouseDown={isSelected ? handleDragMouseDown : () => {
+                }}
+                onClick={() => {
+                    dispatch({
+                        type: ActionTypes.SET_SELECTED,
+                        payload: {
+                            ...selected,
+                            slide: slide.id
+                        }
+                    });
+                }}
             >
                 <rect
                     x={0}
@@ -90,7 +95,7 @@ export const SlideListComponent: React.FC<SlideListComponentProps> = ({
                     </clipPath>
                 </defs>
                 <g clipPath={`url(#clip-slide-${slide.id})`}>
-                    <Slide slide={slide} selectedObjectsId={selected.objects} />
+                    <Slide slide={slide} selectedObjectsId={selected.objects}/>
                 </g>
             </svg>
         </g>

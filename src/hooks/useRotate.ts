@@ -60,6 +60,7 @@ export const useRotate = ({
             newAngle = Math.round(newAngle / 15) * 15;
         }
 
+        latestAngleRef.current = newAngle;
         onRotate(newAngle);
     };
 

@@ -13,7 +13,7 @@ type RequireAtLeastOne<T, K extends keyof T = keyof T> =
 
 // TODO: Узнать как лучше обработать IconPosition
 /**
- * Позиции иконки относительно текста в кнопке.
+ * Позиции иконки относительно текста actionTypes.ts кнопке.
  *
  * @enum {string}
  */
@@ -41,7 +41,7 @@ interface CommonButtonProps {
  *
  * @property {string} iconSrc - URL-адрес изображения иконки.
  * @property {IconPosition} iconPosition - Позиция иконки относительно текста.
- * @property {number} iconSize - Размер иконки в пикселях.
+ * @property {number} iconSize - Размер иконки actionTypes.ts пикселях.
  */
 interface IconProps {
     iconSrc: string;

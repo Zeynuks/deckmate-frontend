@@ -11,8 +11,8 @@ import categoryIcon from '../../assets/icons/category.svg';
 import playIcon from '../../assets/icons/play.svg';
 import shareIcon from '../../assets/icons/send.svg';
 import {Input} from '../components/ui/Input/Input.tsx';
-import {dispatch} from '../../store/editor.ts';
-import {setPresentationTitle} from '../../store/functions/setPresentationTitle.ts';
+import {useDispatch} from 'react-redux';
+import {ActionTypes} from "../../store/actionTypes.ts";
 
 type HeaderProps = {
     title: string
@@ -29,11 +29,12 @@ export const Header: React.FC<HeaderProps> = ({
                                                   description,
                                               }) => {
     const {addToast} = useToast();
+    const dispatch = useDispatch();
 
     const handleShowToast = (type: 'error') => {
         addToast({
             title: type.charAt(0).toUpperCase() + type.slice(1),
-            description: 'Данная функция в разработке',
+            description: 'Данная функция actionTypes.ts разработке',
             type,
         });
     };
@@ -48,7 +49,12 @@ export const Header: React.FC<HeaderProps> = ({
                 <section>
                     <div className={styles.titleBar}>
                         {/*// TODO: Разобраться с длинной Input*/}
-                        <Input value={title} onChange={(value) => dispatch(setPresentationTitle, value)}/>
+                        <Input value={title} onChange={(title) =>
+                            dispatch({
+                                type: ActionTypes.SET_PRESENTATION_TITLE,
+                                payload: title
+                            })
+                        }/>
                         {/*<Button iconSrc={arrowDownIcon} className={styles.menuButton}*/}
                         {/*        onClick={() => handleShowToast('error')}>*/}
                         {/*</Button>*/}

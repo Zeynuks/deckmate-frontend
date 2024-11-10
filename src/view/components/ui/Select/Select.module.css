@@ -44,7 +44,7 @@
     cursor: pointer;
 }
 
-/* Иконка в кнопке очистки */
+/* Иконка actionTypes.ts кнопке очистки */
 .clear-btn-icon {
     width: 1em;
     height: 1em;

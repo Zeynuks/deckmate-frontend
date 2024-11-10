@@ -1,11 +1,9 @@
 import React, {useRef, useEffect, useState, ReactNode} from 'react';
-import { useDrag } from '../../../../hooks/useDrag.ts';
-import { useResize } from '../../../../hooks/useResize.ts';
-import { useRotate } from '../../../../hooks/useRotate.ts';
-import {dispatch} from '../../../../store/editor.ts';
-import {setObjectPos} from '../../../../store/functions/setObjectPos.ts';
-import {setObjectSize} from '../../../../store/functions/setObjectSize.ts';
-import {setObjectAngle} from '../../../../store/functions/setObjectAngle.ts';
+import {useDispatch} from 'react-redux';
+import {useDrag} from '../../../../hooks/useDrag.ts';
+import {useResize} from '../../../../hooks/useResize.ts';
+import {useRotate} from '../../../../hooks/useRotate.ts';
+import {ActionTypes} from '../../../../store/actionTypes.ts';
 
 type TransformableProps = {
     children: (data: { width: number, height: number }) => ReactNode;
@@ -24,6 +22,7 @@ export const Transformable: React.FC<TransformableProps> = ({
                                                                 angle,
                                                                 onClick,
                                                             }) => {
+    const dispatch = useDispatch();
     const objectRef = useRef<SVGGElement | null>(null);
     const [localPosition, setLocalPosition] = useState(position);
     const [localSize, setLocalSize] = useState(size);
@@ -41,57 +40,78 @@ export const Transformable: React.FC<TransformableProps> = ({
         setLocalRotation(angle);
     }, [angle]);
 
-    const { handleDragMouseDown } = useDrag({
+    const {handleDragMouseDown} = useDrag({
         position: localPosition,
         onDrag: (x, y) => {
-            setLocalPosition({ x, y });
+            setLocalPosition({x, y});
         },
         onDragEnd: (x, y) => {
-            dispatch(setObjectPos, { x, y });
+            dispatch({
+                type: ActionTypes.SET_OBJECT_POSITION,
+                payload: {
+                    x,
+                    y
+                }
+            });
         },
         objectRef,
     });
 
-    const { handleResizeMouseDown } = useResize({
+    const {handleResizeMouseDown} = useResize({
         size: localSize,
         position: localPosition,
         onResize: (width, height) => {
-            setLocalSize({ width, height });
+            setLocalSize({width, height});
         },
         onResizeEnd: (width, height) => {
-            dispatch(setObjectSize, { width, height });
+            dispatch({
+                type: ActionTypes.SET_OBJECT_SIZE,
+                payload: {
+                    width,
+                    height
+                }
+            });
         },
         onDrag: (x, y) => {
-            setLocalPosition({ x, y });
+            setLocalPosition({x, y});
         },
         onDragEnd: (x, y) => {
-            dispatch(setObjectPos, { x, y });
+            dispatch({
+                type: ActionTypes.SET_OBJECT_POSITION,
+                payload: {
+                    x,
+                    y
+                }
+            });
         },
         objectRef,
         angle: localRotation,
     });
 
-    const { handleRotateMouseDown } = useRotate({
+    const {handleRotateMouseDown} = useRotate({
         position: localPosition,
         angle: localRotation,
         onRotate: (angle) => {
             setLocalRotation(angle);
         },
         onRotateEnd: (angle) => {
-            dispatch(setObjectAngle, angle);
+            dispatch({
+                type: ActionTypes.SET_OBJECT_ANGLE,
+                payload: angle
+            });
         },
         objectRef,
     });
 
     const resizeDirections = [
-        { x: -1, y: -1 },
-        { x: 0, y: -1 },
-        { x: 1, y: -1 },
-        { x: 1, y: 0 },
-        { x: 1, y: 1 },
-        { x: 0, y: 1 },
-        { x: -1, y: 1 },
-        { x: -1, y: 0 },
+        {x: -1, y: -1},
+        {x: 0, y: -1},
+        {x: 1, y: -1},
+        {x: 1, y: 0},
+        {x: 1, y: 1},
+        {x: 0, y: 1},
+        {x: -1, y: 1},
+        {x: -1, y: 0},
     ];
 
     return (
@@ -106,8 +126,9 @@ export const Transformable: React.FC<TransformableProps> = ({
                 width={localSize.width}
                 height={localSize.height}
                 fill="transparent"
-                onMouseDown={isHidden? handleDragMouseDown: () => {}}
-                style={{ cursor: isHidden ? 'grab' : 'default'}}
+                onMouseDown={isHidden ? handleDragMouseDown : () => {
+                }}
+                style={{cursor: isHidden ? 'grab' : 'default'}}
                 stroke={isHidden ? '#7B61FF' : ''}
                 strokeWidth={isHidden ? '4px' : ''}
                 onMouseDownCapture={onClick}
@@ -130,7 +151,7 @@ export const Transformable: React.FC<TransformableProps> = ({
                         r={10}
                         fill="#7B61FF"
                         onMouseDown={handleRotateMouseDown}
-                        style={{ cursor: 'crosshair' }}
+                        style={{cursor: 'crosshair'}}
                     />
                 </>
             )}
@@ -157,7 +178,7 @@ export const Transformable: React.FC<TransformableProps> = ({
                             rx={3}
                             ry={3}
                             onMouseDown={(e) => handleResizeMouseDown(e, direction)}
-                            style={{ cursor: cursorStyle }}
+                            style={{cursor: cursorStyle}}
                         />
                     );
                 })}

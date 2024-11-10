@@ -4,8 +4,8 @@ import {Presentation, Selected} from '../../store/types.ts';
 import {Slide} from '../Slide/Slide.tsx';
 import {useDimensions} from '../../hooks/useDimensions';
 import {ContextMenu} from '../components/ui/ContextMenu/ContextMenu.tsx';
-import {dispatch} from '../../store/editor.ts';
-import {removeObject} from '../../store/functions/removeObject.ts';
+import { useDispatch } from 'react-redux';
+import {ActionTypes} from '../../store/actionTypes.ts';
 
 type WorkspaceProps = {
     presentation: Presentation;
@@ -25,6 +25,7 @@ export const PresentationWorkspace: React.FC<WorkspaceProps> = ({
                                                                     scale,
                                                                     backgroundColor = '#FBFCFD',
                                                                 }) => {
+    const dispatch = useDispatch();
     const [menuPosition, setMenuPosition] = useState<{ x: number; y: number } | null>(null);
 
     const handleContextMenu = (event: React.MouseEvent) => {
@@ -39,9 +40,10 @@ export const PresentationWorkspace: React.FC<WorkspaceProps> = ({
     const workspaceRef = useRef<HTMLDivElement>(null);
     const dimensions = useDimensions(workspaceRef);
 
-    const selectedSlide = presentation.slides.find(
-        (slide) => slide.id === selected.slide
-    );
+    const selectedSlide = selected && selected.slide ?
+        presentation.slides.find(
+            (slide) => slide.id === selected.slide
+        ) : null;
 
     return (
         <div className={styles.workspaceContainer} onContextMenu={handleContextMenu} onClick={closeMenu} style={{ width: '100%', height: '100%' }}>
@@ -77,7 +79,11 @@ export const PresentationWorkspace: React.FC<WorkspaceProps> = ({
                     </svg>
                 )}
             </div>
-            <ContextMenu position={menuPosition} onRemove={()=> dispatch(removeObject)}/>
+            <ContextMenu position={menuPosition} onRemove={()=> {
+                dispatch({
+                    type: ActionTypes.REMOVE_OBJECT
+                });
+            }}/>
         </div>
     );
 };

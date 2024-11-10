@@ -1,9 +1,7 @@
 import {Editor} from '../types.ts';
 
 export function setPresentationTitle(editor: Editor, newTitle: string): Editor {
-    if (!editor) return editor;
-    const slide = editor.presentation.slides.find(slide => slide.id === editor.selected.slide);
-    if (!slide) return editor;
+     if (!editor) return editor;
 
     return {
         ...editor,

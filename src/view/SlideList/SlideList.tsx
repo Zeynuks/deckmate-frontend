@@ -1,13 +1,12 @@
 import styles from './SlideList.module.css';
-import { Button, IconPosition } from '../components/ui/Button/Button';
+import {Button, IconPosition} from '../components/ui/Button/Button';
 import addIcon from '../../assets/icons/add.svg';
 import trashIcon from '../../assets/icons/trash.svg';
-import { Selected, Slide as SlideType } from '../../store/types';
-import { dispatch } from '../../store/editor';
-import { removeSlide } from '../../store/functions/removeSlide';
-import { addSlide } from '../../store/functions/addSlide';
-import { SlideListComponent } from '../SlideListComponent/SlideListComponent.tsx';
-import { useCallback, useRef } from 'react';
+import {Selected, Slide as SlideType} from '../../store/types';
+import {useDispatch} from 'react-redux';
+import {SlideListComponent} from '../SlideListComponent/SlideListComponent.tsx';
+import {useCallback, useRef} from 'react';
+import {ActionTypes} from '../../store/actionTypes.ts';
 
 type SlideListProps = {
     slides: SlideType[];
@@ -19,7 +18,8 @@ const SCROLL_SPEED = 10;
 //Магические числа
 const SCALE_FACTOR = 5.67;
 
-export const SlideList: React.FC<SlideListProps> = ({ slides, selected }) => {
+export const SlideList: React.FC<SlideListProps> = ({slides, selected}) => {
+    const dispatch = useDispatch();
     const containerRef = useRef<HTMLDivElement | null>(null);
     const selectedSlide = getSelectedSlide(slides, selected);
     const listHeight = calculateListHeight(containerRef, slides.length);
@@ -36,7 +36,6 @@ export const SlideList: React.FC<SlideListProps> = ({ slides, selected }) => {
     );
 
 
-
     return (
         <section className={styles.slideMenu}>
             <div className={styles.slideButtons}>
@@ -44,7 +43,11 @@ export const SlideList: React.FC<SlideListProps> = ({ slides, selected }) => {
                     iconSrc={addIcon}
                     className={styles.addButton}
                     iconPosition={IconPosition.Right}
-                    onClick={() => dispatch(addSlide)}
+                    onClick={() =>
+                        dispatch({
+                            type: ActionTypes.ADD_SLIDE,
+                        })
+                    }
                 >
                     Add Slide
                 </Button>
@@ -53,7 +56,11 @@ export const SlideList: React.FC<SlideListProps> = ({ slides, selected }) => {
                     className={styles.removeButton}
                     iconPosition={IconPosition.Right}
                     textColor="#FFFFFF"
-                    onClick={() => dispatch(removeSlide)}
+                    onClick={() =>
+                        dispatch({
+                            type: ActionTypes.REMOVE_SLIDE,
+                        })
+                    }
                 >
                     Remove
                 </Button>
