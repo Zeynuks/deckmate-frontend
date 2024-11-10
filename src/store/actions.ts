@@ -26,6 +26,11 @@ export interface RemoveSlideAction {
     type: ActionTypes.REMOVE_SLIDE;
 }
 
+export interface RemoveObjectAction {
+    type: ActionTypes.REMOVE_OBJECT;
+}
+
+
 export interface ReorderSlideAction {
     type: ActionTypes.REORDER_SLIDE;
     payload: number;
@@ -71,6 +76,7 @@ export type EditorActions =
     | AddImageObjectAction
     | AddTextObjectAction
     | RemoveSlideAction
+    | RemoveObjectAction
     | ReorderSlideAction
     | SetFontSizeAction
     | SetFontWeightAction

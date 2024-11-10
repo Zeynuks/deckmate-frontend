@@ -18,7 +18,7 @@ export const ElementPanel: React.FC = () => {
             <Button iconSrc={textAreaIcon} iconPosition={IconPosition.Top}  onClick={() =>
                 dispatch({type: ActionTypes.ADD_TEXT_OBJECT})}>Text</Button>
             <Button iconSrc={imageIcon} iconPosition={IconPosition.Top}  onClick={() =>
-                dispatch({type: ActionTypes.ADD_TEXT_OBJECT})}>Image</Button>
+                dispatch({type: ActionTypes.ADD_IMAGE_OBJECT})}>Image</Button>
             <Button iconSrc={triangleIcon} iconPosition={IconPosition.Top}  onClick={() => {}}>Triangle</Button>
             <Button iconSrc={ellipseIcon} iconPosition={IconPosition.Top}  onClick={() => {}}>Ellipse</Button>
             <Button iconSrc={rectIcon} iconPosition={IconPosition.Top}  onClick={() => {}}>Rect</Button>

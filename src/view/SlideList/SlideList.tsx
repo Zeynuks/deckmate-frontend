@@ -77,7 +77,7 @@ export const SlideList: React.FC = () => {
                     preserveAspectRatio="xMinYMin meet"
                 >
                     {slides.map((slide, index) =>
-                        selected.slide && slide.id !== selected.slide ? (
+                        slide.id !== selected.slide ? (
                             <SlideListComponent
                                 key={slide.id}
                                 index={index}

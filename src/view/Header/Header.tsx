@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './Header.module.css';
 import {Button, IconPosition} from '../components/ui/Button/Button.tsx';
 import {Typography} from '../components/ui/Typography/Typography.tsx';
@@ -33,8 +32,28 @@ export const Header: React.FC<HeaderProps> = ({
     const {addToast} = useToast();
     const dispatch = useDispatch();
 
-    const handleImport = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
+
+    const handleExport = () => {
+        try {
+            dispatch({
+                type: ActionTypes.EXPORT_DOCUMENT,
+            });
+            addToast({
+                title: 'Экспорт',
+                description: 'Документ экспортирован в JSON.',
+                type: 'info',
+            });
+        } catch (error) {
+            console.error('Ошибка при экспорте документа', error);
+            addToast({
+                title: 'Ошибка',
+                description: 'Ошибка при экспорте документа',
+                type: 'error',
+            });
+        }
+    };
+
+    const handleFileUpload = (file: File) => {
         if (!file) return;
 
         const reader = new FileReader();
@@ -50,28 +69,20 @@ export const Header: React.FC<HeaderProps> = ({
                 }
             } catch (error) {
                 console.error('Ошибка при импорте документа', error);
+                addToast({
+                    title: 'Ошибка',
+                    description: 'Ошибка при импорте документа',
+                    type: 'error',
+                });
             }
         };
         reader.readAsText(file);
     };
 
-    const handleExport = () => {
-        addToast({
-            title: 'Экспорт',
-            description: 'Документ экспортирован в JSON.',
-            type: 'info',
-        });
-        dispatch({
-            type: ActionTypes.EXPORT_DOCUMENT,
-        });
-
-    };
-
-
     const handleShowToast = (type: 'error') => {
         addToast({
             title: type.charAt(0).toUpperCase() + type.slice(1),
-            description: 'Данная функция actionTypes.ts разработке',
+            description: 'Данная функция в разработке',
             type,
         });
     };
@@ -109,7 +120,8 @@ export const Header: React.FC<HeaderProps> = ({
                     <Button iconSrc={importIcon} className={styles.menuButton}
                             onClick={() => handleExport()}/>
                     <Button iconSrc={categoryIcon} className={styles.menuButton}
-                            onClick={() => handleImport}/>
+                            onClick={() => () => {
+                            }} isLoading onLoad={handleFileUpload}/>
                     <Button iconSrc={playIcon} className={styles.presentButton} iconPosition={IconPosition.Right}
                             onClick={() => handleShowToast('error')}>
                         Present

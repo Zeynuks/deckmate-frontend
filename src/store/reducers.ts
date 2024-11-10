@@ -16,6 +16,7 @@ import {setSelected} from './functions/setSelected';
 import {defaultEditor} from './templates.ts';
 import {importDocument} from "./functions/importDocument.ts";
 import {exportDocument} from "./functions/exportDocument.ts";
+import {removeObject} from "./functions/removeObject.ts";
 
 const loadState = (): Editor | undefined => {
     try {
@@ -56,6 +57,9 @@ const editorReducer = (state = getInitialState(), action: EditorActions): Editor
 
             case ActionTypes.REMOVE_SLIDE:
                 return removeSlide(state);
+
+            case ActionTypes.REMOVE_OBJECT:
+                return removeObject(state);
 
             case ActionTypes.REORDER_SLIDE:
                 return reorderSlide(state, action.payload);
