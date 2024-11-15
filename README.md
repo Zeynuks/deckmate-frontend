@@ -1,56 +1,105 @@
-# React + TypeScript + Vite
+# Presentation Maker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## О проекте
 
-Currently, two official plugins are available:
+**Presentation Maker** — это современное веб-приложение для создания и редактирования презентаций. Проект разработан студентом Ильей Лежниным из Института iSpring, группа ПС-21. Используя передовые технологии фронтенда, такие как Vite, React, TypeScript и Redux, приложение обеспечивает высокую производительность и удобство в использовании.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Основные возможности
 
-## Expanding the ESLint configuration
+- **Интуитивно понятный интерфейс**: Упрощенный процесс создания и редактирования слайдов.
+- **Поддержка мультимедиа**: Вставка изображений.
+- **Сохранение и экспорт**: Возможность сохранения проектов в облаке и экспорта в различные форматы.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Технологии
 
-- Configure the top-level `parserOptions` property like this:
+- **Vite**: Инструмент для быстрой сборки фронтенд-приложений.
+- **React**: Библиотека для построения пользовательских интерфейсов.
+- **TypeScript**: Надстройка над JavaScript с поддержкой статической типизации.
+- **Redux**: Управление состоянием приложения.
+- **Yarn**: Пакетный менеджер для управления зависимостями.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Установка
+
+### Предварительные требования
+
+- [Node.js](https://nodejs.org/) версии 14 или выше.
+- [Yarn](https://yarnpkg.com/) версии 1.22 или выше.
+
+### Шаги установки
+
+1. **Клонирование репозитория**
+
+   ```bash
+   git clone https://github.com/yourusername/presentation-maker.git
+   ```
+
+2. **Переход в директорию проекта**
+
+   ```bash
+   cd presentation-maker
+   ```
+
+3. **Установка зависимостей**
+
+   ```bash
+   yarn install
+   ```
+
+## Запуск проекта
+
+### Режим разработки
+
+Для запуска проекта в режиме разработки выполните команду:
+
+```bash
+yarn dev
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Откройте [http://localhost:3000](http://localhost:3000) в вашем браузере для просмотра приложения.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### Сборка для продакшена
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+Для создания оптимизированной сборки выполните:
+
+```bash
+yarn build
 ```
 
+### Запуск сборки
 
-//Добавить переменные css
-//Доьбавить расширяемые стили
-//pointer-events: none
-/Добавить  editorType
+После сборки можно запустить локальный сервер для просмотра приложения:
+
+```bash
+yarn preview
+```
+
+## Структура проекта
+
+```
+presentation-maker/
+├── public/                 # Статические файлы
+├── src/
+│   ├── assets/             # Медиа-ресурсы (изображения, иконки, шрифты)
+│   ├── components/         # Переиспользуемые компоненты
+│   ├── hooks/              # Кастомные хуки
+│   ├── store/              # Конфигурация Redux
+│   ├── styles/             # Стили проекта
+│   ├── utils/              # Утилиты и вспомогательные функции
+│   ├── view/               # Компоненты представления (UI)
+│   ├── App.tsx             # Главный компонент приложения
+│   └── main.tsx            # Точка входа
+├── .gitignore              # Исключения для Git
+├── package.json            # Зависимости и скрипты
+├── tsconfig.json           # Конфигурация TypeScript
+├── vite.config.ts          # Конфигурация Vite
+└── README.md               # Документация
+
+```
+
+## Контакты
+
+- **Имя**: Илья Лежнин
+- **Email**: leznin2000@ya.ru
+- **GitHub**: [zeynuks](https://github.com/zeynuks)
+
+Для получения дополнительной информации или предложений, пожалуйста, свяжитесь со мной через указанные контакты.
