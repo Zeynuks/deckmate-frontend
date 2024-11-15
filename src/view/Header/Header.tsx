@@ -10,9 +10,8 @@ import categoryIcon from '../../assets/icons/category.svg';
 import playIcon from '../../assets/icons/play.svg';
 import shareIcon from '../../assets/icons/send.svg';
 import {Input} from '../components/ui/Input/Input.tsx';
-import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
-import {ActionTypes} from '../../store/actionTypes.ts';
-import {RootState} from '../../store/store.ts';
+import {RootState, useAppSelector} from '../../store/store.ts';
+import {useAppActions} from '../../hooks/useAppActions.ts';
 
 type HeaderProps = {
     description: string,
@@ -26,21 +25,16 @@ type HeaderProps = {
 export const Header: React.FC<HeaderProps> = ({
                                                   description,
                                               }) => {
-    const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
     const title = useAppSelector((state: RootState) => state.presentation.title);
-
+    const {importDocument, exportDocument, setPresentationTitle} = useAppActions();
     const {addToast} = useToast();
-    const dispatch = useDispatch();
-
 
     const handleExport = () => {
         try {
-            dispatch({
-                type: ActionTypes.EXPORT_DOCUMENT,
-            });
+            exportDocument();
             addToast({
                 title: 'Экспорт',
-                description: 'Документ экспортирован в JSON.',
+                description: 'Документ экспортирован в JSON',
                 type: 'info',
             });
         } catch (error) {
@@ -62,15 +56,17 @@ export const Header: React.FC<HeaderProps> = ({
                 const content = e.target?.result;
                 if (typeof content === 'string') {
                     const importedState = JSON.parse(content);
-                    dispatch({
-                        type: ActionTypes.IMPORT_DOCUMENT,
-                        payload: importedState
+                    importDocument(importedState);
+                    addToast({
+                        title: 'Импорт',
+                        description: 'Документ успешно импортирован',
+                        type: 'info',
                     });
                 }
             } catch (error) {
                 console.error('Ошибка при импорте документа', error);
                 addToast({
-                    title: 'Ошибка',
+                    title: 'Импорт',
                     description: 'Ошибка при импорте документа',
                     type: 'error',
                 });
@@ -97,12 +93,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <section>
                     <div className={styles.titleBar}>
                         {/*// TODO: Разобраться с длинной Input*/}
-                        <Input value={title} onChange={(title) =>
-                            dispatch({
-                                type: ActionTypes.SET_PRESENTATION_TITLE,
-                                payload: title
-                            })
-                        }/>
+                        <Input value={title} onChange={(title) => setPresentationTitle(title)}/>
                         {/*<Button iconSrc={arrowDownIcon} className={styles.menuButton}*/}
                         {/*        onClick={() => handleShowToast('error')}>*/}
                         {/*</Button>*/}

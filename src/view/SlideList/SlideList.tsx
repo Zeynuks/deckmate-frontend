@@ -3,11 +3,10 @@ import {Button, IconPosition} from '../components/ui/Button/Button';
 import addIcon from '../../assets/icons/add.svg';
 import trashIcon from '../../assets/icons/trash.svg';
 import {Selected, Slide as SlideType} from '../../store/types';
-import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import {SlideListComponent} from '../SlideListComponent/SlideListComponent.tsx';
 import {useCallback, useEffect, useRef, useState} from 'react';
-import {ActionTypes} from '../../store/actionTypes.ts';
-import {RootState} from '../../store/store.ts';
+import {RootState, useAppSelector} from '../../store/store.ts';
+import {useAppActions} from '../../hooks/useAppActions.ts';
 
 const SLIDE_HEIGHT = 1080 + 40;
 const SCROLL_SPEED = 10;
@@ -15,11 +14,10 @@ const SCROLL_SPEED = 10;
 const SCALE_FACTOR = 5.67;
 
 export const SlideList: React.FC = () => {
-    const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
     const selected = useAppSelector((state: RootState) => state.selected);
     const slides = useAppSelector((state: RootState) => state.presentation.slides);
 
-    const dispatch = useDispatch();
+    const { addSlide, removeSlide } = useAppActions();
     const containerRef = useRef<HTMLDivElement | null>(null);
     const selectedSlide = getSelectedSlide(slides, selected);
     const [listHeight, setListHeight] = useState(0);
@@ -48,11 +46,7 @@ export const SlideList: React.FC = () => {
                     iconSrc={addIcon}
                     className={styles.addButton}
                     iconPosition={IconPosition.Right}
-                    onClick={() =>
-                        dispatch({
-                            type: ActionTypes.ADD_SLIDE,
-                        })
-                    }
+                    onClick={() => addSlide()}
                 >
                     Add Slide
                 </Button>
@@ -61,11 +55,7 @@ export const SlideList: React.FC = () => {
                     className={styles.removeButton}
                     iconPosition={IconPosition.Right}
                     textColor="#FFFFFF"
-                    onClick={() =>
-                        dispatch({
-                            type: ActionTypes.REMOVE_SLIDE,
-                        })
-                    }
+                    onClick={() => removeSlide()}
                 >
                     Remove
                 </Button>

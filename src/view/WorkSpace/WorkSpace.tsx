@@ -3,9 +3,8 @@ import styles from './WorkSpace.module.css';
 import {Slide} from '../Slide/Slide.tsx';
 import {useDimensions} from '../../hooks/useDimensions';
 import {ContextMenu} from '../components/ui/ContextMenu/ContextMenu.tsx';
-import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
-import {ActionTypes} from '../../store/actionTypes.ts';
-import {RootState} from '../../store/store.ts';
+import {RootState, useAppSelector} from '../../store/store.ts';
+import {useAppActions} from '../../hooks/useAppActions.ts';
 
 
 type WorkspaceProps = {
@@ -22,11 +21,9 @@ export const PresentationWorkspace: React.FC<WorkspaceProps> = ({
                                                                     scale,
                                                                     backgroundColor = '#FBFCFD',
                                                                 }) => {
-    const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+    const {removeObject} = useAppActions();
     const selected = useAppSelector((state: RootState) => state.selected);
     const slides = useAppSelector((state: RootState) => state.presentation.slides);
-
-    const dispatch = useDispatch();
     const [menuPosition, setMenuPosition] = useState<{ x: number; y: number } | null>(null);
 
     const handleContextMenu = (event: React.MouseEvent) => {
@@ -80,11 +77,7 @@ export const PresentationWorkspace: React.FC<WorkspaceProps> = ({
                     </svg>
                 )}
             </div>
-            <ContextMenu position={menuPosition} onRemove={()=> {
-                dispatch({
-                    type: ActionTypes.REMOVE_OBJECT
-                });
-            }}/>
+            <ContextMenu position={menuPosition} onRemove={()=> removeObject()}/>
         </div>
     );
 };

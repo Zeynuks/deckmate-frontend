@@ -1,9 +1,8 @@
 import React, {useRef, useEffect, useState, ReactNode} from 'react';
-import {useDispatch} from 'react-redux';
 import {useDrag} from '../../../../hooks/useDrag.ts';
 import {useResize} from '../../../../hooks/useResize.ts';
 import {useRotate} from '../../../../hooks/useRotate.ts';
-import {ActionTypes} from '../../../../store/actionTypes.ts';
+import {useAppActions} from '../../../../hooks/useAppActions.ts';
 
 type TransformableProps = {
     children: (data: { width: number, height: number }) => ReactNode;
@@ -22,7 +21,7 @@ export const Transformable: React.FC<TransformableProps> = ({
                                                                 angle,
                                                                 onClick,
                                                             }) => {
-    const dispatch = useDispatch();
+    const { setObjectPosition, setObjectAngle, setObjectSize } = useAppActions();
     const objectRef = useRef<SVGGElement | null>(null);
     const [localPosition, setLocalPosition] = useState(position);
     const [localSize, setLocalSize] = useState(size);
@@ -45,15 +44,7 @@ export const Transformable: React.FC<TransformableProps> = ({
         onDrag: (x, y) => {
             setLocalPosition({x, y});
         },
-        onDragEnd: (x, y) => {
-            dispatch({
-                type: ActionTypes.SET_OBJECT_POSITION,
-                payload: {
-                    x,
-                    y
-                }
-            });
-        },
+        onDragEnd: (x, y) => setObjectPosition(x, y),
         objectRef,
     });
 
@@ -63,27 +54,11 @@ export const Transformable: React.FC<TransformableProps> = ({
         onResize: (width, height) => {
             setLocalSize({width, height});
         },
-        onResizeEnd: (width, height) => {
-            dispatch({
-                type: ActionTypes.SET_OBJECT_SIZE,
-                payload: {
-                    width,
-                    height
-                }
-            });
-        },
+        onResizeEnd: (width, height) => setObjectSize(width, height),
         onDrag: (x, y) => {
             setLocalPosition({x, y});
         },
-        onDragEnd: (x, y) => {
-            dispatch({
-                type: ActionTypes.SET_OBJECT_POSITION,
-                payload: {
-                    x,
-                    y
-                }
-            });
-        },
+        onDragEnd: (x, y) => setObjectPosition(x, y),
         objectRef,
         angle: localRotation,
     });
@@ -94,24 +69,19 @@ export const Transformable: React.FC<TransformableProps> = ({
         onRotate: (angle) => {
             setLocalRotation(angle);
         },
-        onRotateEnd: (angle) => {
-            dispatch({
-                type: ActionTypes.SET_OBJECT_ANGLE,
-                payload: angle
-            });
-        },
+        onRotateEnd: (angle) => setObjectAngle(angle),
         objectRef,
     });
 
     const resizeDirections = [
-        {x: -1, y: -1},
-        {x: 0, y: -1},
-        {x: 1, y: -1},
-        {x: 1, y: 0},
-        {x: 1, y: 1},
-        {x: 0, y: 1},
-        {x: -1, y: 1},
-        {x: -1, y: 0},
+        { x: -1, y: -1, cursor: 'nw-resize' },
+        { x: 0, y: -1, cursor: 'n-resize' },
+        { x: 1, y: -1, cursor: 'ne-resize' },
+        { x: 1, y: 0, cursor: 'e-resize' },
+        { x: 1, y: 1, cursor: 'se-resize' },
+        { x: 0, y: 1, cursor: 's-resize' },
+        { x: -1, y: 1, cursor: 'sw-resize' },
+        { x: -1, y: 0, cursor: 'w-resize' }
     ];
 
     return (
@@ -161,12 +131,6 @@ export const Transformable: React.FC<TransformableProps> = ({
                     const markerX = (direction.x * localSize.width) / 2 - 10;
                     const markerY = (direction.y * localSize.height) / 2 - 10;
 
-                    let cursorStyle = 'nwse-resize';
-                    if (direction.x === 0 || direction.y === 0) {
-                        cursorStyle = 'ns-resize';
-                        if (direction.x !== 0) cursorStyle = 'ew-resize';
-                    }
-
                     return (
                         <rect
                             key={index}
@@ -178,7 +142,7 @@ export const Transformable: React.FC<TransformableProps> = ({
                             rx={3}
                             ry={3}
                             onMouseDown={(e) => handleResizeMouseDown(e, direction)}
-                            style={{cursor: cursorStyle}}
+                            style={{cursor: direction.cursor}}
                         />
                     );
                 })}

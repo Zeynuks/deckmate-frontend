@@ -22,7 +22,7 @@ interface CommonButtonProps {
     disabled?: boolean;
     isLoading?: boolean;
     onLoad?: (file: File) => void;
-    onClick: () => void;
+    onClick?: () => void;
 }
 
 interface IconProps {
@@ -50,7 +50,7 @@ export const Button: React.FC<ButtonProps> = ({
                                                   onLoad,
                                                   isLoading = false,
                                                   disabled = false,
-                                                  onClick,
+                                                  onClick = () => {}
                                               }: ButtonProps): JSX.Element => {
     const inputFileRef = useRef<HTMLInputElement>(null);
 

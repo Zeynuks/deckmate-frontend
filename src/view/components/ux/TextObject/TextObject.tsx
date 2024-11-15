@@ -17,7 +17,6 @@ export const TextComponent: React.FC<TextObjectProps> = ({
                                                              object,
                                                              data
                                                          }) => {
-
     const contentToHTML = (content: TextSpan[]): string => {
         return content
             .map((span) => {
@@ -86,13 +85,13 @@ export const TextComponent: React.FC<TextObjectProps> = ({
 
 const styleToCSSObject = (style: TextStyle): React.CSSProperties => {
     const css: React.CSSProperties = {};
-    if (style.color) css.color = style.color;
-    if (style.fontSize) css.fontSize = `${style.fontSize}px`;
-    if (style.fontWeight) css.fontWeight = style.fontWeight;
-    if (style.fontStyle) css.fontStyle = style.fontStyle;
-    if (style.textDecoration) css.textDecoration = style.textDecoration;
-    if (style.fontFamily) css.fontFamily = style.fontFamily;
-    if (style.lineHeight) css.lineHeight = style.lineHeight;
-    if (style.letterSpacing) css.letterSpacing = style.letterSpacing;
+    if (style && style.color) css.color = style.color;
+    if (style && style.fontSize) css.fontSize = `${style.fontSize}px`;
+    if (style && style.fontWeight) css.fontWeight = style.fontWeight;
+    if (style && style.fontStyle) css.fontStyle = style.fontStyle;
+    if (style && style.textDecoration) css.textDecoration = style.textDecoration;
+    if (style && style.fontFamily) css.fontFamily = style.fontFamily;
+    if (style && style.lineHeight) css.lineHeight = style.lineHeight;
+    if (style && style.letterSpacing) css.letterSpacing = style.letterSpacing;
     return css;
 };

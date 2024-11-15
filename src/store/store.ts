@@ -1,8 +1,12 @@
 import { createStore } from 'redux';
 import rootReducer from './reducers';
 import {Editor} from './types.ts';
+import {validateDocument} from '../utils/documentValidation.ts';
+import {TypedUseSelectorHook, useSelector} from 'react-redux';
 
 export type RootState = ReturnType<typeof rootReducer>;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+
 
 const loadState = () => {
     try {
@@ -10,7 +14,15 @@ const loadState = () => {
         if (serializedState === null) {
             return undefined;
         }
-        return JSON.parse(serializedState);
+        const parsedState: Editor = JSON.parse(serializedState);
+
+        if (!validateDocument(parsedState)) {
+            console.error('Загруженные данные из localStorage не прошли валидацию');
+            return undefined;
+        }
+
+
+        return parsedState;
     } catch (err) {
         console.error('Не удалось загрузить состояние из localStorage', err);
         return undefined;

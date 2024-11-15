@@ -2,8 +2,7 @@ import {ObjectType, Slide as SlideType} from '../../store/types.ts';
 import {TextComponent} from '../components/ux/TextObject/TextObject.tsx';
 import {ImageComponent} from '../components/ux/ImageObject/ImageObject.tsx';
 import {Transformable} from '../components/ux/Transformable/Transformable.tsx';
-import {useDispatch} from 'react-redux';
-import {ActionTypes} from '../../store/actionTypes.ts';
+import {useAppActions} from '../../hooks/useAppActions.ts';
 
 type SlideProps = {
     slide: SlideType;
@@ -16,9 +15,8 @@ export const Slide: React.FC<SlideProps> = ({
                                                 selectedObjectsId,
                                                 onView = false
                                             }) => {
-    const dispatch = useDispatch();
+    const {setSelected} = useAppActions();
     const objects = slide.objects.map((object) => {
-
         const slideObject = (data: { width: number, height: number }) => {
             switch (object.type) {
                 case  ObjectType.Text:
@@ -39,13 +37,7 @@ export const Slide: React.FC<SlideProps> = ({
                 angle={object.angle || 0}
                 onClick={() => {
                     if (onView) {
-                        dispatch({
-                            type: ActionTypes.SET_SELECTED,
-                            payload: {
-                                slide: slide.id,
-                                objects: [object.id]
-                            }
-                        });
+                        setSelected(slide.id, [object.id]);
                     }
                 }}
             >
@@ -65,14 +57,7 @@ export const Slide: React.FC<SlideProps> = ({
                     fill={slide.background.color}
                     rx={20}
                     ry={20}
-                    onClick={() =>
-                        dispatch({
-                            type: ActionTypes.SET_SELECTED,
-                            payload: {
-                                slide: slide.id,
-                                objects: []
-                            }
-                        })
+                    onClick={() => setSelected(slide.id)
                     }
                 />
             )}

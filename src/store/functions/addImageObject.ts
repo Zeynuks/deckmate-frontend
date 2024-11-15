@@ -1,7 +1,6 @@
-import {Editor, ObjectID, ObjectType, ImageObject} from '../types.ts';
-import { v4 as uuidv4 } from 'uuid';
+import {Editor, ImageObject} from '../types.ts';
 
-export function addImageObject(editor: Editor): Editor {
+export function addImageObject(editor: Editor, image: ImageObject): Editor {
     if (!editor) {
         return editor;
     }
@@ -12,33 +11,17 @@ export function addImageObject(editor: Editor): Editor {
     if (!slide) {
         return editor;
     }
-
-    const newImageObject: ImageObject = {
-        id: uuidv4() as ObjectID,
-        type: ObjectType.Image,
-        size: {
-            width: 100,
-            height: 100
-        },
-        position: {
-            x: 0,
-            y: 0
-        },
-        angle: 0,
-        src: '',
-    };
-
     return {
         ...editor,
         presentation: {
             ...editor.presentation,
             slides: editor.presentation.slides.map(slide =>
-                slide.id === slideId ? { ...slide, objects: [...slide.objects, newImageObject] } : slide
+                slide.id === slideId ? { ...slide, objects: [...slide.objects, image] } : slide
             )
         },
         selected: {
             ...editor.selected,
-            objects: [...editor.selected.objects, newImageObject.id],
+            objects: [...editor.selected.objects, image.id],
         }
     };
 }

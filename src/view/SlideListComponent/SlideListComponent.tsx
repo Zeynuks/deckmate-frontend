@@ -1,9 +1,8 @@
 import {Selected, Slide as SlideType} from '../../store/types';
 import {Slide} from '../Slide/Slide';
-import {useDispatch} from 'react-redux';
 import {useLayoutEffect, useRef, useState} from 'react';
 import {useDrag} from '../../hooks/useDrag.ts';
-import {ActionTypes} from '../../store/actionTypes.ts';
+import {useAppActions} from '../../hooks/useAppActions.ts';
 
 type SlideListComponentProps = {
     index: number;
@@ -22,7 +21,7 @@ export const SlideListComponent: React.FC<SlideListComponentProps> = ({
                                                                           selected,
                                                                           scrollMove
                                                                       }) => {
-    const dispatch = useDispatch();
+    const {reorderSlide, setSelected} = useAppActions();
     const isSelected = selected.slide === slide.id;
     const initialPosition = {x: 0, y: (SVG_HEIGHT + 40) * index};
     const slideRef = useRef<SVGGElement | null>(null);
@@ -43,10 +42,7 @@ export const SlideListComponent: React.FC<SlideListComponentProps> = ({
         onDragEnd: (_x, y) => {
             const toIndex = Math.round(y / (SVG_HEIGHT + 40));
             setLocalPosition({x: 0, y: (SVG_HEIGHT + 40) * index});
-            dispatch({
-                type: ActionTypes.REORDER_SLIDE,
-                payload: toIndex
-            });
+            reorderSlide(toIndex);
         },
         objectRef: slideRef,
     });
@@ -60,15 +56,7 @@ export const SlideListComponent: React.FC<SlideListComponentProps> = ({
                 viewBox={VIEWBOX}
                 onMouseDown={isSelected ? handleDragMouseDown : () => {
                 }}
-                onClick={() => {
-                    dispatch({
-                        type: ActionTypes.SET_SELECTED,
-                        payload: {
-                            ...selected,
-                            slide: slide.id
-                        }
-                    });
-                }}
+                onClick={() => setSelected(slide.id)}
             >
                 <rect
                     x={0}

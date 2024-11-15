@@ -16,10 +16,11 @@ interface ToastContextProps {
 
 const ToastContext = createContext<ToastContextProps | undefined>(undefined);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useToast = (): ToastContextProps => {
     const context = useContext(ToastContext);
     if (!context) {
-        throw new Error('useToast must be used within a ToastProvider');
+        throw new Error('useToast должен быть использован через ToastProvider');
     }
     return context;
 };
