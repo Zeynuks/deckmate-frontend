@@ -1,0 +1,12 @@
+version: '3.9'
+
+services:
+  react-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: react-vite-ts
+    ports:
+      - "8080:80" # Пробрасываем порт 80 контейнера на порт 8080 хоста
+    environment:
+      - NODE_ENV=production
