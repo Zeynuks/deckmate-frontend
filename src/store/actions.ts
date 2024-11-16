@@ -139,7 +139,7 @@ const setPresentationTitle = (title: string): SetPresentationTitleAction => ({
 
 const setSelected = (slide?: string, objects: string[] = []): SetSelectedAction => ({
     type: ActionTypes.SET_SELECTED,
-    payload: { slide, objects: objects || [] },
+    payload: { slide, objects: objects },
 });
 
 export type ActionsInterfase =

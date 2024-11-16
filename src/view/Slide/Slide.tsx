@@ -57,8 +57,7 @@ export const Slide: React.FC<SlideProps> = ({
                     fill={slide.background.color}
                     rx={20}
                     ry={20}
-                    onClick={() => setSelected(slide.id)
-                    }
+                    onClick={() => setSelected(slide.id)}
                 />
             )}
             {slide.background.type === 'image' && (
@@ -69,6 +68,7 @@ export const Slide: React.FC<SlideProps> = ({
                     width={1920}
                     height={1080}
                     preserveAspectRatio="xMidYMid slice"
+                    onClick={() => setSelected(slide.id)}
                 />
             )}
             {objects.length !== 0 ? objects : <></>}
