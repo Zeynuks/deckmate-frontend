@@ -1,4 +1,4 @@
-import {Editor, Slide, SlideID} from '../types.ts';
+import {Editor, Slide} from '../types.ts';
 import {v4 as uuidv4} from 'uuid';
 
 export function addSlide(editor: Editor): Editor {
@@ -6,7 +6,7 @@ export function addSlide(editor: Editor): Editor {
         return editor;
     }
     const emptySlideTemplate: Slide = {
-        id: uuidv4() as SlideID,
+        id: uuidv4(),
         size: {width: 1920, height: 1080},
         background: {
             type: 'color',

@@ -6,7 +6,7 @@ import {useAppActions} from '../../hooks/useAppActions.ts';
 
 type SlideProps = {
     slide: SlideType;
-    selectedObjectsId: object[];
+    selectedObjectsId: string[];
     onView?: boolean;
 };
 

@@ -13,11 +13,8 @@ export enum ObjectType {
     Image = 'image',
 }
 
-export type SlideID = string & { __brand: 'SlideID' };
-export type ObjectID = string & { __brand: 'ObjectID' };
-
 export type SlideObject = {
-    id: ObjectID;
+    id: string;
     size: Size;
     position: Position;
     angle: number
@@ -111,7 +108,7 @@ export type ImageObject = SlideObject & Image & {
 export type Background = ImageBackground | ColorBackground;
 
 export type Slide = {
-    id: SlideID;
+    id: string;
     size: Size;
     background: Background;
     objects: (TextObject | ImageObject)[];
@@ -123,8 +120,8 @@ export type Presentation = {
 };
 
 export type Selected = {
-    slide?: SlideID;
-    objects: ObjectID[];
+    slide?: string;
+    objects: string[];
 };
 
 export type Editor = {

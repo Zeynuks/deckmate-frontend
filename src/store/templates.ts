@@ -2,11 +2,9 @@ import {v4 as uuidv4} from 'uuid';
 import {
     FontWeight,
     ImageObject,
-    ObjectID,
     ObjectType,
     Presentation,
     Selected,
-    SlideID,
     TextHorizontalAlign,
     TextObject,
     TextVerticalAlign
@@ -17,7 +15,7 @@ const presentation: Presentation = {
     title: 'Full Presentation',
     slides: [
         {
-            id: uuidv4() as SlideID,
+            id: uuidv4(),
             size: {
                 width: 1920,
                 height: 1080
@@ -28,7 +26,7 @@ const presentation: Presentation = {
             },
             objects: [
                 {
-                    id: uuidv4() as ObjectID,
+                    id: uuidv4(),
                     size: {
                         width: 500,
                         height: 200
@@ -65,7 +63,7 @@ const presentation: Presentation = {
                     }
                 } as TextObject,
                 {
-                    id: uuidv4() as ObjectID,
+                    id: uuidv4(),
                     size: {
                         width: 192,
                         height: 108
@@ -80,7 +78,7 @@ const presentation: Presentation = {
                     altText: 'Sample image'
                 } as ImageObject,
                 {
-                    id: uuidv4() as ObjectID,
+                    id: uuidv4(),
                     size: {
                         width: 500,
                         height: 200
@@ -97,7 +95,7 @@ const presentation: Presentation = {
             ]
         },
         {
-            id: uuidv4() as SlideID,
+            id: uuidv4(),
             size: {
                 width: 1920,
                 height: 1080
@@ -112,8 +110,8 @@ const presentation: Presentation = {
 };
 
 const selected: Selected = {
-    slide: presentation.slides[0].id as SlideID,
-    objects: [] as ObjectID[]
+    slide: presentation.slides[0].id,
+    objects: [] as string[]
 };
 
 export const defaultEditor = {

@@ -1,5 +1,5 @@
 import {ActionTypes} from './actionTypes';
-import {Editor, ImageObject, ObjectID, SlideID} from './types';
+import {Editor, ImageObject} from './types';
 
 interface ImportDocumentAction {
     type: ActionTypes.IMPORT_DOCUMENT;
@@ -69,7 +69,7 @@ interface SetPresentationTitleAction {
 
 interface SetSelectedAction {
     type: ActionTypes.SET_SELECTED;
-    payload: { slide?: SlideID, objects: ObjectID[] };
+    payload: { slide?: string, objects: string[] };
 }
 
 const importDocument = (editor: Editor): ImportDocumentAction => ({
@@ -137,7 +137,7 @@ const setPresentationTitle = (title: string): SetPresentationTitleAction => ({
     payload: title,
 });
 
-const setSelected = (slide?: SlideID, objects: ObjectID[] = []): SetSelectedAction => ({
+const setSelected = (slide?: string, objects: string[] = []): SetSelectedAction => ({
     type: ActionTypes.SET_SELECTED,
     payload: { slide, objects: objects || [] },
 });

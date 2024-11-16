@@ -1,7 +1,6 @@
 import {
     Editor,
     FontWeight,
-    ObjectID,
     ObjectType,
     TextHorizontalAlign,
     TextObject,
@@ -21,7 +20,7 @@ export function addTextObject(editor: Editor): Editor {
     }
 
     const newTextObject: TextObject = {
-        id: uuidv4() as ObjectID,
+        id: uuidv4(),
         type: ObjectType.Text,
         size: { width: 100, height: 100 },
         position: { x: 0, y: 0 },

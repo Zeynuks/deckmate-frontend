@@ -8,7 +8,7 @@ import ellipseIcon from '../../assets/icons/ellipse.svg';
 import triangleIcon from '../../assets/icons/triangle.svg';
 import textAreaIcon from '../../assets/icons/text-area.svg';
 import {useToast} from '../components/ui/Toast/ToastContext.tsx';
-import {ImageObject, ObjectID, ObjectType} from '../../store/types.ts';
+import {ImageObject, ObjectType} from '../../store/types.ts';
 import {v4 as uuidv4} from 'uuid';
 import {useAppActions} from '../../hooks/useAppActions.ts';
 
@@ -37,7 +37,7 @@ export const ElementPanel: React.FC = () => {
             URL.revokeObjectURL(img.src);
 
             const newImageObject: ImageObject = {
-                id: uuidv4() as ObjectID,
+                id: uuidv4(),
                 type: ObjectType.Image,
                 size: {
                     width: width,
