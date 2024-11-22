@@ -11,9 +11,12 @@ import {useToast} from '../components/ui/Toast/ToastContext.tsx';
 import {ImageObject, ObjectType} from '../../store/types.ts';
 import {v4 as uuidv4} from 'uuid';
 import {useAppActions} from '../../hooks/useAppActions.ts';
+import convertImageToBase64 from "../../utils/convertBase64.ts";
+import {RootState, useAppSelector} from "../../store/store.ts";
 
 export const ElementPanel: React.FC = () => {
-    const { addTextObject, addImageObject } = useAppActions();
+    const { addTextObject, addImageObject, setScaleFactor } = useAppActions();
+    const scale = useAppSelector((state: RootState) => state.data.scaleFactor);
     const {addToast} = useToast();
 
     const handleFileUpload = (file: File) => {
@@ -30,7 +33,14 @@ export const ElementPanel: React.FC = () => {
         }
 
         const img = new Image();
-        img.src = URL.createObjectURL(file);
+        convertImageToBase64(file)
+            .then(base64 => {
+                img.src = base64;
+                document.getElementById('output')!.textContent = base64;
+            })
+            .catch(error => {
+                console.error('Ошибка конвертации:', error);
+            });
         img.onload = () => {
             const width = img.width;
             const height = img.height;
@@ -67,8 +77,8 @@ export const ElementPanel: React.FC = () => {
         <section className={styles.elementPanel}>
             <Button iconSrc={textAreaIcon} iconPosition={IconPosition.Top} onClick={() => addTextObject()}>Text</Button>
             <Button iconSrc={imageIcon} iconPosition={IconPosition.Top} isLoading onLoad={handleFileUpload}>Image</Button>
-            <Button iconSrc={triangleIcon} iconPosition={IconPosition.Top}>Triangle</Button>
-            <Button iconSrc={ellipseIcon} iconPosition={IconPosition.Top}>Ellipse</Button>
+            <Button iconSrc={triangleIcon} iconPosition={IconPosition.Top} onClick={() => setScaleFactor(1)}>Triangle</Button>
+            <Button iconSrc={ellipseIcon} iconPosition={IconPosition.Top} onClick={() => setScaleFactor(scale/2)}>Ellipse</Button>
             <Button iconSrc={rectIcon} iconPosition={IconPosition.Top}>Rect</Button>
         </section>
     );

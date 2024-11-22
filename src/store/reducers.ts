@@ -3,6 +3,7 @@ import {ActionTypes} from './actionTypes';
 import * as Actions from './functions';
 import {defaultEditor} from './templates.ts';
 import {ActionsInterfase} from './actions.ts';
+
 const loadState = (): Editor | undefined => {
     try {
         const serializedState = localStorage.getItem('editorState');
@@ -23,11 +24,11 @@ const saveState = (state: Editor) => {
     }
 };
 
-// TODO: Убрать затычку defaultEditor
 const getInitialState = (): Editor => {
     const savedState = loadState();
     return savedState || defaultEditor;
 };
+
 
 const editorReducer = (state = getInitialState(), action: ActionsInterfase): Editor => {
     const newState = (() => {
@@ -73,11 +74,13 @@ const editorReducer = (state = getInitialState(), action: ActionsInterfase): Edi
 
             case ActionTypes.IMPORT_DOCUMENT:
                 return Actions.importDocument(state, action.payload);
-
             case ActionTypes.EXPORT_DOCUMENT:
                 Actions.exportDocument(state);
                 return state;
-
+            case ActionTypes.SET_SCALE_FACTOR:
+                return Actions.setScaleFactor(state, action.payload);
+            case ActionTypes.SET_SLIDE_SIZE:
+                return Actions.setSlideSize(state, action.payload);
             default:
                 return state;
         }

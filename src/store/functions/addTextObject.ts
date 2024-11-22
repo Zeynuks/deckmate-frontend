@@ -29,9 +29,9 @@ export function addTextObject(editor: Editor): Editor {
         style: {
             fontSize: 60,
             fontFamily: 'Nunito',
-            fontWeight: FontWeight.Normal,
+            fontWeight: FontWeight.W400,
             textHorizontalAlign: TextHorizontalAlign.Left,
-            textVerticalAlign: TextVerticalAlign.Start,
+            textVerticalAlign: TextVerticalAlign.Middle,
             color: '#000000'
         }
     };

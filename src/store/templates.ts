@@ -1,15 +1,5 @@
 import {v4 as uuidv4} from 'uuid';
-import {
-    FontWeight,
-    ImageObject,
-    ObjectType,
-    Presentation,
-    Selected,
-    TextHorizontalAlign,
-    TextObject,
-    TextVerticalAlign
-} from './types';
-import image from '../assets/6581494373.jpg';
+import {BackgroundType, Editor, Presentation, PresentationData, Selected} from './types';
 
 const presentation: Presentation = {
     title: 'Full Presentation',
@@ -21,78 +11,10 @@ const presentation: Presentation = {
                 height: 1080
             },
             background: {
-                type: 'color',
+                type: BackgroundType.Color,
                 color: '#FFFFFF'
             },
-            objects: [
-                {
-                    id: uuidv4(),
-                    size: {
-                        width: 500,
-                        height: 200
-                    },
-                    position: {
-                        x: 1000,
-                        y: 20
-                    },
-                    angle: 0,
-                    type: ObjectType.Text,
-                    content: [
-                        {
-                            text: 'This is a full text object.'
-                        },
-                        {
-                            text: 'I\'m do drag&drop',
-                            style: {
-                                fontSize: 96,
-                                fontFamily: 'Nunito',
-                                fontWeight: FontWeight.Bold,
-                                textHorizontalAlign: TextHorizontalAlign.Left,
-                                textVerticalAlign: TextVerticalAlign.Start,
-                                color: 'hsl(0,100%,50%)'
-                            }
-                        }
-                    ],
-                    style: {
-                        fontSize: 60,
-                        fontFamily: 'Nunito',
-                        fontWeight: FontWeight.Bold,
-                        textHorizontalAlign: TextHorizontalAlign.Middle,
-                        textVerticalAlign: TextVerticalAlign.Start,
-                        color: 'hsl(120, 100%, 50%)'
-                    }
-                } as TextObject,
-                {
-                    id: uuidv4(),
-                    size: {
-                        width: 192,
-                        height: 108
-                    },
-                    position: {
-                        x: 200,
-                        y: 300
-                    },
-                    angle: 0,
-                    type: ObjectType.Image,
-                    src: image,
-                    altText: 'Sample image'
-                } as ImageObject,
-                {
-                    id: uuidv4(),
-                    size: {
-                        width: 500,
-                        height: 200
-                    },
-                    position: {
-                        x: 20,
-                        y: 700
-                    },
-                    angle: 0,
-                    type: ObjectType.Image,
-                    src: image,
-                    altText: 'Sample image'
-                } as ImageObject
-            ]
+            objects: []
         },
         {
             id: uuidv4(),
@@ -101,7 +23,7 @@ const presentation: Presentation = {
                 height: 1080
             },
             background: {
-                type: 'color',
+                type: BackgroundType.Color,
                 color: '#FFFFFF'
             },
             objects: []
@@ -114,7 +36,13 @@ const selected: Selected = {
     objects: [] as string[]
 };
 
-export const defaultEditor = {
+const data: PresentationData = {
+    scaleFactor: 1,
+    slideSize: {width: 1920, height: 1080}
+};
+
+export const defaultEditor: Editor = {
     presentation,
+    data,
     selected
 };

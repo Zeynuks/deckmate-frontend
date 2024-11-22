@@ -75,8 +75,6 @@ export type CSSColor =
     | `hsla(${number},${number}%,${number}%,${number})`
     | `hsla(${number},${number}%,${number}%,${number}%)`;
 
-export type ImageDataURI = `data:${string};base64,${string}`;
-
 // ----------------------------
 // Slide Objects
 // ----------------------------
@@ -99,10 +97,7 @@ export interface TextStyle {
     fontWeight?: FontWeight;
     fontStyle?: FontStyle;
     textDecoration?: TextDecoration;
-    textHorizontalAlign?: TextHorizontalAlign;
-    textVerticalAlign?: TextVerticalAlign;
-    lineHeight?: number;
-    letterSpacing?: number;
+    horizontalAlign?: TextHorizontalAlign;
     color?: CSSColor;
     backgroundColor?: CSSColor;
 }
@@ -110,12 +105,22 @@ export interface TextStyle {
 export interface TextObject extends SlideBaseObject {
     type: ObjectType.Text;
     content: TextSpan[];
-    style: TextStyle;
+    style: {
+        fontSize: number;
+        fontFamily: string;
+        fontWeight: FontWeight;
+        fontStyle: FontStyle;
+        textDecoration: TextDecoration;
+        horizontalAlign: TextHorizontalAlign;
+        verticalAlign: TextVerticalAlign;
+        color: CSSColor;
+        backgroundColor?: CSSColor;
+    };
 }
 
 export interface ImageObjectBase {
     type: ObjectType.Image;
-    src: ImageDataURI;
+    src: string;
     altText?: string;
 }
 
@@ -177,7 +182,7 @@ export interface BackgroundColor {
 
 export interface BackgroundImage {
     type: BackgroundType.Image;
-    src: ImageDataURI;
+    src: string;
     altText?: string;
 }
 
@@ -208,7 +213,13 @@ export interface Selected {
     objects: string[];
 }
 
+export interface PresentationData {
+    scaleFactor: number;
+    slideSize: Size;
+}
+
 export interface Editor {
     presentation: Presentation;
+    data: PresentationData;
     selected: Selected;
 }

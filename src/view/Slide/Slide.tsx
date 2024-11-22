@@ -47,31 +47,46 @@ export const Slide: React.FC<SlideProps> = ({
     });
 
     return (
-        <g>
+        <>
+            <defs>
+                <clipPath id={`slide-${slide.id}`}>
+                    <rect
+                        x={0}
+                        y={0}
+                        width={slide.size.width}
+                        height={slide.size.height}
+                        fill='transparent'
+                        rx={20}
+                        ry={20}
+                        onClick={() => setSelected(slide.id)}
+                    />
+                </clipPath>
+            </defs>
             {slide.background.type === 'color' && (
-                <rect
-                    x={0}
-                    y={0}
-                    width={slide.size.width}
-                    height={slide.size.height}
-                    fill={slide.background.color}
-                    rx={20}
-                    ry={20}
-                    onClick={() => setSelected(slide.id)}
-                />
+                <g clipPath={`url(#slide-${slide.id})`}>
+                    <rect
+                        x={0}
+                        y={0}
+                        width={slide.size.width}
+                        height={slide.size.height}
+                        fill={slide.background.color}
+                        onClick={() => setSelected(slide.id)}
+                    />
+                </g>
             )}
             {slide.background.type === 'image' && (
-                <image
-                    href={slide.background.src}
-                    x={0}
-                    y={0}
-                    width={1920}
-                    height={1080}
-                    preserveAspectRatio="xMidYMid slice"
-                    onClick={() => setSelected(slide.id)}
-                />
+                <g clipPath={`url(#slide-${slide.id})`}>
+                    <image
+                        href={slide.background.src}
+                        x={0}
+                        y={0}
+                        width={1920}
+                        height={1080}
+                        preserveAspectRatio="xMidYMid slice"
+                    />
+                </g>
             )}
             {objects.length !== 0 ? objects : <></>}
-        </g>
+        </>
     );
 };

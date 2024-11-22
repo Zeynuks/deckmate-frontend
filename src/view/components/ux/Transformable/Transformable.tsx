@@ -3,6 +3,7 @@ import {useDrag} from '../../../../hooks/useDrag.ts';
 import {useResize} from '../../../../hooks/useResize.ts';
 import {useRotate} from '../../../../hooks/useRotate.ts';
 import {useAppActions} from '../../../../hooks/useAppActions.ts';
+import {RootState, useAppSelector} from '../../../../store/store.ts';
 
 type TransformableProps = {
     children: (data: { width: number, height: number }) => ReactNode;
@@ -21,7 +22,8 @@ export const Transformable: React.FC<TransformableProps> = ({
                                                                 angle,
                                                                 onClick,
                                                             }) => {
-    const { setObjectPosition, setObjectAngle, setObjectSize } = useAppActions();
+    const scale = useAppSelector((state: RootState) => state.data.scaleFactor);
+    const {setObjectPosition, setObjectAngle, setObjectSize} = useAppActions();
     const objectRef = useRef<SVGGElement | null>(null);
     const [localPosition, setLocalPosition] = useState(position);
     const [localSize, setLocalSize] = useState(size);
@@ -74,14 +76,14 @@ export const Transformable: React.FC<TransformableProps> = ({
     });
 
     const resizeDirections = [
-        { x: -1, y: -1, cursor: 'nw-resize' },
-        { x: 0, y: -1, cursor: 'n-resize' },
-        { x: 1, y: -1, cursor: 'ne-resize' },
-        { x: 1, y: 0, cursor: 'e-resize' },
-        { x: 1, y: 1, cursor: 'se-resize' },
-        { x: 0, y: 1, cursor: 's-resize' },
-        { x: -1, y: 1, cursor: 'sw-resize' },
-        { x: -1, y: 0, cursor: 'w-resize' }
+        {x: -1, y: -1, cursor: 'nw-resize'},
+        {x: 0, y: -1, cursor: 'n-resize'},
+        {x: 1, y: -1, cursor: 'ne-resize'},
+        {x: 1, y: 0, cursor: 'e-resize'},
+        {x: 1, y: 1, cursor: 'se-resize'},
+        {x: 0, y: 1, cursor: 's-resize'},
+        {x: -1, y: 1, cursor: 'sw-resize'},
+        {x: -1, y: 0, cursor: 'w-resize'}
     ];
 
     return (
@@ -110,15 +112,14 @@ export const Transformable: React.FC<TransformableProps> = ({
                         x1={0}
                         y1={-localSize.height / 2}
                         x2={0}
-                        y2={-localSize.height / 2 - 30}
+                        y2={-localSize.height / 2 - 30 / scale}
                         stroke="#7B61FF"
-                        strokeWidth={4}
+                        strokeWidth={4 / scale}
                     />
-
                     <circle
                         cx={0}
-                        cy={-localSize.height / 2 - 40}
-                        r={10}
+                        cy={-localSize.height / 2 - 40 / scale}
+                        r={10 / scale}
                         fill="#7B61FF"
                         onMouseDown={handleRotateMouseDown}
                         style={{cursor: 'crosshair'}}
@@ -128,16 +129,16 @@ export const Transformable: React.FC<TransformableProps> = ({
 
             {isHidden &&
                 resizeDirections.map((direction, index) => {
-                    const markerX = (direction.x * localSize.width) / 2 - 10;
-                    const markerY = (direction.y * localSize.height) / 2 - 10;
+                    const markerX = (direction.x * localSize.width) / 2 - 10 / scale;
+                    const markerY = (direction.y * localSize.height) / 2 - 10 / scale;
 
                     return (
                         <rect
                             key={index}
                             x={markerX}
                             y={markerY}
-                            width={20}
-                            height={20}
+                            width={20 / scale}
+                            height={20 / scale}
                             fill="#7B61FF"
                             rx={3}
                             ry={3}

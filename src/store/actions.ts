@@ -72,9 +72,19 @@ interface SetSelectedAction {
     payload: { slide?: string, objects: string[] };
 }
 
-const importDocument = (editor: Editor): ImportDocumentAction => ({
+interface SetScaleFactorAction {
+    type: ActionTypes.SET_SCALE_FACTOR;
+    payload: number
+}
+
+interface SetSlideSizeAction {
+    type: ActionTypes.SET_SLIDE_SIZE;
+    payload: { width: number; height: number };
+}
+
+const importDocument = (importedEditor: Editor): ImportDocumentAction => ({
     type: ActionTypes.IMPORT_DOCUMENT,
-    payload: editor,
+    payload: importedEditor,
 });
 
 const exportDocument = (): ExportDocumentAction => ({
@@ -124,12 +134,12 @@ const setObjectAngle = (angle: number): SetObjectAngleAction => ({
 
 const setObjectPosition = (x: number, y: number): SetObjectPositionAction => ({
     type: ActionTypes.SET_OBJECT_POSITION,
-    payload: { x, y },
+    payload: {x, y},
 });
 
 const setObjectSize = (width: number, height: number): SetObjectSizeAction => ({
     type: ActionTypes.SET_OBJECT_SIZE,
-    payload: { width, height },
+    payload: {width, height},
 });
 
 const setPresentationTitle = (title: string): SetPresentationTitleAction => ({
@@ -139,7 +149,17 @@ const setPresentationTitle = (title: string): SetPresentationTitleAction => ({
 
 const setSelected = (slide?: string, objects: string[] = []): SetSelectedAction => ({
     type: ActionTypes.SET_SELECTED,
-    payload: { slide, objects: objects },
+    payload: {slide, objects: objects},
+});
+
+const setScaleFactor = (scaleFactor: number): SetScaleFactorAction => ({
+    type: ActionTypes.SET_SCALE_FACTOR,
+    payload: scaleFactor,
+});
+
+const setSlideSize = (width: number, height: number): SetSlideSizeAction => ({
+    type: ActionTypes.SET_SLIDE_SIZE,
+    payload: {width, height},
 });
 
 export type ActionsInterfase =
@@ -157,7 +177,9 @@ export type ActionsInterfase =
     | SetPresentationTitleAction
     | SetSelectedAction
     | ImportDocumentAction
-    | ExportDocumentAction;
+    | ExportDocumentAction
+    | SetScaleFactorAction
+    | SetSlideSizeAction;
 
 export const ActionCreators = {
     importDocument,
@@ -175,4 +197,6 @@ export const ActionCreators = {
     setObjectSize,
     setPresentationTitle,
     setSelected,
+    setScaleFactor,
+    setSlideSize
 };

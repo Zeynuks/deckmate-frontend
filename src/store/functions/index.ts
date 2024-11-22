@@ -13,3 +13,5 @@ export { setPresentationTitle } from './setPresentationTitle';
 export { setSelected } from './setSelected';
 export { importDocument } from './importDocument';
 export { exportDocument } from './exportDocument';
+export { setScaleFactor } from './setScaleFactor';
+export { setSlideSize } from './setSlideSize';
