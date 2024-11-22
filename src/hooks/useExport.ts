@@ -1,9 +1,7 @@
-import {useAppActions} from './useAppActions';
 import {RootState, useAppSelector} from '../store/store';
 import {useToast} from '../view/components/ui/Toast/ToastContext';
 
 export const useExport = () => {
-    const {exportDocument} = useAppActions();
     const editor = useAppSelector((state: RootState) => state);
     const {addToast} = useToast();
 
@@ -15,8 +13,6 @@ export const useExport = () => {
 
     return () => {
         try {
-            exportDocument();
-
             const serializedState = JSON.stringify(editor, null, 2);
             const blob = new Blob([serializedState], {type: 'application/json'});
             const url = URL.createObjectURL(blob);

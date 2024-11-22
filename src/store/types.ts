@@ -66,7 +66,7 @@ export interface Position {
     x: number;
     y: number;
 }
-
+//TODO: HSL дл картинок и тп (die)
 export type CSSColor =
     | `#${string}`
     | `rgb(${number},${number},${number})`

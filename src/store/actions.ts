@@ -6,10 +6,6 @@ interface ImportDocumentAction {
     payload: Editor;
 }
 
-interface ExportDocumentAction {
-    type: ActionTypes.EXPORT_DOCUMENT;
-}
-
 interface AddSlideAction {
     type: ActionTypes.ADD_SLIDE;
 }
@@ -85,10 +81,6 @@ interface SetSlideSizeAction {
 const importDocument = (importedEditor: Editor): ImportDocumentAction => ({
     type: ActionTypes.IMPORT_DOCUMENT,
     payload: importedEditor,
-});
-
-const exportDocument = (): ExportDocumentAction => ({
-    type: ActionTypes.EXPORT_DOCUMENT,
 });
 
 const addSlide = (): AddSlideAction => ({
@@ -177,13 +169,11 @@ export type ActionsInterfase =
     | SetPresentationTitleAction
     | SetSelectedAction
     | ImportDocumentAction
-    | ExportDocumentAction
     | SetScaleFactorAction
     | SetSlideSizeAction;
 
 export const ActionCreators = {
     importDocument,
-    exportDocument,
     addSlide,
     addImageObject,
     addTextObject,

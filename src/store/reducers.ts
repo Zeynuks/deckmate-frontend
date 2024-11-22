@@ -74,13 +74,13 @@ const editorReducer = (state = getInitialState(), action: ActionsInterfase): Edi
 
             case ActionTypes.IMPORT_DOCUMENT:
                 return Actions.importDocument(state, action.payload);
-            case ActionTypes.EXPORT_DOCUMENT:
-                Actions.exportDocument(state);
-                return state;
+
             case ActionTypes.SET_SCALE_FACTOR:
                 return Actions.setScaleFactor(state, action.payload);
+
             case ActionTypes.SET_SLIDE_SIZE:
                 return Actions.setSlideSize(state, action.payload);
+
             default:
                 return state;
         }
