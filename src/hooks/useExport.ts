@@ -3,9 +3,15 @@ import {RootState, useAppSelector} from '../store/store';
 import {useToast} from '../view/components/ui/Toast/ToastContext';
 
 export const useExport = () => {
-    const { exportDocument } = useAppActions();
+    const {exportDocument} = useAppActions();
     const editor = useAppSelector((state: RootState) => state);
-    const { addToast } = useToast();
+    const {addToast} = useToast();
+
+    let fileName = editor.presentation.title;
+    fileName = fileName.replace(/^[^\wа-яА-ЯёЁ]+/g, '');
+    fileName = fileName.replace(/\s+/g, '_');
+    fileName = fileName.replace(/[\\/:*?"<>|.]/g, '');
+    fileName = fileName? fileName: 'presentation';
 
     return () => {
         try {
@@ -17,7 +23,7 @@ export const useExport = () => {
 
             const link = document.createElement('a');
             link.href = url;
-            link.download = 'presentation.json';
+            link.download = `${fileName}.json`;
             link.click();
 
             URL.revokeObjectURL(url);

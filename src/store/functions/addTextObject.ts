@@ -1,12 +1,13 @@
 import {
     Editor,
+    FontStyle,
     FontWeight,
-    ObjectType,
+    ObjectType, TextDecoration,
     TextHorizontalAlign,
     TextObject,
     TextVerticalAlign
 } from '../types.ts';
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 
 export function addTextObject(editor: Editor): Editor {
     if (!editor || !editor.selected?.slide) {
@@ -30,8 +31,10 @@ export function addTextObject(editor: Editor): Editor {
             fontSize: 60,
             fontFamily: 'Nunito',
             fontWeight: FontWeight.W400,
-            textHorizontalAlign: TextHorizontalAlign.Left,
-            textVerticalAlign: TextVerticalAlign.Middle,
+            fontStyle: FontStyle.Normal,
+            textDecoration: TextDecoration.None,
+            horizontalAlign: TextHorizontalAlign.Middle,
+            verticalAlign: TextVerticalAlign.Middle,
             color: '#000000'
         }
     };
