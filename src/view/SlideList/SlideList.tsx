@@ -11,7 +11,7 @@ import {useAppActions} from '../../hooks/useAppActions.ts';
 const SLIDE_HEIGHT = 1080 + 40;
 const SCROLL_SPEED = 10;
 //Магические числа
-const SCALE_FACTOR = 5.9;
+const SCALE_FACTOR = 5.75;
 
 export const SlideList: React.FC = () => {
     const selected = useAppSelector((state: RootState) => state.selected);

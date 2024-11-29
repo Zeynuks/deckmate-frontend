@@ -18,7 +18,6 @@ function initHistory(store: Store<Editor>): HistoryType {
 
     store.subscribe(() => {
         const editor = store.getState();
-        console.log(editor);
         if (!undoStack.length || previousEditor.presentation !== editor.presentation) {
             if (editor === getLastItem(undoStack)) {
                 undoStack.pop();
