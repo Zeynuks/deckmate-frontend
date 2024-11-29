@@ -13,7 +13,7 @@ type SlideListComponentProps = {
 
 const SVG_WIDTH = 1920;
 const SVG_HEIGHT = 1080;
-const VIEWBOX = `-20 -20 ${SVG_WIDTH + 40} ${SVG_HEIGHT + 40}`;
+const VIEWABLE = `-20 -20 ${SVG_WIDTH + 40} ${SVG_HEIGHT + 40}`;
 
 export const SlideListComponent: React.FC<SlideListComponentProps> = ({
                                                                           index,
@@ -26,7 +26,7 @@ export const SlideListComponent: React.FC<SlideListComponentProps> = ({
     const initialPosition = {x: 0, y: (SVG_HEIGHT + 40) * index};
     const slideRef = useRef<SVGGElement | null>(null);
     const [localPosition, setLocalPosition] = useState(initialPosition);
-
+    const [isDrag, setIsDrag] = useState(false);
     useLayoutEffect(() => {
         setLocalPosition({x: 0, y: (1080 + 40) * index});
     }, [index]);
@@ -38,11 +38,13 @@ export const SlideListComponent: React.FC<SlideListComponentProps> = ({
             y = Math.max(0, y);
             setLocalPosition({x, y});
             scrollMove(y);
+            setIsDrag(true);
         },
         onDragEnd: (_x, y) => {
             const toIndex = Math.round(y / (SVG_HEIGHT + 40));
             setLocalPosition({x: 0, y: (SVG_HEIGHT + 40) * index});
             reorderSlide(toIndex);
+            setIsDrag(false);
         },
         objectRef: slideRef,
     });
@@ -53,10 +55,11 @@ export const SlideListComponent: React.FC<SlideListComponentProps> = ({
                 y={localPosition.y}
                 width={SVG_WIDTH}
                 height={SVG_HEIGHT}
-                viewBox={VIEWBOX}
+                viewBox={VIEWABLE}
                 onMouseDown={isSelected ? handleDragMouseDown : () => {
                 }}
                 onClick={() => setSelected(slide.id)}
+                style={isDrag ? {opacity: 0.7} : {}}
             >
                 <rect
                     x={0}

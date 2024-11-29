@@ -1,9 +1,11 @@
 .contextMenu {
-    display: flex;
-    flex-direction: column;
+    position: absolute;
+width: 150px;
+    height: 100px;
     background-color: #FFFFFF;
     border: 1px solid #D9D9D9;
     border-radius: 10px;
+    z-index: 1000;
 }
 
 .contextMenuButton {

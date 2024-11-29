@@ -1,12 +1,12 @@
 import React, {useRef, useEffect, useState, ReactNode} from 'react';
-import {useDrag} from '../../../../hooks/useDrag.ts';
-import {useResize} from '../../../../hooks/useResize.ts';
-import {useRotate} from '../../../../hooks/useRotate.ts';
-import {useAppActions} from '../../../../hooks/useAppActions.ts';
-import {RootState, useAppSelector} from '../../../../store/store.ts';
+import {useDrag} from '../../../hooks/useDrag.ts';
+import {useResize} from '../../../hooks/useResize.ts';
+import {useRotate} from '../../../hooks/useRotate.ts';
+import {useAppActions} from '../../../hooks/useAppActions.ts';
+import {RootState, useAppSelector} from '../../../store/store.ts';
 
 type TransformableProps = {
-    children: (data: { width: number, height: number }) => ReactNode;
+    children: (size: { width: number, height: number }, isEditing: boolean) => ReactNode;
     isHidden: boolean;
     position: { x: number; y: number };
     size: { width: number; height: number };
@@ -28,6 +28,11 @@ export const Transformable: React.FC<TransformableProps> = ({
     const [localPosition, setLocalPosition] = useState(position);
     const [localSize, setLocalSize] = useState(size);
     const [localRotation, setLocalRotation] = useState(angle);
+    const [isEditing, setEditing] = useState(false);
+
+    useEffect(() => {
+        setEditing(false);
+    }, [children]);
 
     useEffect(() => {
         setLocalPosition(position);
@@ -91,8 +96,8 @@ export const Transformable: React.FC<TransformableProps> = ({
             ref={objectRef}
             transform={`translate(${localPosition.x} ${localPosition.y}) rotate(${localRotation})`}
         >
-            {children(localSize)}
-            <rect
+            {children(localSize, isEditing)}
+            {!isEditing && <rect
                 x={-localSize.width / 2}
                 y={-localSize.height / 2}
                 width={localSize.width}
@@ -103,10 +108,11 @@ export const Transformable: React.FC<TransformableProps> = ({
                 style={{cursor: isHidden ? 'grab' : 'default'}}
                 stroke={isHidden ? '#7B61FF' : ''}
                 strokeWidth={isHidden ? '4px' : ''}
-                onMouseDownCapture={onClick}
-            />
+                onClick={onClick}
+                onDoubleClick={isHidden? () => setEditing(true): () => {}}
+            />}
 
-            {isHidden && (
+            {isHidden && !isEditing && (
                 <>
                     <line
                         x1={0}
@@ -127,7 +133,7 @@ export const Transformable: React.FC<TransformableProps> = ({
                 </>
             )}
 
-            {isHidden &&
+            {isHidden && !isEditing &&
                 resizeDirections.map((direction, index) => {
                     const markerX = (direction.x * localSize.width) / 2 - 10 / scale;
                     const markerY = (direction.y * localSize.height) / 2 - 10 / scale;

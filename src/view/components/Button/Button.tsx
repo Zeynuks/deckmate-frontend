@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import styles from './Button.module.css';
-import { Typography } from '../Typography/Typography';
+import { Typography } from '../Typography/Typography.tsx';
 
 type RequireAtLeastOne<T, K extends keyof T = keyof T> =
     Omit<T, K> & { [P in K]-?: Required<Pick<T, P>> & Partial<Omit<T, P>> }[K];

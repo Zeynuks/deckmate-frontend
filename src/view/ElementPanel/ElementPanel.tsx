@@ -1,18 +1,18 @@
 import React from 'react';
 import styles from './ElementPanel.module.css';
-import {Button, IconPosition} from '../components/ui/Button/Button.tsx';
+import {Button, IconPosition} from '../components/Button/Button.tsx';
 
 import imageIcon from '../../assets/icons/gallery.svg';
 import rectIcon from '../../assets/icons/rect.svg';
 import ellipseIcon from '../../assets/icons/ellipse.svg';
 import triangleIcon from '../../assets/icons/triangle.svg';
 import textAreaIcon from '../../assets/icons/text-area.svg';
-import {useToast} from '../components/ui/Toast/ToastContext.tsx';
+import {useToast} from '../components/Toast/ToastContext.tsx';
 import {ImageObject, ObjectType} from '../../store/types.ts';
 import {v4 as uuidv4} from 'uuid';
 import {useAppActions} from '../../hooks/useAppActions.ts';
-import convertImageToBase64 from "../../utils/convertBase64.ts";
-import {RootState, useAppSelector} from "../../store/store.ts";
+import convertImageToBase64 from '../../utils/convertBase64.ts';
+import {RootState, useAppSelector} from '../../store/store.ts';
 
 export const ElementPanel: React.FC = () => {
     const { addTextObject, addImageObject, setScaleFactor } = useAppActions();

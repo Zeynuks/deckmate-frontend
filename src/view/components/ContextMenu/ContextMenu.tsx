@@ -9,17 +9,15 @@ type ContextMenuProps = {
 
 // TODO: Добаботать интерфейс и содержание ContextMenu
 
-export const ContextMenu: React.FC<ContextMenuProps> = ({ position,onRemove }) => {
+export const ContextMenu: React.FC<ContextMenuProps> = ({ position, onRemove }) => {
     if (!position) return null;
 
     return (
         <div
            className={styles.contextMenu}
            style={{
-               position: 'absolute',
-               zIndex: 1000,
                top: position.y,
-               left: position.x
+               left: position.x,
            }}>
             <Button onClick={onRemove}>Remove</Button>
         </div>

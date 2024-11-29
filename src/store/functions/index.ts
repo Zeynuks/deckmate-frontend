@@ -14,3 +14,5 @@ export { setSelected } from './setSelected';
 export { importDocument } from './importDocument';
 export { setScaleFactor } from './setScaleFactor';
 export { setSlideSize } from './setSlideSize';
+export { setImageObject } from './setImageObject';
+export { setEditor } from './setEditor';

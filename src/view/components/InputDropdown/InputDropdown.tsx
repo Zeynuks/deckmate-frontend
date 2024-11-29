@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './InputDropdown.module.css';
-import { Typography } from '../Typography/Typography';
+import { Typography } from '../Typography/Typography.tsx';
 
 export type DropdownOption = {
     label: string;

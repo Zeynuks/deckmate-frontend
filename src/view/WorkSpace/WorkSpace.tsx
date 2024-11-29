@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react';
 import styles from './WorkSpace.module.css';
 import {Slide} from '../Slide/Slide.tsx';
-import {ContextMenu} from '../components/ui/ContextMenu/ContextMenu.tsx';
+import {ContextMenu} from '../components/ContextMenu/ContextMenu.tsx';
 import {RootState, useAppSelector} from '../../store/store.ts';
 import {useAppActions} from '../../hooks/useAppActions.ts';
 

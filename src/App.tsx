@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import LoadingScreen from './view/LoadingScreen/LoadingScreen';
 import DeckMate from './DeсkMate.tsx';
+import {HistoryType} from './utils/history.ts';
 
-const App: React.FC = () => {
+type AppProps = {
+    history: HistoryType,
+}
+
+const App: React.FC<AppProps> = ({history}) => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -21,7 +26,7 @@ const App: React.FC = () => {
 
     return (
         <>
-            {isLoading ? <LoadingScreen /> : <DeckMate/>}
+            {isLoading ? <LoadingScreen /> : <DeckMate history={history} />}
         </>
     );
 };

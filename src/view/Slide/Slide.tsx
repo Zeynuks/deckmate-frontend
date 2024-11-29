@@ -1,7 +1,7 @@
 import {ObjectType, Slide as SlideType} from '../../store/types.ts';
-import {TextComponent} from '../components/ux/TextObject/TextObject.tsx';
-import {ImageComponent} from '../components/ux/ImageObject/ImageObject.tsx';
-import {Transformable} from '../components/ux/Transformable/Transformable.tsx';
+import {TextComponent} from '../components/TextObject/TextObject.tsx';
+import {ImageComponent} from '../components/ImageObject/ImageObject.tsx';
+import {Transformable} from '../components/Transformable/Transformable.tsx';
 import {useAppActions} from '../../hooks/useAppActions.ts';
 
 type SlideProps = {
@@ -17,12 +17,12 @@ export const Slide: React.FC<SlideProps> = ({
                                             }) => {
     const {setSelected} = useAppActions();
     const objects = slide.objects.map((object) => {
-        const slideObject = (data: { width: number, height: number }) => {
+        const slideObject = (size: { width: number, height: number }, isEditing: boolean) => {
             switch (object.type) {
                 case  ObjectType.Text:
-                    return <TextComponent object={object} data={data}/>;
+                    return <TextComponent key={object.id} object={object} size={size} isEditing={isEditing}/>;
                 case ObjectType.Image:
-                    return <ImageComponent object={object} data={data}/>;
+                    return <ImageComponent key={object.id} object={object} size={size} isEditing={isEditing}/>;
                 default:
                     return <></>;
             }
@@ -41,7 +41,7 @@ export const Slide: React.FC<SlideProps> = ({
                     }
                 }}
             >
-                {(data: { width: number, height: number }) => slideObject(data)}
+                {(size: { width: number, height: number }, isEditing: boolean) => slideObject(size, isEditing)}
             </Transformable>
         );
     });

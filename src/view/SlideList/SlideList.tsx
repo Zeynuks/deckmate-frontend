@@ -1,5 +1,5 @@
 import styles from './SlideList.module.css';
-import {Button, IconPosition} from '../components/ui/Button/Button';
+import {Button, IconPosition} from '../components/Button/Button';
 import addIcon from '../../assets/icons/add.svg';
 import trashIcon from '../../assets/icons/trash.svg';
 import {Selected, Slide as SlideType} from '../../store/types';
@@ -11,7 +11,7 @@ import {useAppActions} from '../../hooks/useAppActions.ts';
 const SLIDE_HEIGHT = 1080 + 40;
 const SCROLL_SPEED = 10;
 //Магические числа
-const SCALE_FACTOR = 5.67;
+const SCALE_FACTOR = 5.9;
 
 export const SlideList: React.FC = () => {
     const selected = useAppSelector((state: RootState) => state.selected);

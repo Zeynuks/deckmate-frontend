@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import ReactDOM from 'react-dom';
-import Toast from './Toast';
+import Toast from './Toast.tsx';
 import styles from './Toast.module.css';
 interface Message {
     id: number;

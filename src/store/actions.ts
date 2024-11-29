@@ -6,6 +6,11 @@ interface ImportDocumentAction {
     payload: Editor;
 }
 
+interface SetEditorAction {
+    type: ActionTypes.SET_EDITOR;
+    payload: Editor;
+}
+
 interface AddSlideAction {
     type: ActionTypes.ADD_SLIDE;
 }
@@ -43,6 +48,11 @@ interface SetFontWeightAction {
     payload: number;
 }
 
+interface SetImageObjectAction {
+    type: ActionTypes.SET_IMAGE_OBJECT;
+    payload: ImageObject;
+}
+
 interface SetObjectAngleAction {
     type: ActionTypes.SET_OBJECT_ANGLE;
     payload: number
@@ -77,6 +87,11 @@ interface SetSlideSizeAction {
     type: ActionTypes.SET_SLIDE_SIZE;
     payload: { width: number; height: number };
 }
+
+const setEditor = (newEditor: Editor): SetEditorAction => ({
+    type: ActionTypes.SET_EDITOR,
+    payload: newEditor,
+});
 
 const importDocument = (importedEditor: Editor): ImportDocumentAction => ({
     type: ActionTypes.IMPORT_DOCUMENT,
@@ -134,6 +149,11 @@ const setObjectSize = (width: number, height: number): SetObjectSizeAction => ({
     payload: {width, height},
 });
 
+const setImageObject = (image: ImageObject): SetImageObjectAction => ({
+    type: ActionTypes.SET_IMAGE_OBJECT,
+    payload: image,
+});
+
 const setPresentationTitle = (title: string): SetPresentationTitleAction => ({
     type: ActionTypes.SET_PRESENTATION_TITLE,
     payload: title,
@@ -170,7 +190,9 @@ export type ActionsInterfase =
     | SetSelectedAction
     | ImportDocumentAction
     | SetScaleFactorAction
-    | SetSlideSizeAction;
+    | SetSlideSizeAction
+    | SetImageObjectAction
+    | SetEditorAction;
 
 export const ActionCreators = {
     importDocument,
@@ -188,5 +210,7 @@ export const ActionCreators = {
     setPresentationTitle,
     setSelected,
     setScaleFactor,
-    setSlideSize
+    setSlideSize,
+    setImageObject,
+    setEditor
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {
     Size,
     TextObject,
@@ -6,7 +6,7 @@ import {
     TextStyle,
     TextHorizontalAlign,
     TextVerticalAlign,
-} from '../../../../store/types.ts';
+} from '../../../store/types.ts';
 
 // Функции для CSS выравнивания
 const mapHorizontalAlign = (
@@ -41,20 +41,23 @@ const mapVerticalAlign = (
 
 type TextObjectProps = {
     object: TextObject;
-    data: Size;
-    onEdit?: () => void;
+    size: Size;
+    isEditing: boolean;
 };
 
 export const TextComponent: React.FC<TextObjectProps> = ({
                                                              object,
-                                                             data,
-                                                             onEdit,
+                                                             size,
+                                                             isEditing,
                                                          }) => {
+    const divRef = useRef<HTMLDivElement | null>(null);
+    const lastMousePosition = useRef<{ x: number; y: number } | null>(null);
+
     const contentToHTML = (content: TextSpan[]): string => {
         return content
             .map((span) => {
                 const styleString = span.style ? styleToCSS(span.style) : '';
-                return `<span style="${styleString}">${span.text}</span>`;
+                return `<span style="${styleString}" >${span.text}</span>`;
             })
             .join('');
     };
@@ -97,48 +100,63 @@ export const TextComponent: React.FC<TextObjectProps> = ({
         ...styleToCSSObject(object.style),
     };
 
+    const setCursorAtMousePosition = (element: HTMLElement, x: number, y: number) => {
+        if (!element.isContentEditable) return;
+
+        const caretPosition =
+            (document as Document & {
+                caretPositionFromPoint?: (x: number, y: number) => { offsetNode: Node; offset: number } | null;
+            }).caretPositionFromPoint?.(x, y);
+
+        let range: Range | null = null;
+
+        if (caretPosition) {
+            range = document.createRange();
+            range.setStart(caretPosition.offsetNode, caretPosition.offset);
+            range.collapse(true);
+        } else if ('caretRangeFromPoint' in document && document.caretRangeFromPoint) {
+            range = document.caretRangeFromPoint(x, y);
+        }
+
+        if (range) {
+            const selection = window.getSelection();
+            selection?.removeAllRanges();
+            selection?.addRange(range);
+        }
+    };
+
+    useEffect(() => {
+        if (isEditing && lastMousePosition.current && divRef.current) {
+            const { x, y } = lastMousePosition.current;
+            setCursorAtMousePosition(divRef.current, x, y);
+            divRef.current.focus();
+        }
+    }, [isEditing]);
+
     return (
         <svg
-            x={-data.width / 2}
-            y={-data.height / 2}
-            width={data.width}
-            height={data.height}
+            x={-size.width / 2}
+            y={-size.height / 2}
+            width={size.width}
+            height={size.height}
             pointerEvents="all"
-            viewBox={`0 0 ${data.width} ${data.height}`}
+            viewBox={`0 0 ${size.width} ${size.height}`}
             preserveAspectRatio="none"
         >
             <g>
-                {onEdit && (
-                    <foreignObject
-                        width={data.width}
-                        height={data.height}
-                        style={{ pointerEvents: 'auto' }}
-                        onDoubleClick={onEdit}
-                    >
-                        <div
-                            contentEditable
-                            style={containerStyle}
-                            dangerouslySetInnerHTML={{
-                                __html: contentToHTML(object.content),
-                            }}
-                        />
-                    </foreignObject>
-                )}
-
-                {!onEdit && (
-                    <foreignObject
-                        width={data.width}
-                        height={data.height}
-                        style={{ pointerEvents: 'none' }}
-                    >
-                        <div
-                            style={containerStyle}
-                            dangerouslySetInnerHTML={{
-                                __html: contentToHTML(object.content),
-                            }}
-                        />
-                    </foreignObject>
-                )}
+                <foreignObject
+                    width={size.width}
+                    height={size.height}
+                    style={{pointerEvents: 'auto'}}
+                >
+                    <div
+                        contentEditable={isEditing}
+                        style={containerStyle}
+                        dangerouslySetInnerHTML={{
+                            __html: contentToHTML(object.content),
+                        }}
+                    />
+                </foreignObject>
             </g>
         </svg>
     );

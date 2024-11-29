@@ -1,9 +1,9 @@
 import React, {useEffect, useState, CSSProperties} from 'react';
 import styles from './Toast.module.css';
-import successIcon from '../../../../assets/icons/tick-circle.svg';
-import errorIcon from '../../../../assets/icons/close-circle.svg';
-import warningIcon from '../../../../assets/icons/info-circle.svg';
-import infoIcon from '../../../../assets/icons/more-circle.svg';
+import successIcon from '../../../assets/icons/tick-circle.svg';
+import errorIcon from '../../../assets/icons/close-circle.svg';
+import warningIcon from '../../../assets/icons/info-circle.svg';
+import infoIcon from '../../../assets/icons/more-circle.svg';
 import {Typography} from '../Typography/Typography.tsx';
 import {Button} from '../Button/Button.tsx';
 

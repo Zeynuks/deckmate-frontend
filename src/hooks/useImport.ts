@@ -1,5 +1,5 @@
 import {useAppActions} from './useAppActions';
-import {useToast} from '../view/components/ui/Toast/ToastContext';
+import {useToast} from '../view/components/Toast/ToastContext';
 
 export const useImport = () => {
     const { importDocument } = useAppActions();

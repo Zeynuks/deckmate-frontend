@@ -1,5 +1,5 @@
 import {RootState, useAppSelector} from '../store/store';
-import {useToast} from '../view/components/ui/Toast/ToastContext';
+import {useToast} from '../view/components/Toast/ToastContext';
 
 export const useExport = () => {
     const editor = useAppSelector((state: RootState) => state);

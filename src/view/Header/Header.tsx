@@ -1,15 +1,15 @@
 import React from 'react';
 import styles from './Header.module.css';
-import { Button, IconPosition } from '../components/ui/Button/Button.tsx';
-import { Typography } from '../components/ui/Typography/Typography.tsx';
-import { useToast } from '../components/ui/Toast/ToastContext.tsx';
+import { Button, IconPosition } from '../components/Button/Button.tsx';
+import { Typography } from '../components/Typography/Typography.tsx';
+import { useToast } from '../components/Toast/ToastContext.tsx';
 import { History } from '../History/History.tsx';
 import menuIcon from '../../assets/icons/menu.svg';
 import importIcon from '../../assets/icons/import.svg';
 import categoryIcon from '../../assets/icons/category.svg';
 import playIcon from '../../assets/icons/play.svg';
 import shareIcon from '../../assets/icons/send.svg';
-import { Input } from '../components/ui/Input/Input.tsx';
+import { Input } from '../components/Input/Input.tsx';
 import { RootState, useAppSelector } from '../../store/store.ts';
 import { useAppActions } from '../../hooks/useAppActions.ts';
 import { useExport } from '../../hooks/useExport.ts';
@@ -59,11 +59,7 @@ export const Header: React.FC<HeaderProps> = ({ description }) => {
                         {description}
                     </Typography>
                 </section>
-                <History
-                    onBack={() => handleShowToast('error')}
-                    onView={() => handleShowToast('error')}
-                    onForward={() => handleShowToast('error')}
-                />
+                <History/>
                 <section className={styles.actions}>
                     <Button
                         iconSrc={importIcon}

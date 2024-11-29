@@ -33,6 +33,9 @@ const getInitialState = (): Editor => {
 const editorReducer = (state = getInitialState(), action: ActionsInterfase): Editor => {
     const newState = (() => {
         switch (action.type) {
+            case ActionTypes.SET_EDITOR:
+                return Actions.setEditor(action.payload);
+
             case ActionTypes.ADD_SLIDE:
                 return Actions.addSlide(state);
 
@@ -81,6 +84,8 @@ const editorReducer = (state = getInitialState(), action: ActionsInterfase): Edi
             case ActionTypes.SET_SLIDE_SIZE:
                 return Actions.setSlideSize(state, action.payload);
 
+            case ActionTypes.SET_IMAGE_OBJECT:
+                return Actions.setImageObject(state, action.payload);
             default:
                 return state;
         }
