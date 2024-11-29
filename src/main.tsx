@@ -6,9 +6,9 @@ import { initHistory } from './utils/history.ts';
 import store from './store/store';
 
 const root = createRoot(document.getElementById('root')!);
-
+//TODO: Придумать как убрать затычку as never
 root.render(
     <Provider store={store}>
-        <App history={initHistory(store)}/>
+        <App history={initHistory(store as never)}/>
     </Provider>
 );

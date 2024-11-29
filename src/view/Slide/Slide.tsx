@@ -58,7 +58,6 @@ export const Slide: React.FC<SlideProps> = ({
                         fill='transparent'
                         rx={20}
                         ry={20}
-                        onClick={() => setSelected(slide.id)}
                     />
                 </clipPath>
             </defs>
