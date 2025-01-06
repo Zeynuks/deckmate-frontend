@@ -4,10 +4,23 @@ interface Options {
     enabled?: boolean;
 }
 
-type KeyCombination = string[];
+export enum KeyCodes {
+    ctrlZ = 'control+KeyZ',
+    ctrlShiftZ = 'control+shift+KeyZ',
+    ctrlY = 'control+KeyY',
+    metaZ = 'meta+KeyZ',
+    metaShiftZ = 'meta+shift+KeyZ',
+    metaY = 'meta+KeyY',
+    delete = 'Delete',
+    arrowLeft = 'ArrowLeft',
+    arrowRight = 'ArrowRight',
+    arrowUp = 'ArrowUp',
+    arrowDown = 'ArrowDown',
+    escape = 'Escape',
+}
 
 export function useHotkeys(
-    keys: KeyCombination,
+    combinations: KeyCodes[],
     callback: (event: KeyboardEvent) => void,
     options: Options = {}
 ) {
@@ -23,7 +36,6 @@ export function useHotkeys(
 
         const handler = (event: KeyboardEvent) => {
             const downedKeys = new Set();
-
             if (event.ctrlKey) downedKeys.add('control');
             if (event.shiftKey) downedKeys.add('shift');
             if (event.altKey) downedKeys.add('alt');
@@ -32,12 +44,9 @@ export function useHotkeys(
             const key = event.code;
             downedKeys.add(key);
 
-            const match = (targetKeys: string[]) =>
-                targetKeys.length === downedKeys.size && targetKeys.every(k => downedKeys.has(k));
-
-            for (const keyCombo of keys) {
-                const targetKeys = parseKeys(keyCombo);
-                if (match(targetKeys)) {
+            for (const combination of combinations) {
+                const targetKeys = parseKeys(combination);
+                if (targetKeys.length === downedKeys.size && targetKeys.every(k => downedKeys.has(k))) {
                     callback(event);
                     break;
                 }
@@ -49,5 +58,5 @@ export function useHotkeys(
         return () => {
             window.removeEventListener('keydown', handler);
         };
-    }, [keys, callback, enabled]);
+    }, [combinations, callback, enabled]);
 }

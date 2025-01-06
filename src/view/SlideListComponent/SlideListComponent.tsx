@@ -86,7 +86,7 @@ export const SlideListComponent: React.FC<SlideListComponentProps> = ({
                     </clipPath>
                 </defs>
                 <g clipPath={`url(#clip-slide-${slide.id})`}>
-                    <Slide slide={slide} selectedObjectsId={selected.objects}/>
+                    <Slide slide={slide} borderRadius={20}/>
                 </g>
             </svg>
         </g>

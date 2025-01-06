@@ -1,7 +1,7 @@
 import {RootState, useAppSelector} from '../store/store';
 import {useToast} from '../view/components/Toast/ToastContext';
 
-export const useExport = () => {
+export const useExportToJSON = () => {
     const editor = useAppSelector((state: RootState) => state);
     const {addToast} = useToast();
 

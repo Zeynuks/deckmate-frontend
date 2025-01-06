@@ -2,7 +2,7 @@ import {
     Editor,
     FontStyle,
     FontWeight,
-    ObjectType, TextDecoration,
+    ObjectType,
     TextHorizontalAlign,
     TextObject,
     TextVerticalAlign
@@ -32,10 +32,12 @@ export function addTextObject(editor: Editor): Editor {
             fontFamily: 'Nunito',
             fontWeight: FontWeight.W400,
             fontStyle: FontStyle.Normal,
-            textDecoration: TextDecoration.None,
+            underline: false,
+            overline: false,
             horizontalAlign: TextHorizontalAlign.Middle,
             verticalAlign: TextVerticalAlign.Middle,
-            color: '#000000'
+            color: '#000000',
+            backgroundColor: '#ffffff'
         }
     };
 

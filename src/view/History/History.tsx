@@ -7,7 +7,7 @@ import viewIcon from '../../assets/icons/clock.svg';
 import redoIcon from '../../assets/icons/redo.svg';
 import {HistoryContext} from '../../hooks/historyContenx.ts';
 import {useAppActions} from '../../hooks/useAppActions.ts';
-import {useHotkeys} from '../../hooks/useHotkeys.ts';
+import {KeyCodes, useHotkeys} from '../../hooks/useHotkeys.ts';
 
 type HistoryProps = {
     disabledBack?: boolean;
@@ -39,12 +39,12 @@ export const History: React.FC<HistoryProps> = ({
         }
     };
 
-    useHotkeys(['control+KeyZ', 'meta+KeyZ'], event => {
+    useHotkeys([KeyCodes.ctrlZ, KeyCodes.metaZ], event => {
         event.preventDefault();
         onUndo();
     });
 
-    useHotkeys(['control+shift+KeyZ', 'control+shift+KeyZ', 'control+KeyY', 'meta+shift+KeyY'], event => {
+    useHotkeys([KeyCodes.ctrlY, KeyCodes.metaY, KeyCodes.ctrlShiftZ, KeyCodes.metaShiftZ], event => {
         event.preventDefault();
         onRedo();
     });

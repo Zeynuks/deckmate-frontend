@@ -1,7 +1,3 @@
-// ----------------------------
-// Enums
-// ----------------------------
-
 export enum ObjectType {
     Text = 'text',
     Image = 'image',
@@ -32,13 +28,6 @@ export enum FontStyle {
     Normal = 'normal',
     Italic = 'italic',
     Oblique = 'oblique',
-}
-
-export enum TextDecoration {
-    None = 'none',
-    Underline = 'underline',
-    Overline = 'overline',
-    LineThrough = 'line-through',
 }
 
 export enum TextHorizontalAlign {
@@ -96,7 +85,8 @@ export interface TextStyle {
     fontFamily?: string;
     fontWeight?: FontWeight;
     fontStyle?: FontStyle;
-    textDecoration?: TextDecoration;
+    underline?: boolean;
+    overline?: boolean;
     horizontalAlign?: TextHorizontalAlign;
     color?: CSSColor;
     backgroundColor?: CSSColor;
@@ -110,11 +100,12 @@ export interface TextObject extends SlideBaseObject {
         fontFamily: string;
         fontWeight: FontWeight;
         fontStyle: FontStyle;
-        textDecoration: TextDecoration;
+        underline: boolean;
+        overline: boolean;
         horizontalAlign: TextHorizontalAlign;
         verticalAlign: TextVerticalAlign;
         color: CSSColor;
-        backgroundColor?: CSSColor;
+        backgroundColor: CSSColor;
     };
 }
 
@@ -188,10 +179,6 @@ export interface BackgroundImage {
 
 export type Background = BackgroundImage | BackgroundColor;
 
-// ----------------------------
-// Presentation Structure
-// ----------------------------
-
 export interface Slide {
     id: string;
     size: Size;
@@ -203,10 +190,6 @@ export interface Presentation {
     title: string;
     slides: Slide[];
 }
-
-// ----------------------------
-// Editor State Types
-// ----------------------------
 
 export interface Selected {
     slide?: string;

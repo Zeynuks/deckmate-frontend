@@ -3,19 +3,22 @@ import {TextComponent} from '../components/TextObject/TextObject.tsx';
 import {ImageComponent} from '../components/ImageObject/ImageObject.tsx';
 import {Transformable} from '../components/Transformable/Transformable.tsx';
 import {useAppActions} from '../../hooks/useAppActions.ts';
+import {KeyCodes, useHotkeys} from '../../hooks/useHotkeys.ts';
+import {RootState, useAppSelector} from "../../store/store.ts";
 
 type SlideProps = {
     slide: SlideType;
-    selectedObjectsId: string[];
     onView?: boolean;
+    borderRadius?: number;
 };
 
 export const Slide: React.FC<SlideProps> = ({
                                                 slide,
-                                                selectedObjectsId,
-                                                onView = false
+                                                onView = false,
+                                                borderRadius = 0
                                             }) => {
-    const {setSelected} = useAppActions();
+    const selected = useAppSelector((state: RootState) => state.selected);
+    const {setSelected, removeObject} = useAppActions();
     const objects = slide.objects.map((object) => {
         const slideObject = (size: { width: number, height: number }, isEditing: boolean) => {
             switch (object.type) {
@@ -31,7 +34,7 @@ export const Slide: React.FC<SlideProps> = ({
         return (
             <Transformable
                 key={object.id}
-                isHidden={selectedObjectsId && selectedObjectsId.includes(object.id) && onView}
+                isHidden={selected.objects && selected.objects.includes(object.id) && onView}
                 position={{x: object.position.x, y: object.position.y}}
                 size={{height: object.size.height, width: object.size.width}}
                 angle={object.angle || 0}
@@ -46,6 +49,11 @@ export const Slide: React.FC<SlideProps> = ({
         );
     });
 
+    useHotkeys([KeyCodes.delete], event => {
+        event.preventDefault();
+        if (selected.objects.length > 0) removeObject();
+    });
+
     return (
         <>
             <defs>
@@ -56,8 +64,8 @@ export const Slide: React.FC<SlideProps> = ({
                         width={slide.size.width}
                         height={slide.size.height}
                         fill='transparent'
-                        rx={20}
-                        ry={20}
+                        rx={borderRadius}
+                        ry={borderRadius}
                     />
                 </clipPath>
             </defs>

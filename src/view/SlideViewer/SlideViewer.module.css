@@ -1,0 +1,97 @@
+html {
+    width: 100%;
+    height: 100%;
+}
+
+/* Контейнер для слайдов */
+.viewContainer {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    background-color: #1E1E1E;
+}
+
+/* Стили для шапки (header) */
+.header {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 6%;
+    background-color: #1E1E1E;
+    flex-basis: 250px;
+    opacity: 0; /* Скрыть по умолчанию */
+    transition: opacity 0.7s; /* Плавное появление/исчезновение */
+    top: 0; /* Размещаем шапку вверху страницы */
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 300px;
+    overflow: hidden;
+}
+
+/* Стили для кнопок (buttons) */
+.buttons {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 1em;
+    font-family: 'Nunito', serif;
+    font-weight: 400;
+    font-size: 0.8em;
+    width: 100px;
+    height: 25px;
+    position: absolute;
+    left: calc(50% - 50px);
+    top: calc(100% - 50px); /* Размещаем кнопки внизу */
+    border-radius: 20px;
+    background-color: #1E1E1E;
+    color: white;
+    opacity: 0; /* Скрыть по умолчанию */
+    transition: opacity 0.7s; /* Плавное появление/исчезновение */
+}
+
+/* Стили для кнопок внутри шапки */
+.headerInnerLeft, .headerInnerRight {
+    width: 250px;
+    display: flex;
+    justify-content: space-between;
+    margin-left: 10px;
+}
+
+/* Блок с кнопками внутри шапки */
+.headerButtons {
+    display: flex;
+    gap: 10px;
+}
+
+/* Стиль для кнопки "Share view" */
+.shareButton {
+    color: #FFFFFF;
+    padding: 12px 16px;
+    background-color: #7B61FF;
+}
+
+/* Стили для отдельных кнопок */
+.menuButton, .resizeButton, .settingsButton {
+    padding: 8px;
+    background-color: #1E1E1E;
+}
+
+.menuButton {
+    padding: 2px;
+}
+
+.settingsButton {
+    background: none;
+}
+
+/* Стили для кнопок назад/вперед */
+.button {
+    height: 0.8em;
+    width: 0.8em;
+}

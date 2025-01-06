@@ -75,7 +75,7 @@ export const PresentationWorkspace: React.FC<WorkspaceProps> = ({
                                 ry={BORDER_RADIUS}
                             />
                             <g x={500}>
-                                <Slide slide={selectedSlide} selectedObjectsId={selected.objects} onView={true}/>
+                                <Slide slide={selectedSlide} onView={true} borderRadius={BORDER_RADIUS}/>
                             </g>
                         </g>
                     </svg>

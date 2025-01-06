@@ -8,7 +8,7 @@ import {
     Presentation,
     PresentationData,
     Selected,
-    Size, TextDecoration, TextHorizontalAlign, TextStyle, TextVerticalAlign
+    Size, TextHorizontalAlign, TextStyle, TextVerticalAlign
 } from './types';
 
 const presentation: Presentation = {
@@ -38,7 +38,8 @@ const presentation: Presentation = {
                             fontFamily: 'Arial, sans-serif',
                             fontWeight: FontWeight.W400,
                             fontStyle: FontStyle.Normal,
-                            textDecoration: TextDecoration.None,
+                            underline: false,
+                            overline: false,
                             horizontalAlign: TextHorizontalAlign.Left,
                             color: '#333333',
                         } as TextStyle,
@@ -50,7 +51,8 @@ const presentation: Presentation = {
                             fontFamily: 'Arial, sans-serif',
                             fontWeight: FontWeight.W700,
                             fontStyle: FontStyle.Italic,
-                            textDecoration: TextDecoration.Underline,
+                            underline: true,
+                            overline: false,
                             horizontalAlign: TextHorizontalAlign.Left,
                             color: 'rgb(255, 0, 0)',
                         } as TextStyle,
@@ -62,7 +64,6 @@ const presentation: Presentation = {
                             fontFamily: 'Times New Roman, serif',
                             fontWeight: FontWeight.W300,
                             fontStyle: FontStyle.Oblique,
-                            textDecoration: TextDecoration.LineThrough,
                             horizontalAlign: TextHorizontalAlign.Left,
                             color: 'hsl(120, 100%, 40%)',
                             backgroundColor: 'rgba(0, 0, 255, 0.1)',
@@ -74,10 +75,12 @@ const presentation: Presentation = {
                     fontFamily: 'Arial, sans-serif',
                     fontWeight: FontWeight.W400,
                     fontStyle: FontStyle.Normal,
-                    textDecoration: TextDecoration.None,
+                    underline: false,
+                    overline: false, // Assuming no direct equivalent for LineThrough
                     horizontalAlign: TextHorizontalAlign.Left,
                     verticalAlign: TextVerticalAlign.Middle,
                     color: '#333333',
+                    backgroundColor: '#FFFFFF', // Added missing backgroundColor property with default value
                 },
             }]
         },

@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router';
 import LoadingScreen from './view/LoadingScreen/LoadingScreen';
 import DeckMate from './DeсkMate.tsx';
 import {HistoryType} from './utils/history.ts';
+import SlideViewer from "./view/SlideViewer/SlideViewer.tsx";
 
 type AppProps = {
-    history: HistoryType,
-}
+    history: HistoryType;
+};
 
-const App: React.FC<AppProps> = ({history}) => {
+const App: React.FC<AppProps> = ({ history }) => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -25,9 +27,18 @@ const App: React.FC<AppProps> = ({history}) => {
     }, []);
 
     return (
-        <>
-            {isLoading ? <LoadingScreen /> : <DeckMate history={history} />}
-        </>
+        <BrowserRouter>
+            <Routes>
+                <Route
+                    path="/"
+                    element={isLoading ? <LoadingScreen /> : <DeckMate history={history} />}
+                />
+                <Route
+                    path="/present"
+                    element={isLoading ? <LoadingScreen /> : <SlideViewer/>}
+                />
+            </Routes>
+        </BrowserRouter>
     );
 };
 

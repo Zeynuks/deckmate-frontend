@@ -107,7 +107,7 @@ export const Transformable: React.FC<TransformableProps> = ({
                 }}
                 style={{cursor: isHidden ? 'grab' : 'default'}}
                 stroke={isHidden ? '#7B61FF' : ''}
-                strokeWidth={isHidden ? '4px' : ''}
+                strokeWidth={isHidden ? `${4 / scale}px` : ''}
                 onClick={onClick}
                 onDoubleClick={isHidden? () => setEditing(true): () => {}}
             />}
