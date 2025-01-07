@@ -16,3 +16,4 @@ export { setScaleFactor } from './setScaleFactor';
 export { setSlideSize } from './setSlideSize';
 export { setImageObject } from './setImageObject';
 export { setEditor } from './setEditor';
+export { setText } from './setText';

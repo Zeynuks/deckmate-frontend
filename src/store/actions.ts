@@ -1,5 +1,10 @@
 import {ActionTypes} from './actionTypes';
-import {Editor, ImageObject} from './types';
+import {Editor, ImageObject, TextObject} from './types';
+
+interface SetText {
+    type: ActionTypes.SET_TEXT;
+    payload: TextObject;
+}
 
 interface ImportDocumentAction {
     type: ActionTypes.IMPORT_DOCUMENT;
@@ -88,6 +93,11 @@ interface SetSlideSizeAction {
     payload: { width: number; height: number };
 }
 
+const setText = (textObject: TextObject): SetText => ({
+    type: ActionTypes.SET_TEXT,
+    payload: textObject,
+});
+
 const setEditor = (newEditor: Editor): SetEditorAction => ({
     type: ActionTypes.SET_EDITOR,
     payload: newEditor,
@@ -175,6 +185,7 @@ const setSlideSize = (width: number, height: number): SetSlideSizeAction => ({
 });
 
 export type ActionsInterfase =
+    | SetText
     | AddSlideAction
     | AddImageObjectAction
     | AddTextObjectAction
@@ -212,5 +223,6 @@ export const ActionCreators = {
     setScaleFactor,
     setSlideSize,
     setImageObject,
-    setEditor
+    setEditor,
+    setText
 };

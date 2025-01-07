@@ -55,7 +55,7 @@ export interface Position {
     x: number;
     y: number;
 }
-//TODO: HSL дл картинок и тп (die)
+
 export type CSSColor =
     | `#${string}`
     | `rgb(${number},${number},${number})`
@@ -75,38 +75,33 @@ export interface SlideBaseObject {
     angle: number;
 }
 
+export interface TextObject extends SlideBaseObject {
+    type: ObjectType.Text;
+    lines: TextLine[];
+    verticalAlign: TextVerticalAlign;
+}
+
+export interface TextLine {
+    id: string;
+    horizontalAlign: TextHorizontalAlign;
+    spans: TextSpan[];
+}
+
 export interface TextSpan {
+    id: string;
     text: string;
-    style?: TextStyle;
+    style: TextStyle;
 }
 
 export interface TextStyle {
-    fontSize?: number;
-    fontFamily?: string;
-    fontWeight?: FontWeight;
-    fontStyle?: FontStyle;
-    underline?: boolean;
-    overline?: boolean;
-    horizontalAlign?: TextHorizontalAlign;
-    color?: CSSColor;
-    backgroundColor?: CSSColor;
-}
-
-export interface TextObject extends SlideBaseObject {
-    type: ObjectType.Text;
-    content: TextSpan[];
-    style: {
-        fontSize: number;
-        fontFamily: string;
-        fontWeight: FontWeight;
-        fontStyle: FontStyle;
-        underline: boolean;
-        overline: boolean;
-        horizontalAlign: TextHorizontalAlign;
-        verticalAlign: TextVerticalAlign;
-        color: CSSColor;
-        backgroundColor: CSSColor;
-    };
+    fontSize: number;
+    fontFamily: string;
+    fontWeight: FontWeight;
+    fontStyle: FontStyle;
+    underline: boolean;
+    overline: boolean;
+    color: CSSColor;
+    backgroundColor: CSSColor | 'none';
 }
 
 export interface ImageObjectBase {

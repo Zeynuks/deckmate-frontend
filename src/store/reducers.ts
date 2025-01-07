@@ -86,6 +86,10 @@ const editorReducer = (state = getInitialState(), action: ActionsInterfase): Edi
 
             case ActionTypes.SET_IMAGE_OBJECT:
                 return Actions.setImageObject(state, action.payload);
+
+            case ActionTypes.SET_TEXT:
+                return Actions.setText(state, action.payload);
+
             default:
                 return state;
         }

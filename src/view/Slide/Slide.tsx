@@ -1,10 +1,10 @@
-import {ObjectType, Slide as SlideType} from '../../store/types.ts';
+import {ObjectType, Slide as SlideType, TextObject} from '../../store/types.ts';
 import {TextComponent} from '../components/TextObject/TextObject.tsx';
 import {ImageComponent} from '../components/ImageObject/ImageObject.tsx';
 import {Transformable} from '../components/Transformable/Transformable.tsx';
 import {useAppActions} from '../../hooks/useAppActions.ts';
 import {KeyCodes, useHotkeys} from '../../hooks/useHotkeys.ts';
-import {RootState, useAppSelector} from "../../store/store.ts";
+import {RootState, useAppSelector} from '../../store/store.ts';
 
 type SlideProps = {
     slide: SlideType;
@@ -18,12 +18,14 @@ export const Slide: React.FC<SlideProps> = ({
                                                 borderRadius = 0
                                             }) => {
     const selected = useAppSelector((state: RootState) => state.selected);
-    const {setSelected, removeObject} = useAppActions();
+    const {setSelected, removeObject, setText} = useAppActions();
     const objects = slide.objects.map((object) => {
         const slideObject = (size: { width: number, height: number }, isEditing: boolean) => {
             switch (object.type) {
                 case  ObjectType.Text:
-                    return <TextComponent key={object.id} object={object} size={size} isEditing={isEditing}/>;
+                    return <TextComponent key={object.id} object={object} size={size} isEditing={isEditing} onFinishEdit={(updatedObject: TextObject) => {
+                        setText(updatedObject);
+                    }}/>;
                 case ObjectType.Image:
                     return <ImageComponent key={object.id} object={object} size={size} isEditing={isEditing}/>;
                 default:

@@ -4,7 +4,7 @@ import { RootState, useAppSelector } from '../../store/store.ts';
 import { Slide } from '../Slide/Slide.tsx';
 import { ToastProvider } from '../components/Toast/ToastContext.tsx';
 import { useHotkeys, KeyCodes } from '../../hooks/useHotkeys';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '../components/Button/Button.tsx';
 import { Typography } from '../components/Typography/Typography.tsx';
 
@@ -19,9 +19,30 @@ const SlideViewer: React.FC = () => {
     const slides = useAppSelector((state: RootState) => state.presentation.slides);
     const title = useAppSelector((state: RootState) => state.presentation.title);
 
-    const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const slideIdParam = searchParams.get('slide');
+
+    const initialSlideIndex = slides.findIndex((slide) => slide.id === slideIdParam);
+
+    const safeInitialIndex =
+        initialSlideIndex >= 0 && initialSlideIndex < slides.length
+            ? initialSlideIndex
+            : 0;
+
+    const [currentSlideIndex, setCurrentSlideIndex] = useState(safeInitialIndex);
+
     const [showHeader, setShowHeader] = useState(false);
     const [showButtons, setShowButtons] = useState(false);
+
+    const currentSlide = slides[currentSlideIndex];
+
+    useEffect(() => {
+        if (currentSlide) {
+            searchParams.set('slide', currentSlide.id);
+            setSearchParams(searchParams, { replace: true });
+        }
+    }, [currentSlideIndex, currentSlide, searchParams, setSearchParams]);
 
     const closeView = () => {
         navigate('/');
@@ -78,9 +99,11 @@ const SlideViewer: React.FC = () => {
                 <div className={styles.headerInnerLeft}>
                     <Button className={styles.menuButton} iconSize={36} iconSrc={menu}></Button>
                 </div>
-              <div className={styles.title}>
-                  <Typography variant={'description'} color={'#FFFFFF'}>{title}</Typography>
-              </div>
+                <div className={styles.title}>
+                    <Typography variant={'description'} color={'#FFFFFF'}>
+                        {title}
+                    </Typography>
+                </div>
                 <div className={styles.headerInnerRight}>
                     <div className={styles.headerButtons}>
                         <Button className={styles.shareButton}>Share view</Button>
@@ -96,13 +119,25 @@ const SlideViewer: React.FC = () => {
                     transition: 'opacity 0.7s',
                 }}
             >
-                <img className={styles.button} src={undoIcon} onClick={goToPreviousSlide}></img>
-                <span>{currentSlideIndex + 1}/{slides.length}</span>
-                <img className={styles.button} src={redoIcon} onClick={goToNextSlide}></img>
+                <img
+                    className={styles.button}
+                    src={undoIcon}
+                    onClick={goToPreviousSlide}
+                    alt="Previous slide"
+                />
+                <span>
+                    {currentSlideIndex + 1}/{slides.length}
+                </span>
+                <img
+                    className={styles.button}
+                    src={redoIcon}
+                    onClick={goToNextSlide}
+                    alt="Next slide"
+                />
             </div>
             <div className={styles.viewContainer}>
-                <svg viewBox={'0 0 1920 1080'}>
-                    <Slide slide={slides[currentSlideIndex]} onView={false} />
+                <svg viewBox="0 0 1920 1080">
+                    <Slide slide={currentSlide} onView={false} />
                 </svg>
             </div>
         </ToastProvider>

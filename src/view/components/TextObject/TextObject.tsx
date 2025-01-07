@@ -1,33 +1,16 @@
-import React, {useEffect, useRef} from 'react';
+import React, { useCallback, useRef } from 'react';
 import {
-    Size,
     TextObject,
-    TextSpan,
-    TextStyle,
-    TextHorizontalAlign,
+    Size,
     TextVerticalAlign,
-} from '../../../store/types.ts';
+} from '../../../store/types';
+import {
+    linesToHTML,
+    parseHTMLtoTextObject,
+} from '../../../utils/textUtils';
 
-// Функции для CSS выравнивания
-const mapHorizontalAlign = (
-    align: TextHorizontalAlign
-): React.CSSProperties['textAlign'] => {
-    switch (align) {
-        case TextHorizontalAlign.Left:
-            return 'left';
-        case TextHorizontalAlign.Middle:
-            return 'center';
-        case TextHorizontalAlign.Right:
-            return 'right';
-        default:
-            return 'left';
-    }
-};
-
-const mapVerticalAlign = (
-    align: TextVerticalAlign
-): React.CSSProperties['justifyContent'] => {
-    switch (align) {
+function mapVerticalAlign(va: TextVerticalAlign): React.CSSProperties['justifyContent'] {
+    switch (va) {
         case TextVerticalAlign.Top:
             return 'flex-start';
         case TextVerticalAlign.Middle:
@@ -37,101 +20,48 @@ const mapVerticalAlign = (
         default:
             return 'flex-start';
     }
-};
+}
 
-type TextObjectProps = {
+type TextComponentProps = {
     object: TextObject;
     size: Size;
     isEditing: boolean;
+    onFinishEdit?: (updated: TextObject) => void;
 };
 
-export const TextComponent: React.FC<TextObjectProps> = ({
-                                                             object,
-                                                             size,
-                                                             isEditing,
-                                                         }) => {
-    const divRef = useRef<HTMLDivElement | null>(null);
-    const lastMousePosition = useRef<{ x: number; y: number } | null>(null);
+export const TextComponent: React.FC<TextComponentProps> = ({
+                                                                object,
+                                                                size,
+                                                                isEditing,
+                                                                onFinishEdit,
+                                                            }) => {
+    const divRef = useRef<HTMLDivElement>(null);
 
-    const contentToHTML = (content: TextSpan[]): string => {
-        return content
-            .map((span) => {
-                const styleString = span.style ? styleToCSS(span.style) : '';
-                return `<span style="${styleString}" >${span.text}</span>`;
-            })
-            .join('');
-    };
+    // Генерация HTML из модели
+    const html = linesToHTML(object);
 
-    const styleToCSS = (style: TextStyle): string => {
-        const css: string[] = [];
-        if (style.color) css.push(`color: ${style.color}`);
-        if (style.fontSize) css.push(`font-size: ${style.fontSize}px`);
-        if (style.fontWeight) css.push(`font-weight: ${style.fontWeight}`);
-        if (style.fontStyle) css.push(`font-style: ${style.fontStyle}`);
-        if (style.textDecoration)
-            css.push(`text-decoration: ${style.textDecoration}`);
-        if (style.fontFamily) css.push(`font-family: ${style.fontFamily}`);
-        if (style.backgroundColor)
-            css.push(`background-color: ${style.backgroundColor}`);
-        return css.join('; ');
-    };
+    // При потере фокуса парсим HTML обратно в модель
+    const handleBlur = useCallback(() => {
+        if (!isEditing) return;
+        if (!divRef.current) return;
 
-    const styleToCSSObject = (style: TextStyle): React.CSSProperties => {
-        const css: React.CSSProperties = {};
-        if (style.color) css.color = style.color;
-        if (style.fontSize) css.fontSize = `${style.fontSize}px`;
-        if (style.fontWeight) css.fontWeight = style.fontWeight;
-        if (style.fontStyle) css.fontStyle = style.fontStyle;
-        if (style.textDecoration) css.textDecoration = style.textDecoration;
-        if (style.fontFamily) css.fontFamily = style.fontFamily;
-        if (style.backgroundColor) css.backgroundColor = style.backgroundColor;
-        return css;
-    };
+        const currentHTML = divRef.current.innerHTML;
+
+        // Здесь при необходимости можно сделать санитизацию:
+        // const safeHTML = DOMPurify.sanitize(currentHTML);
+        // const newObj = parseHTMLtoTextObject(safeHTML, object);
+
+        const newObj = parseHTMLtoTextObject(currentHTML, object);
+        onFinishEdit?.(newObj);
+    }, [isEditing, onFinishEdit, object]);
 
     const containerStyle: React.CSSProperties = {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: mapVerticalAlign(object.style.verticalAlign),
-        textAlign: mapHorizontalAlign(object.style.horizontalAlign),
         width: '100%',
         height: '100%',
-        whiteSpace: 'pre-wrap',
-        wordWrap: 'break-word',
-        ...styleToCSSObject(object.style),
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: mapVerticalAlign(object.verticalAlign),
     };
-
-    const setCursorAtMousePosition = (element: HTMLElement, x: number, y: number) => {
-        if (!element.isContentEditable) return;
-
-        const caretPosition =
-            (document as Document & {
-                caretPositionFromPoint?: (x: number, y: number) => { offsetNode: Node; offset: number } | null;
-            }).caretPositionFromPoint?.(x, y);
-
-        let range: Range | null = null;
-
-        if (caretPosition) {
-            range = document.createRange();
-            range.setStart(caretPosition.offsetNode, caretPosition.offset);
-            range.collapse(true);
-        } else if ('caretRangeFromPoint' in document && document.caretRangeFromPoint) {
-            range = document.caretRangeFromPoint(x, y);
-        }
-
-        if (range) {
-            const selection = window.getSelection();
-            selection?.removeAllRanges();
-            selection?.addRange(range);
-        }
-    };
-
-    useEffect(() => {
-        if (isEditing && lastMousePosition.current && divRef.current) {
-            const { x, y } = lastMousePosition.current;
-            setCursorAtMousePosition(divRef.current, x, y);
-            divRef.current.focus();
-        }
-    }, [isEditing]);
 
     return (
         <svg
@@ -147,14 +77,15 @@ export const TextComponent: React.FC<TextObjectProps> = ({
                 <foreignObject
                     width={size.width}
                     height={size.height}
-                    style={{pointerEvents: 'auto'}}
+                    style={{ pointerEvents: 'auto' }}
                 >
                     <div
+                        ref={divRef}
                         contentEditable={isEditing}
                         style={containerStyle}
-                        dangerouslySetInnerHTML={{
-                            __html: contentToHTML(object.content),
-                        }}
+                        // Опционально: sanitize HTML, если источники небезопасны
+                        dangerouslySetInnerHTML={{ __html: html }}
+                        onBlur={handleBlur}
                     />
                 </foreignObject>
             </g>
