@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
+    "lint": "eslint --fix .",
     "preview": "vite preview",
     "deploy": "gh-pages -d dist -b deploy",
     "generate:fonts": "ts-node scripts/generate-font-face.ts"
@@ -26,6 +26,7 @@
     "react-router": "^7.1.1",
     "react-router-dom": "^7.1.1",
     "redux": "^5.0.1",
+    "redux-thunk": "^3.1.0",
     "uuid": "^10.0.0"
   },
   "devDependencies": {
@@ -33,6 +34,7 @@
     "@types/dom-to-image": "^2.6.7",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "@types/redux-thunk": "^2.1.0",
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-react": "^4.3.1",
     "eslint": "^9.9.0",

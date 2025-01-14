@@ -26,7 +26,7 @@ export function addTextObject(editor: Editor): Editor {
         size: { width: 100, height: 100 },
         position: { x: 0, y: 0 },
         angle: 0,
-        content: [{text: 'Text template'}],
+        content: [{text: 'Text.tsx template'}],
         style: {
             fontSize: 60,
             fontFamily: 'Nunito',

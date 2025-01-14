@@ -15,8 +15,9 @@ import { RootState, useAppSelector } from '../../store/store.ts';
 import ImageSearchModal from '../ImageSearchModal/ImageSearchModal';
 
 export const ElementPanel: React.FC = () => {
-    const { addTextObject, addImageObject, setScaleFactor } = useAppActions();
+    const { addTextObject, addImageObject, setScaleFactor, setSelected } = useAppActions();
     const scale = useAppSelector((state: RootState) => state.data.scaleFactor);
+    const selected = useAppSelector((state: RootState) => state.selected);
     const { addToast } = useToast();
     const [isUnsplashModalOpen, setUnsplashModalOpen] = useState(false);
 
@@ -50,6 +51,7 @@ export const ElementPanel: React.FC = () => {
                 src: img.src,
             };
             addImageObject(newImageObject);
+            setSelected(selected.slide, [newImageObject.id]);
         };
         img.onerror = () => {
             addToast({
@@ -79,6 +81,7 @@ export const ElementPanel: React.FC = () => {
                         src: img.src,
                     };
                     addImageObject(newImageObject);
+                    setSelected(selected.slide, [newImageObject.id]);
                     setUnsplashModalOpen(false);
                 };
                 img.onerror = () => {

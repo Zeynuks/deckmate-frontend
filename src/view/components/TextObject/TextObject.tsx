@@ -6,7 +6,7 @@ import {
 } from '../../../store/types';
 import {
     linesToHTML,
-    parseHTMLtoTextObject,
+    parseHTMLtoTextObject, // <-- Обратите внимание
 } from '../../../utils/textUtils';
 
 function mapVerticalAlign(va: TextVerticalAlign): React.CSSProperties['justifyContent'] {
@@ -40,17 +40,17 @@ export const TextComponent: React.FC<TextComponentProps> = ({
     // Генерация HTML из модели
     const html = linesToHTML(object);
 
-    // При потере фокуса парсим HTML обратно в модель
+    // При потере фокуса парсим HTML обратно в модель c помощью getComputedStyle
     const handleBlur = useCallback(() => {
         if (!isEditing) return;
         if (!divRef.current) return;
 
         const currentHTML = divRef.current.innerHTML;
 
-        // Здесь при необходимости можно сделать санитизацию:
+        // Если нужно, санитизируем:
         // const safeHTML = DOMPurify.sanitize(currentHTML);
-        // const newObj = parseHTMLtoTextObject(safeHTML, object);
 
+        // Теперь новый объект — с учётом computed-стиля:
         const newObj = parseHTMLtoTextObject(currentHTML, object);
         onFinishEdit?.(newObj);
     }, [isEditing, onFinishEdit, object]);
@@ -62,6 +62,8 @@ export const TextComponent: React.FC<TextComponentProps> = ({
         flexDirection: 'column',
         justifyContent: mapVerticalAlign(object.verticalAlign),
     };
+
+    console.log('View', object.lines);
 
     return (
         <svg
@@ -76,14 +78,13 @@ export const TextComponent: React.FC<TextComponentProps> = ({
             <g>
                 <foreignObject
                     width={size.width}
-                    height={size.height}
+                    height="100%"
                     style={{ pointerEvents: 'auto' }}
                 >
                     <div
                         ref={divRef}
                         contentEditable={isEditing}
                         style={containerStyle}
-                        // Опционально: sanitize HTML, если источники небезопасны
                         dangerouslySetInnerHTML={{ __html: html }}
                         onBlur={handleBlur}
                     />

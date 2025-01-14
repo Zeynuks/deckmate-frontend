@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router';
 import LoadingScreen from './view/LoadingScreen/LoadingScreen';
 import DeckMate from './DeсkMate.tsx';
 import {HistoryType} from './utils/history.ts';
-import SlideViewer from "./view/SlideViewer/SlideViewer.tsx";
+import SlideViewer from './view/SlideViewer/SlideViewer.tsx';
 
 type AppProps = {
     history: HistoryType;
@@ -14,7 +14,6 @@ const App: React.FC<AppProps> = ({ history }) => {
 
     useEffect(() => {
         const handleLoad = () => {
-            console.log('Страница и все ресурсы полностью загружены');
             setIsLoading(false);
         };
 

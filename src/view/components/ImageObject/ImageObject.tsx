@@ -3,6 +3,7 @@ import convertImageToBase64 from '../../../utils/convertBase64.ts';
 import {useToast} from '../Toast/ToastContext.tsx';
 import {useAppActions} from '../../../hooks/useAppActions.ts';
 import {useEffect} from 'react';
+import {RootState, useAppSelector} from '../../../store/store.ts';
 
 type ImageObjectProps = {
     object: ImageObject;
@@ -15,7 +16,8 @@ export const ImageComponent: React.FC<ImageObjectProps> = ({
                                                                size,
                                                                isEditing
                                                            }) => {
-    const {setImageObject} = useAppActions();
+    const selected = useAppSelector((state: RootState) => state.selected);
+    const {setImageObject, setSelected} = useAppActions();
     const {addToast} = useToast();
 
     const handleFileUpload = (file: File) => {
@@ -55,6 +57,7 @@ export const ImageComponent: React.FC<ImageObjectProps> = ({
                 src: img.src
             };
             setImageObject(updatedImageObject);
+            setSelected(selected.slide, [updatedImageObject.id]);
         };
 
         img.onerror = () => {

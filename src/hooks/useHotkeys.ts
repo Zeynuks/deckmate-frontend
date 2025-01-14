@@ -17,6 +17,7 @@ export enum KeyCodes {
     arrowUp = 'ArrowUp',
     arrowDown = 'ArrowDown',
     escape = 'Escape',
+    enter = 'Enter',
 }
 
 export function useHotkeys(

@@ -25,7 +25,7 @@ function getDefaultTextStyle(): TextStyle {
 }
 
 /** Объединяет два «полных» стиля в один. */
-function mergeStyles(base: TextStyle, override: TextStyle): TextStyle {
+function mergeStyles(base: TextStyle, override: Partial<TextStyle>): TextStyle {
     return {
         fontSize: override.fontSize ?? base.fontSize,
         fontFamily: override.fontFamily ?? base.fontFamily,
@@ -62,12 +62,16 @@ function styleToCSS(s: TextStyle): string {
 }
 
 /** Мапим TextHorizontalAlign -> 'left'|'center'|'right' */
-function mapHorizontalAlign(ha: TextHorizontalAlign): 'left'|'center'|'right' {
+function mapHorizontalAlign(ha: TextHorizontalAlign): 'left' | 'center' | 'right' {
     switch (ha) {
-        case TextHorizontalAlign.Left: return 'left';
-        case TextHorizontalAlign.Middle: return 'center';
-        case TextHorizontalAlign.Right: return 'right';
-        default: return 'left';
+        case TextHorizontalAlign.Left:
+            return 'left';
+        case TextHorizontalAlign.Middle:
+            return 'center';
+        case TextHorizontalAlign.Right:
+            return 'right';
+        default:
+            return 'left';
     }
 }
 
@@ -78,7 +82,7 @@ function escapeHtml(text: string): string {
         '<': '&lt;',
         '>': '&gt;',
         '"': '&quot;',
-        "'": '&#039;',
+        '\'': '&#039;',
     };
     return text.replace(/[&<>"']/g, (m) => map[m]);
 }
@@ -96,9 +100,8 @@ export function linesToHTML(textObj: TextObject): string {
 
             const spansHTML = line.spans
                 .map((span) => {
-                    // Можно мерджить с дефолтным стилем, но обычно у TextSpan уже «полный» стиль.
-                    // Если нужно добавить «глобальный» стиль объекта – тут тоже можно сделать mergeStyles(...)
-                    const finalStyle = mergeStyles(getDefaultTextStyle(), span.style);
+                    // Поскольку каждый TextSpan содержит полный TextStyle, можно использовать его напрямую
+                    const finalStyle = span.style;
 
                     // Экранирование и <br/> вместо \n
                     const safeText = span.text
@@ -132,27 +135,25 @@ export function parseHTMLtoTextObject(html: string, baseObject: TextObject): Tex
         newLines.push({
             id: uuidv4(),
             horizontalAlign: baseObject.lines[0]?.horizontalAlign ?? TextHorizontalAlign.Left,
-            // Парсим весь content как одну строку
             spans: parseChildNodes(tempDiv, getDefaultTextStyle()),
         });
     } else {
         divs.forEach((div, i) => {
-            // Считаем выравнивание из стиля или берём из baseObject.lines[i] (или [0]).
-            // Если оно не нужно – уберите эту логику.
-            const lineAlign = readTextAlign(div.style.textAlign)
-                ?? baseObject.lines[i]?.horizontalAlign
-                ?? baseObject.lines[0]?.horizontalAlign
-                ?? TextHorizontalAlign.Left;
+            const lineAlign =
+                readTextAlign(div.style.textAlign) ??
+                baseObject.lines[i]?.horizontalAlign ??
+                baseObject.lines[0]?.horizontalAlign ??
+                TextHorizontalAlign.Left;
 
             newLines.push({
                 id: uuidv4(),
                 horizontalAlign: lineAlign,
-                // Парсим childNodes данного div
                 spans: parseChildNodes(div, getDefaultTextStyle()),
             });
         });
     }
 
+    console.log('Edit', newLines);
     return {
         ...baseObject,
         lines: newLines,
@@ -169,18 +170,17 @@ function parseChildNodes(element: HTMLElement, parentStyle: TextStyle): TextSpan
 
     element.childNodes.forEach((node) => {
         if (node.nodeType === Node.TEXT_NODE) {
-            // Узел-текст: просто добавляем текст
+            // Узел-текст
             const text = node.textContent ?? '';
             if (text) {
                 if (!currentSpan) {
                     currentSpan = {
                         id: uuidv4(),
                         text: '',
-                        style: parentStyle,
+                        style: { ...parentStyle }, // Копируем parentStyle
                     };
                     spans.push(currentSpan);
                 }
-                // Склеиваем текст в текущем спане
                 currentSpan.text += text;
             }
         } else if (node.nodeType === Node.ELEMENT_NODE) {
@@ -195,22 +195,19 @@ function parseChildNodes(element: HTMLElement, parentStyle: TextStyle): TextSpan
                     spans.push({
                         id: uuidv4(),
                         text: '\n',
-                        style: parentStyle,
+                        style: { ...parentStyle },
                     });
                 }
             } else if (tag === 'div') {
-                // div внутри div: рекурсивно парсим и складываем всё в новые спаны
-                const childSpans = parseChildNodes(el, parentStyle);
+                // div внутри div: рекурсивно
+                const childSpans = parseChildNodes(el, { ...parentStyle });
                 spans.push(...childSpans);
                 currentSpan = childSpans[childSpans.length - 1] || currentSpan;
             } else {
-                // Для span, b, i, u, strong, em и т.п.:
-                // 1) Вычисляем новый style на основе parentStyle
-                // 2) Рекурсивно обходим детей
+                // Для span, b, i, u, strong, em и т.п.
                 const newStyle = applyTagStyle(parentStyle, el);
                 const childSpans = parseChildNodes(el, newStyle);
 
-                // Добавляем их в общий список
                 spans.push(...childSpans);
                 currentSpan = childSpans[childSpans.length - 1] || currentSpan;
             }
@@ -245,50 +242,56 @@ function applyTagStyle(parentStyle: TextStyle, el: HTMLElement): TextStyle {
         style.underline = true;
     }
 
-    // Если это span (или любой элемент с inline-стилем), мерджим стили
+    // Дополняем style тем, что извлекли из инлайна
     style = mergeStyles(style, extractInlineStyle(el));
 
     return style;
 }
 
 /**
- * Извлекаем стиль из inline-стиля элемента.
- * Возвращаем полный TextStyle (мерджим с дефолтом).
+ * Извлекаем стиль из inline-стиля элемента:
+ * возвращаем **Partial<TextStyle>** только с теми полями, что реально прописаны.
  */
-function extractInlineStyle(el: HTMLElement): TextStyle {
+function extractInlineStyle(el: HTMLElement): Partial<TextStyle> {
     const s = el.style;
-    // Начнём с дефолта, потом поправим поля:
-    const style = getDefaultTextStyle();
+    // Начинаем с пустого объекта, чтобы не перезаписывать родительские стили «дефолтом».
+    const style: Partial<TextStyle> = {};
 
     // font-size
     if (s.fontSize) {
         const fs = parseInt(s.fontSize, 10);
         if (!isNaN(fs)) style.fontSize = fs;
     }
+
     // font-weight
     if (s.fontWeight) {
         const fw = parseInt(s.fontWeight, 10);
         if (!isNaN(fw)) style.fontWeight = fw as FontWeight;
     }
+
     // font-style
     if (s.fontStyle) {
         if (Object.values(FontStyle).includes(s.fontStyle as FontStyle)) {
             style.fontStyle = s.fontStyle as FontStyle;
         }
     }
+
     // text-decoration
     if (s.textDecoration) {
         style.underline = s.textDecoration.includes('underline');
         style.overline = s.textDecoration.includes('overline');
     }
+
     // color
     if (s.color) {
         style.color = s.color as CSSColor;
     }
+
     // background-color
     if (s.backgroundColor && s.backgroundColor !== 'none') {
         style.backgroundColor = s.backgroundColor as CSSColor;
     }
+
     // font-family
     if (s.fontFamily) {
         style.fontFamily = s.fontFamily;
@@ -304,9 +307,13 @@ function extractInlineStyle(el: HTMLElement): TextStyle {
 function readTextAlign(align: string | undefined): TextHorizontalAlign | undefined {
     if (!align) return undefined;
     switch (align) {
-        case 'left': return TextHorizontalAlign.Left;
-        case 'center': return TextHorizontalAlign.Middle;
-        case 'right': return TextHorizontalAlign.Right;
-        default: return undefined;
+        case 'left':
+            return TextHorizontalAlign.Left;
+        case 'center':
+            return TextHorizontalAlign.Middle;
+        case 'right':
+            return TextHorizontalAlign.Right;
+        default:
+            return undefined;
     }
 }

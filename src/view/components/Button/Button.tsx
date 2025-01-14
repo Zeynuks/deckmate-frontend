@@ -51,7 +51,7 @@ export const Button: React.FC<ButtonProps> = ({
                                                   isLoading = false,
                                                   disabled = false,
                                                   onClick = () => {}
-                                              }: ButtonProps): JSX.Element => {
+                                              }: ButtonProps) => {
     const inputFileRef = useRef<HTMLInputElement>(null);
 
     const handleButtonClick = () => {

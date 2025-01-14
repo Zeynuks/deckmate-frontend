@@ -6,7 +6,7 @@ import {SlideList} from './view/SlideList/SlideList.tsx';
 import React from 'react';
 import { HistoryContext } from './hooks/historyContenx.ts';
 import {HistoryType} from './utils/history.ts';
-import {ToolPanel} from "./view/ToolPanel/ToolPanel.tsx";
+import {ToolPanel} from './view/ToolPanel/ToolPanel.tsx';
 
 type DeckMateProps = {
     history: HistoryType,

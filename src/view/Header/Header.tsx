@@ -1,31 +1,29 @@
-// src/components/Header/Header.tsx
-import React from 'react';
 import styles from './Header.module.css';
-import { Button, IconPosition } from '../components/Button/Button.tsx';
-import { Typography } from '../components/Typography/Typography.tsx';
-import { useToast } from '../components/Toast/ToastContext.tsx';
-import { History } from '../History/History.tsx';
+import {Button, IconPosition} from '../components/Button/Button.tsx';
+import {Typography} from '../components/Typography/Typography.tsx';
+import {useToast} from '../components/Toast/ToastContext.tsx';
+import {History} from '../History/History.tsx';
 import menuIcon from '../../assets/icons/menu.svg';
 import importIcon from '../../assets/icons/import.svg';
 import categoryIcon from '../../assets/icons/category.svg';
 import playIcon from '../../assets/icons/play.svg';
 import shareIcon from '../../assets/icons/send.svg';
-import { Input } from '../components/Input/Input.tsx';
-import { RootState, useAppSelector } from '../../store/store.ts';
-import { useAppActions } from '../../hooks/useAppActions.ts';
-import { useImport } from '../../hooks/useImport.ts';
-import { useNavigate } from 'react-router';
+import {Input} from '../components/Input/Input.tsx';
+import {RootState, useAppSelector} from '../../store/store.ts';
+import {useAppActions} from '../../hooks/useAppActions.ts';
+import {useImport} from '../../hooks/useImport.ts';
+import {useNavigate} from 'react-router';
 import useExportToPDF from '../../hooks/useExportToPdf.tsx';
 
 type HeaderProps = {
     description: string;
 };
 
-export const Header: React.FC<HeaderProps> = ({ description }) => {
+export const Header: React.FC<HeaderProps> = ({description}) => {
     const title = useAppSelector((state: RootState) => state.presentation.title);
     const slides = useAppSelector((state: RootState) => state.presentation.slides);
-    const { setPresentationTitle } = useAppActions();
-    const { addToast } = useToast();
+    const {setPresentationTitle} = useAppActions();
+    const {addToast} = useToast();
     const exportToPDF = useExportToPDF();
     const handleImport = useImport();
     const navigate = useNavigate();
@@ -73,11 +71,11 @@ export const Header: React.FC<HeaderProps> = ({ description }) => {
             <section className={styles.topPanel}>
                 <section>
                     <div className={styles.titleBar}>
-                        <Input value={title} onChange={(title) => setPresentationTitle(title)} />
+                        <Input value={title} onChange={(title) => setPresentationTitle(title)}/>
                     </div>
                     <Typography variant="description">{description}</Typography>
                 </section>
-                <History />
+                <History/>
                 <section className={styles.actions}>
                     <Button
                         iconSrc={importIcon}
@@ -87,7 +85,8 @@ export const Header: React.FC<HeaderProps> = ({ description }) => {
                     <Button
                         iconSrc={categoryIcon}
                         className={styles.menuButton}
-                        onClick={() => {}}
+                        onClick={() => {
+                        }}
                         isLoading
                         onLoad={handleImport}
                     />

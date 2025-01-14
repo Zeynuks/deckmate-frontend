@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect, useRef } from 'react';
+import axios, { AxiosResponse } from 'axios';
 import styles from './ImageSearchModal.module.css';
 import { useToast } from '../components/Toast/ToastContext';
+import {Typography} from '../components/Typography/Typography.tsx';
 
 interface ImageSearchModalProps {
     isOpen: boolean;
@@ -18,69 +19,129 @@ interface UnsplashImage {
     alt_description?: string;
 }
 
-const ImageSearchModal: React.FC<ImageSearchModalProps> = ({
-                                                               isOpen,
-                                                               onClose,
-                                                               onSelectImage,
-                                                           }) => {
+interface ProgressiveImageProps {
+    lowSrc: string;
+    highSrc: string;
+    alt: string;
+    onClick: () => void;
+}
+
+const ProgressiveImage: React.FC<ProgressiveImageProps> = ({ lowSrc, highSrc, alt, onClick }) => {
+    const [src, setSrc] = useState(lowSrc);
+    const [loadingHigh, setLoadingHigh] = useState(true);
+
+    useEffect(() => {
+        const img = new Image();
+        img.src = highSrc;
+        img.onload = () => {
+            setSrc(highSrc);
+            setLoadingHigh(false);
+        };
+    }, [highSrc]);
+
+    return (
+        <img
+            src={src}
+            alt={alt}
+            onClick={onClick}
+            className={styles.progressiveImage + (loadingHigh ? ` ${styles.loadingHigh}` : '')}
+        />
+    );
+};
+
+const ImageSearchModal: React.FC<ImageSearchModalProps> = ({ isOpen, onClose, onSelectImage }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [images, setImages] = useState<UnsplashImage[]>([]);
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
+    const containerRef = useRef<HTMLDivElement | null>(null);
     const { addToast } = useToast();
+    const accessKey = import.meta.env.VITE_UNSPLASH_ACCESS_KEY;
 
-    const fetchImages = async (query: string) => {
+    const abortControllerRef = useRef<AbortController | null>(null);
+
+    const [debouncedTerm, setDebouncedTerm] = useState(searchTerm);
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedTerm(searchTerm);
+        }, 100);
+        return () => clearTimeout(handler);
+    }, [searchTerm]);
+
+    const fetchImages = async (p: number, term: string) => {
+        if (abortControllerRef.current) {
+            abortControllerRef.current.abort();
+        }
+        abortControllerRef.current = new AbortController();
         try {
             setLoading(true);
-            setError('');
-            const accessKey = import.meta.env.VITE_UNSPLASH_ACCESS_KEY;
-            const response = await axios.get('https://api.unsplash.com/search/photos', {
-                params: {
-                    query,
-                    per_page: 12,
-                },
-                headers: {
-                    Authorization: `Client-ID ${accessKey}`,
-                },
-            });
-            setImages(response.data.results);
-            if (response.data.results.length === 0) {
+            let response: AxiosResponse;
+            if (term.trim().length > 0) {
+                response = await axios.get('https://api.unsplash.com/search/photos', {
+                    params: { query: term, page: p, per_page: 12 },
+                    headers: { Authorization: `Client-ID ${accessKey}` },
+                    signal: abortControllerRef.current.signal,
+                });
+                const newImages: UnsplashImage[] = response.data.results;
+                setImages((prev) => (p === 1 ? newImages : [...prev, ...newImages]));
+                setHasMore(newImages.length === 12);
+            } else {
+                response = await axios.get('https://api.unsplash.com/photos', {
+                    params: { page: p, per_page: 12, order_by: 'latest' },
+                    headers: { Authorization: `Client-ID ${accessKey}` },
+                    signal: abortControllerRef.current.signal,
+                });
+                const newImages: UnsplashImage[] = response.data;
+                setImages((prev) => (p === 1 ? newImages : [...prev, ...newImages]));
+                setHasMore(newImages.length === 12);
+            }
+        } catch (e) {
+            if (!axios.isCancel(e)) {
                 addToast({
-                    title: 'Ничего не найдено',
-                    description: `По запросу "${query}" нет изображений`,
-                    type: 'warning',
+                    title: 'Ошибка',
+                    description: 'Не удалось загрузить изображения.',
+                    type: 'error',
                 });
             }
-        } catch (err) {
-            console.error(err);
-            setError('Ошибка при загрузке изображений');
-            addToast({
-                title: 'Ошибка',
-                description: 'Не удалось загрузить изображения. Попробуйте позже.',
-                type: 'error',
-            });
         } finally {
             setLoading(false);
         }
     };
 
     useEffect(() => {
-        if (isOpen && searchTerm.trim().length > 0) {
-            fetchImages(searchTerm);
-        }
         if (!isOpen) {
             setImages([]);
             setSearchTerm('');
-            setError('');
+            setPage(1);
+            setHasMore(true);
+            return;
         }
-    }, [isOpen]);
+        setImages([]);
+        setPage(1);
+        setHasMore(true);
+    }, [isOpen, debouncedTerm]);
 
-    if (!isOpen) return null;
+    useEffect(() => {
+        if (isOpen) {
+            fetchImages(page, debouncedTerm);
+        }
+    }, [page, isOpen, debouncedTerm]);
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        if (searchTerm.trim()) {
-            fetchImages(searchTerm);
+        if (!isOpen) return;
+        setImages([]);
+        setPage(1);
+        setHasMore(true);
+    };
+
+    const handleScroll = () => {
+        if (containerRef.current && hasMore && !loading) {
+            const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+            if (scrollTop + clientHeight >= scrollHeight - 5) {
+                setPage((prev) => prev + 1);
+            }
         }
     };
 
@@ -91,17 +152,16 @@ const ImageSearchModal: React.FC<ImageSearchModalProps> = ({
             const blob = response.data;
             const fileName = alt ? `${alt}.jpg` : 'unsplash.jpg';
             addToast({
-                title: 'Изображение выбрано',
-                description: `Файл "${fileName}" добавлен в редактор`,
+                title: 'Загрузка завершена',
+                description: 'Изображение успешно добавлено',
                 type: 'success',
             });
             onSelectImage(blob, fileName);
             onClose();
         } catch {
-            setError('Ошибка при загрузке изображения');
             addToast({
                 title: 'Ошибка',
-                description: 'Не удалось загрузить изображение. Попробуйте ещё раз.',
+                description: 'Ошибка при загрузке изображения',
                 type: 'error',
             });
         } finally {
@@ -109,38 +169,33 @@ const ImageSearchModal: React.FC<ImageSearchModalProps> = ({
         }
     };
 
+    if (!isOpen) return null;
+
     return (
         <div className={styles.overlay}>
             <div className={styles.modalContent}>
-                <button className={styles.closeButton} onClick={onClose}>
-                    &#10005;
-                </button>
-                <h2 className={styles.title}>Поиск изображений на Unsplash</h2>
+                <button className={styles.closeButton} onClick={onClose}>&#10005;</button>
+                <Typography variant={'menuTitle'}>Find images</Typography>
+
                 <form onSubmit={handleSearch} className={styles.searchForm}>
                     <input
                         type="text"
-                        placeholder="Введите поисковой запрос"
+                        placeholder="Enter search query"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className={styles.searchInput}
                     />
-                    <button type="submit" className={styles.searchButton}>
-                        Найти
-                    </button>
                 </form>
-                {loading && <p className={styles.loading}>Загрузка...</p>}
-                {error && <p className={styles.error}>{error}</p>}
-                <div className={styles.imagesGrid}>
+                <div ref={containerRef} className={styles.masonryContainer} onScroll={handleScroll}>
                     {images.map((image) => (
-                        <img
-                            key={image.id}
-                            src={image.urls.small}
-                            alt={image.alt_description || 'Unsplash image'}
-                            className={styles.imageItem}
-                            onClick={() =>
-                                handleSelectImage(image.urls.regular, image.alt_description)
-                            }
-                        />
+                        <div key={image.id} className={styles.masonryItem}>
+                            <ProgressiveImage
+                                lowSrc={image.urls.small}
+                                highSrc={image.urls.regular}
+                                alt={image.alt_description || 'Unsplash'}
+                                onClick={() => handleSelectImage(image.urls.regular, image.alt_description)}
+                            />
+                        </div>
                     ))}
                 </div>
             </div>
