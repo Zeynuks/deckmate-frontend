@@ -90,6 +90,9 @@ const editorReducer = (state = getInitialState(), action: ActionsInterfase): Edi
             case ActionTypes.SET_TEXT:
                 return Actions.setText(state, action.payload);
 
+            case ActionTypes.SET_SLIDE_BACKGROUND:
+                return Actions.setSlideBackground(state, action.payload);
+
             default:
                 return state;
         }

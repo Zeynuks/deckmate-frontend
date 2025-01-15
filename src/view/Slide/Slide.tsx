@@ -147,14 +147,13 @@ export const Slide: React.FC<SlideProps> = ({
         },
         {enabled: !edit}
     );
-    console.log(edit)
     const objects = slide.objects.map((object) => {
         const renderSlideObject = (
             size: { width: number; height: number },
             isEditing: boolean
         ) => {
             if (object.id === selected.objects[0]) {
-                setEdit(isEditing);
+                setEdit(selected.objects.includes(object.id) && isEditing);
             }
             switch (object.type) {
                 case ObjectType.Text:
@@ -245,6 +244,7 @@ export const Slide: React.FC<SlideProps> = ({
                         width={1920}
                         height={1080}
                         preserveAspectRatio="xMidYMid slice"
+                        onClick={() => setSelected(slide.id)}
                     />
                 </g>
             )}

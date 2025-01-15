@@ -42,10 +42,6 @@ export enum TextVerticalAlign {
     Bottom = 'bottom',
 }
 
-// ----------------------------
-// Basic Types
-// ----------------------------
-
 export interface Size {
     width: number;
     height: number;
@@ -63,10 +59,6 @@ export type CSSColor =
     | `hsl(${number},${number}%,${number}%)`
     | `hsla(${number},${number}%,${number}%,${number})`
     | `hsla(${number},${number}%,${number}%,${number}%)`;
-
-// ----------------------------
-// Slide Objects
-// ----------------------------
 
 export interface SlideBaseObject {
     id: string;
@@ -156,10 +148,6 @@ export type SlideObject =
     | RectangleObject
     | TriangleObject
     | CustomShapeObject;
-
-// ----------------------------
-// Background Types
-// ----------------------------
 
 export interface BackgroundColor {
     type: BackgroundType.Color;

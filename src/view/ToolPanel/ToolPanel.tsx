@@ -11,7 +11,12 @@ import leftIcon from '../../assets/icons/Left.svg';
 import middleIcon from '../../assets/icons/Center.svg';
 import rightIcon from '../../assets/icons/Right.svg';
 import fillIcon from '../../assets/icons/Fill.svg';
+import slideLoadIcon from '../../assets/icons/slideLoad.svg';
 import backgroundFillIcon from '../../assets/icons/BackgroundFill.svg';
+import convertImageToBase64 from '../../utils/convertBase64.ts';
+import {Background, BackgroundType, CSSColor} from '../../store/types.ts';
+import {useToast} from '../components/Toast/ToastContext.tsx';
+import {useAppActions} from '../../hooks/useAppActions.ts';
 
 function saveSelection(): Range | null {
     const selection = window.getSelection();
@@ -46,6 +51,8 @@ function applyManualFontSize(fontSize: number) {
 }
 
 export const ToolPanel: FC = () => {
+    const { addToast } = useToast();
+    const { setSlideBackground } = useAppActions();
     const selected = useAppSelector((state: RootState) => state.selected);
 
     const fontOptions: SelectOption[] = [
@@ -174,6 +181,50 @@ export const ToolPanel: FC = () => {
         document.execCommand('justifyRight', false);
     };
 
+    const handleSetSlideImageBackground = (file: File) => {
+        if (!file) return;
+        if (!file.type.startsWith('image/')) {
+            addToast({
+                title: 'Ошибка загрузки',
+                description: 'Пожалуйста, выберите файл изображения',
+                type: 'error',
+            });
+            return;
+        }
+        const img = new Image();
+        convertImageToBase64(file)
+            .then((base64) => {
+                img.src = base64;
+            })
+            .catch((error) => {
+                console.error('Ошибка конвертации:', error);
+            });
+        img.onload = () => {
+            URL.revokeObjectURL(img.src);
+
+            const imageBackgound: Background = {
+                type: BackgroundType.Image,
+                src: img.src
+            };
+            setSlideBackground(imageBackgound);
+        };
+        img.onerror = () => {
+            addToast({
+                title: 'Ошибка загрузки',
+                description: 'Ошибка при загрузке изображения',
+                type: 'error',
+            });
+        };
+    };
+
+    const handleSetSlideColorBackground = (color: string) => {
+        const imageBackgound: Background = {
+            type: BackgroundType.Color,
+            color: color as CSSColor
+        };
+        setSlideBackground(imageBackgound);
+    };
+
     return (
         <div className={styles.toolPanel}>
             <Select
@@ -221,8 +272,18 @@ export const ToolPanel: FC = () => {
                 />
             </div>
             <div className={styles.toolbarInner}>
-                <ColorPicker srcIcon={fillIcon} onColorSelect={handleColorChange} />
-                <ColorPicker srcIcon={backgroundFillIcon} onColorSelect={handleBackgoundColorChange} />
+                <ColorPicker srcIcon={fillIcon} onColorSelect={handleColorChange}/>
+                <ColorPicker srcIcon={backgroundFillIcon} onColorSelect={handleBackgoundColorChange}/>
+            </div>
+            <line style={{width: '100%'}}></line>
+            <div className={styles.toolbarInner}>
+                <Button
+                    iconSrc={slideLoadIcon}
+                    className={styles.tollbarButton}
+                    isLoading
+                    onLoad={handleSetSlideImageBackground}
+                />
+                <ColorPicker srcIcon={backgroundFillIcon} onColorSelect={handleSetSlideColorBackground}/>
             </div>
         </div>
     );

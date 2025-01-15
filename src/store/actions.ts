@@ -1,9 +1,14 @@
 import {ActionTypes} from './actionTypes';
-import {Editor, ImageObject, TextObject} from './types';
+import {Editor, ImageObject, TextObject, Background} from './types';
 
 interface SetText {
     type: ActionTypes.SET_TEXT;
     payload: TextObject;
+}
+
+interface SetSlideBackground {
+    type: ActionTypes.SET_SLIDE_BACKGROUND;
+    payload: Background;
 }
 
 interface ImportDocumentAction {
@@ -97,6 +102,10 @@ interface SetSlideSizeAction {
 const setText = (textObject: TextObject): SetText => ({
     type: ActionTypes.SET_TEXT,
     payload: textObject,
+});
+const setSlideBackground = (background: Background): SetSlideBackground => ({
+    type: ActionTypes.SET_SLIDE_BACKGROUND,
+    payload: background,
 });
 
 const setEditor = (newEditor: Editor): SetEditorAction => ({
@@ -205,6 +214,7 @@ export type ActionsInterfase =
     | SetScaleFactorAction
     | SetSlideSizeAction
     | SetImageObjectAction
+    | SetSlideBackground
     | SetEditorAction;
 
 export const ActionCreators = {
@@ -226,5 +236,6 @@ export const ActionCreators = {
     setSlideSize,
     setImageObject,
     setEditor,
+    setSlideBackground,
     setText
 };
