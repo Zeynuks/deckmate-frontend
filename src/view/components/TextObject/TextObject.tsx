@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback } from 'react';
 import {
     TextObject,
     Size,
@@ -6,7 +6,7 @@ import {
 } from '../../../store/types';
 import {
     linesToHTML,
-    parseHTMLtoTextObject, // <-- Обратите внимание
+    parseHTMLtoTextObject,
 } from '../../../utils/textUtils';
 
 function mapVerticalAlign(va: TextVerticalAlign): React.CSSProperties['justifyContent'] {
@@ -35,22 +35,12 @@ export const TextComponent: React.FC<TextComponentProps> = ({
                                                                 isEditing,
                                                                 onFinishEdit,
                                                             }) => {
-    const divRef = useRef<HTMLDivElement>(null);
-
-    // Генерация HTML из модели
     const html = linesToHTML(object);
-
-    // При потере фокуса парсим HTML обратно в модель c помощью getComputedStyle
     const handleBlur = useCallback(() => {
         if (!isEditing) return;
-        if (!divRef.current) return;
-
-        const currentHTML = divRef.current.innerHTML;
-
-        // Если нужно, санитизируем:
-        // const safeHTML = DOMPurify.sanitize(currentHTML);
-
-        // Теперь новый объект — с учётом computed-стиля:
+        const element = document.getElementById(object.id);
+        if (!element) return;
+        const currentHTML = element.innerHTML;
         const newObj = parseHTMLtoTextObject(currentHTML, object);
         onFinishEdit?.(newObj);
     }, [isEditing, onFinishEdit, object]);
@@ -63,8 +53,6 @@ export const TextComponent: React.FC<TextComponentProps> = ({
         justifyContent: mapVerticalAlign(object.verticalAlign),
     };
 
-    console.log('View', object.lines);
-
     return (
         <svg
             x={-size.width / 2}
@@ -76,13 +64,9 @@ export const TextComponent: React.FC<TextComponentProps> = ({
             preserveAspectRatio="none"
         >
             <g>
-                <foreignObject
-                    width={size.width}
-                    height="100%"
-                    style={{ pointerEvents: 'auto' }}
-                >
+                <foreignObject width={size.width} height="100%" style={{ pointerEvents: 'auto' }}>
                     <div
-                        ref={divRef}
+                        id={object.id}
                         contentEditable={isEditing}
                         style={containerStyle}
                         dangerouslySetInnerHTML={{ __html: html }}

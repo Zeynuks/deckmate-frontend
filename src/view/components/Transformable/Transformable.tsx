@@ -4,6 +4,7 @@ import {useResize} from '../../../hooks/useResize.ts';
 import {useRotate} from '../../../hooks/useRotate.ts';
 import {useAppActions} from '../../../hooks/useAppActions.ts';
 import {RootState, useAppSelector} from '../../../store/store.ts';
+import {KeyCodes, useHotkeys} from '../../../hooks/useHotkeys.ts';
 
 type TransformableProps = {
     children: (size: { width: number, height: number }, isEditing: boolean) => ReactNode;
@@ -23,6 +24,8 @@ export const Transformable: React.FC<TransformableProps> = ({
                                                                 onClick,
                                                             }) => {
     const scale = useAppSelector((state: RootState) => state.data.scaleFactor);
+    const selected = useAppSelector((state: RootState) => state.selected);
+
     const {setObjectPosition, setObjectAngle, setObjectSize} = useAppActions();
     const objectRef = useRef<SVGGElement | null>(null);
     const [localPosition, setLocalPosition] = useState(position);
@@ -32,7 +35,7 @@ export const Transformable: React.FC<TransformableProps> = ({
 
     useEffect(() => {
         setEditing(false);
-    }, [children]);
+    }, [selected]);
 
     useEffect(() => {
         setLocalPosition(position);
@@ -79,6 +82,15 @@ export const Transformable: React.FC<TransformableProps> = ({
         onRotateEnd: (angle) => setObjectAngle(angle),
         objectRef,
     });
+
+    useHotkeys(
+        [KeyCodes.escape, KeyCodes.enter],
+        (event) => {
+            event.preventDefault();
+            setEditing(false);
+        },
+        { enabled: isEditing },
+    );
 
     const resizeDirections = [
         {x: -1, y: -1, cursor: 'nw-resize'},

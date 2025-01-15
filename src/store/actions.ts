@@ -27,6 +27,7 @@ interface AddImageObjectAction {
 
 interface AddTextObjectAction {
     type: ActionTypes.ADD_TEXT_OBJECT;
+    payload: TextObject;
 }
 
 interface RemoveSlideAction {
@@ -117,8 +118,9 @@ const addImageObject = (imageObject: ImageObject): AddImageObjectAction => ({
     payload: imageObject,
 });
 
-const addTextObject = (): AddTextObjectAction => ({
+const addTextObject = (textObject: TextObject): AddTextObjectAction => ({
     type: ActionTypes.ADD_TEXT_OBJECT,
+    payload: textObject
 });
 
 const removeSlide = (): RemoveSlideAction => ({

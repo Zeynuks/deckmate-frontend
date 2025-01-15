@@ -1,14 +1,21 @@
 /* Стили для контейнера */
 .container {
+    min-width: 180px;
     position: relative;
     display: flex;
     align-items: center;
-    border: 1px solid #777;
-    border-radius: 0.25em;
+    border: 1px solid #E6E6E6;
+    border-radius: 20px;
     padding: 0.5em;
-    min-height: 2em;
+    min-height: 1.5em;
     gap: 0.5em;
     background-color: white;
+
+    text-decoration: none;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1em;
 }
 
 /* Стили для значения */
@@ -26,7 +33,7 @@
     gap: 0.25em;
     background-color: #f0f0f0;
     border: none;
-    border-radius: 0.25em;
+    border-radius: 20px;
     padding: 0.25em 0.5em;
     cursor: pointer;
 }
@@ -80,14 +87,32 @@
     list-style: none;
     max-height: 15em;
     overflow-y: auto;
-    border: 1px solid #777;
-    border-radius: 0.25em;
+    border: 1px solid #E6E6E6;
+    border-radius: 20px;
     width: 100%;
     top: calc(100% + 0.25em);
     left: 0;
     background-color: white;
     z-index: 100;
     display: none;
+
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1em;
+}
+
+.options::-webkit-scrollbar {
+    margin: 8px 8px;
+    width: 8px;
+    border-radius: 12px;
+
+}
+
+.options::-webkit-scrollbar-thumb {
+    margin: 8px 8px;
+    background-color: #D9D9D9;
+    border-radius: 12px;
 }
 
 .options.show {

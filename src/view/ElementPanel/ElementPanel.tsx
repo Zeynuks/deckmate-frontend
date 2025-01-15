@@ -2,12 +2,19 @@ import React, { useState } from 'react';
 import styles from './ElementPanel.module.css';
 import { Button, IconPosition } from '../components/Button/Button.tsx';
 import imageIcon from '../../assets/icons/gallery.svg';
-import rectIcon from '../../assets/icons/rect.svg';
-import ellipseIcon from '../../assets/icons/ellipse.svg';
-import triangleIcon from '../../assets/icons/triangle.svg';
+import ellipseIcon from '../../assets/icons/scaleDown.svg';
+import triangleIcon from '../../assets/icons/scaleUp.svg';
 import textAreaIcon from '../../assets/icons/text-area.svg';
 import { useToast } from '../components/Toast/ToastContext.tsx';
-import { ImageObject, ObjectType } from '../../store/types.ts';
+import {
+    FontStyle,
+    FontWeight,
+    ImageObject,
+    ObjectType,
+    TextHorizontalAlign,
+    TextObject,
+    TextVerticalAlign
+} from '../../store/types.ts';
 import { v4 as uuidv4 } from 'uuid';
 import { useAppActions } from '../../hooks/useAppActions.ts';
 import convertImageToBase64 from '../../utils/convertBase64.ts';
@@ -96,13 +103,48 @@ export const ElementPanel: React.FC = () => {
         reader.readAsDataURL(fileBlob);
     };
 
+    const addText = () => {
+        const newTextObject: TextObject =  {
+            id: uuidv4(),
+            type: ObjectType.Text,
+            size: {width: 400, height: 100},
+            position: {x: 800, y: 700},
+            angle: 0,
+            verticalAlign: TextVerticalAlign.Middle,
+            lines: [
+                {
+                    id: uuidv4(),
+                    horizontalAlign: TextHorizontalAlign.Left,
+                    spans: [
+                        {
+                            id: uuidv4(),
+                            text: 'Text template',
+                            style: {
+                                fontSize: 20,
+                                fontFamily: 'Arial, sans-serif',
+                                fontWeight: FontWeight.W400,
+                                fontStyle: FontStyle.Normal,
+                                underline: false,
+                                overline: false,
+                                color: '#1ABC9C',
+                                backgroundColor: 'none',
+                            },
+                        }
+                    ],
+                },
+            ],
+        };
+
+        addTextObject(newTextObject);
+    };
+
     return (
         <>
             <section className={styles.elementPanel}>
                 <Button
                     iconSrc={textAreaIcon}
                     iconPosition={IconPosition.Top}
-                    onClick={() => addTextObject()}
+                    onClick={() => addText()}
                 >
                     Text
                 </Button>
@@ -121,26 +163,20 @@ export const ElementPanel: React.FC = () => {
                 >
                     Stock image
                 </Button>
-                <Button
-                    iconSrc={triangleIcon}
-                    iconPosition={IconPosition.Top}
-                    onClick={() => setScaleFactor(1)}
-                >
-                    Triangle
-                </Button>
-                <Button
-                    iconSrc={ellipseIcon}
-                    iconPosition={IconPosition.Top}
-                    onClick={() => setScaleFactor(scale / 2)}
-                >
-                    Ellipse
-                </Button>
-                <Button
-                    iconSrc={rectIcon}
-                    iconPosition={IconPosition.Top}
-                >
-                    Rect
-                </Button>
+               <div style={{width: '96px', display: 'flex', flexDirection: 'column'}}>
+                   <Button
+                       iconSrc={triangleIcon}
+                       iconPosition={IconPosition.Top}
+                       onClick={() => setScaleFactor(1)}
+                   >
+                   </Button>
+                   <Button
+                       iconSrc={ellipseIcon}
+                       iconPosition={IconPosition.Top}
+                       onClick={() => setScaleFactor(scale / 2)}
+                   >
+                   </Button>
+               </div>
             </section>
 
             <ImageSearchModal

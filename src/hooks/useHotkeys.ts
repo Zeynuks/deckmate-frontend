@@ -18,7 +18,14 @@ export enum KeyCodes {
     arrowDown = 'ArrowDown',
     escape = 'Escape',
     enter = 'Enter',
+    ctrlC = 'control+KeyC',
+    ctrlV = 'control+KeyV',
+    metaC = 'meta+KeyC',
+    metaV = 'meta+KeyV',
+    ctrlX = 'control+KeyX',
+    metaX = 'meta+KeyX'
 }
+
 
 export function useHotkeys(
     combinations: KeyCodes[],

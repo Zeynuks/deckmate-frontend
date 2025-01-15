@@ -1,0 +1,24 @@
+.wrapper {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    z-index: 9999
+}
+
+.closeButton {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    bottom: 12px;
+    right: 8px;
+    padding: 4px;
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.select {
+    padding: 0px;
+    background: transparent;
+}

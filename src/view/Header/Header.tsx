@@ -5,7 +5,7 @@ import {useToast} from '../components/Toast/ToastContext.tsx';
 import {History} from '../History/History.tsx';
 import menuIcon from '../../assets/icons/menu.svg';
 import importIcon from '../../assets/icons/import.svg';
-import categoryIcon from '../../assets/icons/category.svg';
+import categoryIcon from '../../assets/icons/pdf.svg';
 import playIcon from '../../assets/icons/play.svg';
 import shareIcon from '../../assets/icons/send.svg';
 import {Input} from '../components/Input/Input.tsx';

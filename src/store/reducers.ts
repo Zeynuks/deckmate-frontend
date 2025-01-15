@@ -43,7 +43,7 @@ const editorReducer = (state = getInitialState(), action: ActionsInterfase): Edi
                 return Actions.addImageObject(state, action.payload);
 
             case ActionTypes.ADD_TEXT_OBJECT:
-                return Actions.addTextObject(state);
+                return Actions.addTextObject(state, action.payload);
 
             case ActionTypes.REMOVE_SLIDE:
                 return Actions.removeSlide(state);

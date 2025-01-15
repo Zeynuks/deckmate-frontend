@@ -1,0 +1,19 @@
+.toolPanel {
+    height: 48px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 0.25px solid #D9D9D9;
+}
+
+.tollbarButton {
+    padding: 0px;
+    background: transparent;
+}
+
+.toolbarInner {
+    display: flex;
+    gap: 16px;
+    padding: 0 16px;
+}
