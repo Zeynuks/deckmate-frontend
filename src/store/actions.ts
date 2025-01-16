@@ -49,16 +49,6 @@ interface ReorderSlideAction {
     payload: number;
 }
 
-interface SetFontSizeAction {
-    type: ActionTypes.SET_FONT_SIZE;
-    payload: number;
-}
-
-interface SetFontWeightAction {
-    type: ActionTypes.SET_FONT_WEIGHT;
-    payload: number;
-}
-
 interface SetImageObjectAction {
     type: ActionTypes.SET_IMAGE_OBJECT;
     payload: ImageObject;
@@ -145,16 +135,6 @@ const reorderSlide = (newIndex: number): ReorderSlideAction => ({
     payload: newIndex,
 });
 
-const setFontSize = (fontSize: number): SetFontSizeAction => ({
-    type: ActionTypes.SET_FONT_SIZE,
-    payload: fontSize,
-});
-
-const setFontWeight = (fontWeight: number): SetFontWeightAction => ({
-    type: ActionTypes.SET_FONT_WEIGHT,
-    payload: fontWeight,
-});
-
 const setObjectAngle = (angle: number): SetObjectAngleAction => ({
     type: ActionTypes.SET_OBJECT_ANGLE,
     payload: angle,
@@ -203,8 +183,6 @@ export type ActionsInterfase =
     | RemoveSlideAction
     | RemoveObjectAction
     | ReorderSlideAction
-    | SetFontSizeAction
-    | SetFontWeightAction
     | SetObjectAngleAction
     | SetObjectPositionAction
     | SetObjectSizeAction
@@ -225,8 +203,6 @@ export const ActionCreators = {
     removeSlide,
     removeObject,
     reorderSlide,
-    setFontSize,
-    setFontWeight,
     setObjectAngle,
     setObjectPosition,
     setObjectSize,

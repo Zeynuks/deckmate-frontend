@@ -29,11 +29,11 @@ const App: React.FC<AppProps> = ({ history }) => {
         <BrowserRouter>
             <Routes>
                 <Route
-                    path="/"
+                    path="/deckmate-frontend/"
                     element={isLoading ? <LoadingScreen /> : <DeckMate history={history} />}
                 />
                 <Route
-                    path="/present"
+                    path="/deckmate-frontend/present"
                     element={isLoading ? <LoadingScreen /> : <SlideViewer/>}
                 />
             </Routes>

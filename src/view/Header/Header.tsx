@@ -37,7 +37,7 @@ export const Header: React.FC<HeaderProps> = ({description}) => {
     };
 
     const viewPresentation = () => {
-        navigate('/present');
+        navigate('/deckmate-frontend/present');
     };
 
     const handleExport = async () => {

@@ -54,12 +54,6 @@ const editorReducer = (state = getInitialState(), action: ActionsInterfase): Edi
             case ActionTypes.REORDER_SLIDE:
                 return Actions.reorderSlide(state, action.payload);
 
-            case ActionTypes.SET_FONT_SIZE:
-                return Actions.setFontSize(state, action.payload);
-
-            case ActionTypes.SET_FONT_WEIGHT:
-                return Actions.setFontWeight(state, action.payload);
-
             case ActionTypes.SET_OBJECT_ANGLE:
                 return Actions.setObjectAngle(state, action.payload);
 
