@@ -5,6 +5,6 @@ export function importDocument(editor: Editor, importedState: Editor): Editor {
     if (validateDocument(importedState)) {
         return { ...importedState };
     } else {
-        return editor;
+      return editor;
     }
 }

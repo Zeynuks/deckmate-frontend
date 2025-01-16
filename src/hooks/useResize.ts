@@ -1,5 +1,5 @@
 import {useRef, useEffect, startTransition, useState} from 'react';
-import { useMousePosition } from './useMousePosition';
+import {useMousePosition} from './useMousePosition';
 
 type UseResizeProps = {
     size: { width: number; height: number };
@@ -25,14 +25,14 @@ export const useResize = ({
     const [, setPosition] = useState(position);
     const [, setSize] = useState(size);
     const isResizing = useRef(false);
-    const startMousePosition = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+    const startMousePosition = useRef<{ x: number; y: number }>({x: 0, y: 0});
     const startDimensions = useRef(size);
     const startPosition = useRef(position);
-    const resizeDirection = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+    const resizeDirection = useRef<{ x: number; y: number }>({x: 0, y: 0});
     const latestPositionRef = useRef(position);
     const latestSizeRef = useRef(size);
 
-    const { getMousePosition } = useMousePosition(objectRef);
+    const {getMousePosition} = useMousePosition(objectRef);
 
     const toRadians = (degrees: number) => degrees * (Math.PI / 180);
 
@@ -98,20 +98,20 @@ export const useResize = ({
         const newX = startPosition.current.x + rotatedShift.x;
         const newY = startPosition.current.y + rotatedShift.y;
 
-        latestPositionRef.current = { x: newX, y: newY };
-        latestSizeRef.current = { width: width, height: height };
+        latestPositionRef.current = {x: newX, y: newY};
+        latestSizeRef.current = {width: width, height: height};
 
         startTransition(() => {
-            setPosition({ x: newX, y: newY });
-            setSize({ height: height, width: width });
+            setPosition({x: newX, y: newY});
+            setSize({height: height, width: width});
         });
         onDrag(newX, newY);
         onResize(width, height);
     };
 
     const handleResizeMouseUp = () => {
-        const { x, y } = latestPositionRef.current;
-        const { width, height } = latestSizeRef.current;
+        const {x, y} = latestPositionRef.current;
+        const {width, height} = latestSizeRef.current;
         isResizing.current = false;
         onDragEnd(x, y);
         onResizeEnd(width, height);
@@ -126,5 +126,5 @@ export const useResize = ({
         };
     }, []);
 
-    return { handleResizeMouseDown };
+    return {handleResizeMouseDown};
 };

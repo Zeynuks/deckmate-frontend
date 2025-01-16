@@ -1,55 +1,18 @@
-export type Size = { width: number; height: number; };
-export type Position = { x: number; y: number };
-export type CSSColor =
-    | `#${string}`
-    | `rgb(${number},${number},${number})`
-    | `rgba(${number},${number},${number},${number})`
-    | `hsl(${number},${number}%,${number}%)`
-    | `hsla(${number},${number}%,${number}%,${number})`
-    | `${string}`;
-
 export enum ObjectType {
     Text = 'text',
     Image = 'image',
+    Ellipse = 'ellipse',
+    Rectangle = 'rectangle',
+    Triangle = 'triangle',
+    CustomShape = 'custom-shape',
 }
 
-export type SlideObject = {
-    id: string;
-    size: Size;
-    position: Position;
-    angle: number
-};
-
-export interface TextStyle {
-    fontSize?: number;
-    fontFamily?: string;
-    fontWeight?: FontWeight;
-    fontStyle?: FontStyle;
-    textDecoration?: TextDecoration;
-    textHorizontalAlign?: TextHorizontalAlign;
-    textVerticalAlign?: TextVerticalAlign;
-    lineHeight?: number;
-    letterSpacing?: number;
-    color?: CSSColor;
-    backgroundColor?: CSSColor;
-}
-
-export type TextSpan = {
-    text: string;
-    style?: TextStyle;
-};
-
-export interface TextObject extends SlideObject {
-    type: ObjectType.Text;
-    content: TextSpan[];
-    style: TextStyle;
+export enum BackgroundType {
+    Image = 'image',
+    Color = 'color',
 }
 
 export enum FontWeight {
-    Normal = 'normal',
-    Bold = 'bold',
-    Lighter = 'lighter',
-    Bolder = 'bolder',
     W100 = 100,
     W200 = 200,
     W300 = 300,
@@ -67,13 +30,6 @@ export enum FontStyle {
     Oblique = 'oblique',
 }
 
-export enum TextDecoration {
-    None = 'none',
-    Underline = 'underline',
-    Overline = 'overline',
-    LineThrough = 'line-through',
-}
-
 export enum TextHorizontalAlign {
     Left = 'left',
     Middle = 'middle',
@@ -81,51 +37,155 @@ export enum TextHorizontalAlign {
 }
 
 export enum TextVerticalAlign {
-    Justify = 'justify',
-    Start = 'start',
-    End = 'end',
+    Top = 'top',
+    Middle = 'middle',
+    Bottom = 'bottom',
 }
 
+export interface Size {
+    width: number;
+    height: number;
+}
 
-export type Image = {
+export interface Position {
+    x: number;
+    y: number;
+}
+
+export type CSSColor =
+    | `#${string}`
+    | `rgb(${number},${number},${number})`
+    | `rgba(${number},${number},${number},${number})`
+    | `hsl(${number},${number}%,${number}%)`
+    | `hsla(${number},${number}%,${number}%,${number})`
+    | `hsla(${number},${number}%,${number}%,${number}%)`;
+
+export interface SlideBaseObject {
+    id: string;
+    size: Size;
+    position: Position;
+    angle: number;
+}
+
+export interface TextObject extends SlideBaseObject {
+    type: ObjectType.Text;
+    lines: TextLine[];
+    verticalAlign: TextVerticalAlign;
+}
+
+export interface TextLine {
+    id: string;
+    horizontalAlign: TextHorizontalAlign;
+    spans: TextSpan[];
+}
+
+export interface TextSpan {
+    id: string;
+    text: string;
+    style: TextStyle;
+}
+
+export interface TextStyle {
+    fontSize: number;
+    fontFamily: string;
+    fontWeight: FontWeight;
+    fontStyle: FontStyle;
+    underline: boolean;
+    overline: boolean;
+    color: CSSColor;
+    backgroundColor: CSSColor | 'none';
+}
+
+export interface ImageObjectBase {
+    type: ObjectType.Image;
     src: string;
-};
-
-export type ImageBackground = Image & {
-    type: 'image';
+    altText?: string;
 }
 
-export type ColorBackground = {
-    type: 'color';
+export interface ImageObject extends SlideBaseObject, ImageObjectBase {}
+
+export interface EllipseObject extends SlideBaseObject {
+    type: ObjectType.Ellipse;
+    radiusX: number;
+    radiusY: number;
+    style: ShapeStyle;
+}
+
+export interface RectangleObject extends SlideBaseObject {
+    type: ObjectType.Rectangle;
+    cornerRadius?: number;
+    style: ShapeStyle;
+}
+
+export interface TriangleObject extends SlideBaseObject {
+    type: ObjectType.Triangle;
+    style: ShapeStyle;
+}
+
+export interface BezierPoint {
+    x: number;
+    y: number;
+    type: 'moveTo' | 'lineTo' | 'curveTo';
+    controlPoints?: BezierPoint[];
+}
+
+export interface CustomShapeObject extends SlideBaseObject {
+    type: ObjectType.CustomShape;
+    points: BezierPoint[];
+    style: ShapeStyle;
+}
+
+export interface ShapeStyle {
+    fillColor?: CSSColor;
+    strokeColor?: CSSColor;
+    strokeWidth?: number;
+}
+
+export type SlideObject =
+    | TextObject
+    | ImageObject
+    | EllipseObject
+    | RectangleObject
+    | TriangleObject
+    | CustomShapeObject;
+
+export interface BackgroundColor {
+    type: BackgroundType.Color;
     color: CSSColor;
 }
 
-export type ImageObject = SlideObject & Image & {
-    type: ObjectType.Image;
+export interface BackgroundImage {
+    type: BackgroundType.Image;
+    src: string;
     altText?: string;
-};
+}
 
-export type Background = ImageBackground | ColorBackground;
+export type Background = BackgroundImage | BackgroundColor;
 
-export type Slide = {
+export interface Slide {
     id: string;
     size: Size;
     background: Background;
-    objects: (TextObject | ImageObject)[];
-};
-
-export type Presentation = {
-    title: string;
-    slides: Slide[];
-};
-
-export type Selected = {
-    slide?: string;
-    objects: string[];
-};
-
-export type Editor = {
-    presentation: Presentation;
-    selected: Selected;
+    objects: SlideObject[];
 }
 
+export interface Presentation {
+    title: string;
+    slides: Slide[];
+}
+
+export interface Selected {
+    slide?: string;
+    objects: string[];
+}
+
+export interface PresentationData {
+    scaleFactor: number;
+    slideSize: Size;
+}
+
+export interface Editor {
+    presentation: Presentation;
+    data: PresentationData;
+    selected: Selected;
+}

@@ -1,24 +1,44 @@
-import { Header } from './view/Header/Header';
-import { ToastProvider } from './view/components/ui/Toast/ToastContext';
-import { ElementPanel } from './view/ElementPanel/ElementPanel';
-import { PresentationWorkspace } from './view/WorkSpace/WorkSpace';
-import { SlideList } from './view/SlideList/SlideList';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router';
+import LoadingScreen from './view/LoadingScreen/LoadingScreen';
+import DeckMate from './DeсkMate.tsx';
+import {HistoryType} from './utils/history.ts';
+import SlideViewer from './view/SlideViewer/SlideViewer.tsx';
 
-export const App: React.FC = () => {
+type AppProps = {
+    history: HistoryType;
+};
+
+const App: React.FC<AppProps> = ({ history }) => {
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const handleLoad = () => {
+            setIsLoading(false);
+        };
+
+        if (document.readyState === 'complete') {
+            handleLoad();
+        } else {
+            window.addEventListener('load', handleLoad);
+            return () => window.removeEventListener('load', handleLoad);
+        }
+    }, []);
 
     return (
-        <ToastProvider>
-            <Header description={'Workspace'} />
-            <div style={{
-                height: 'calc(100vh - 96px)',
-                display: 'flex',
-                flexDirection: 'row',
-            }}>
-                <ElementPanel />
-                <PresentationWorkspace/>
-                <SlideList/>
-            </div>
-        </ToastProvider>
+        <BrowserRouter>
+            <Routes>
+                <Route
+                    path="/deckmate-frontend/"
+                    element={isLoading ? <LoadingScreen /> : <DeckMate history={history} />}
+                />
+                <Route
+                    path="/deckmate-frontend/present"
+                    element={isLoading ? <LoadingScreen /> : <SlideViewer/>}
+                />
+            </Routes>
+        </BrowserRouter>
     );
 };
+
+export default App;

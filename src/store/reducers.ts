@@ -3,6 +3,7 @@ import {ActionTypes} from './actionTypes';
 import * as Actions from './functions';
 import {defaultEditor} from './templates.ts';
 import {ActionsInterfase} from './actions.ts';
+
 const loadState = (): Editor | undefined => {
     try {
         const serializedState = localStorage.getItem('editorState');
@@ -23,15 +24,18 @@ const saveState = (state: Editor) => {
     }
 };
 
-// TODO: Убрать затычку defaultEditor
 const getInitialState = (): Editor => {
     const savedState = loadState();
     return savedState || defaultEditor;
 };
 
+
 const editorReducer = (state = getInitialState(), action: ActionsInterfase): Editor => {
     const newState = (() => {
         switch (action.type) {
+            case ActionTypes.SET_EDITOR:
+                return Actions.setEditor(action.payload);
+
             case ActionTypes.ADD_SLIDE:
                 return Actions.addSlide(state);
 
@@ -39,7 +43,7 @@ const editorReducer = (state = getInitialState(), action: ActionsInterfase): Edi
                 return Actions.addImageObject(state, action.payload);
 
             case ActionTypes.ADD_TEXT_OBJECT:
-                return Actions.addTextObject(state);
+                return Actions.addTextObject(state, action.payload);
 
             case ActionTypes.REMOVE_SLIDE:
                 return Actions.removeSlide(state);
@@ -49,12 +53,6 @@ const editorReducer = (state = getInitialState(), action: ActionsInterfase): Edi
 
             case ActionTypes.REORDER_SLIDE:
                 return Actions.reorderSlide(state, action.payload);
-
-            case ActionTypes.SET_FONT_SIZE:
-                return Actions.setFontSize(state, action.payload);
-
-            case ActionTypes.SET_FONT_WEIGHT:
-                return Actions.setFontWeight(state, action.payload);
 
             case ActionTypes.SET_OBJECT_ANGLE:
                 return Actions.setObjectAngle(state, action.payload);
@@ -74,9 +72,20 @@ const editorReducer = (state = getInitialState(), action: ActionsInterfase): Edi
             case ActionTypes.IMPORT_DOCUMENT:
                 return Actions.importDocument(state, action.payload);
 
-            case ActionTypes.EXPORT_DOCUMENT:
-                Actions.exportDocument(state);
-                return state;
+            case ActionTypes.SET_SCALE_FACTOR:
+                return Actions.setScaleFactor(state, action.payload);
+
+            case ActionTypes.SET_SLIDE_SIZE:
+                return Actions.setSlideSize(state, action.payload);
+
+            case ActionTypes.SET_IMAGE_OBJECT:
+                return Actions.setImageObject(state, action.payload);
+
+            case ActionTypes.SET_TEXT:
+                return Actions.setText(state, action.payload);
+
+            case ActionTypes.SET_SLIDE_BACKGROUND:
+                return Actions.setSlideBackground(state, action.payload);
 
             default:
                 return state;

@@ -8,16 +8,24 @@
     background: none;
 }
 
+.buttonText {
+    text-decoration: none;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1em;
+}
+
 
 .presentButton {
     color: #FFFFFF;
-    padding: 12px 20px;
+    padding: 12px 18px;
     background-color: #7B61FF;
 }
 
 .shareButton {
     color: #FFFFFF;
-    padding: 12px 20px;
+    padding: 12px 18px;
     background-color: #000000;
 }
 

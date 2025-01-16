@@ -1,13 +1,24 @@
 import {ActionTypes} from './actionTypes';
-import {Editor, ImageObject} from './types';
+import {Editor, ImageObject, TextObject, Background} from './types';
+
+interface SetText {
+    type: ActionTypes.SET_TEXT;
+    payload: TextObject;
+}
+
+interface SetSlideBackground {
+    type: ActionTypes.SET_SLIDE_BACKGROUND;
+    payload: Background;
+}
 
 interface ImportDocumentAction {
     type: ActionTypes.IMPORT_DOCUMENT;
     payload: Editor;
 }
 
-interface ExportDocumentAction {
-    type: ActionTypes.EXPORT_DOCUMENT;
+interface SetEditorAction {
+    type: ActionTypes.SET_EDITOR;
+    payload: Editor;
 }
 
 interface AddSlideAction {
@@ -21,6 +32,7 @@ interface AddImageObjectAction {
 
 interface AddTextObjectAction {
     type: ActionTypes.ADD_TEXT_OBJECT;
+    payload: TextObject;
 }
 
 interface RemoveSlideAction {
@@ -37,14 +49,9 @@ interface ReorderSlideAction {
     payload: number;
 }
 
-interface SetFontSizeAction {
-    type: ActionTypes.SET_FONT_SIZE;
-    payload: number;
-}
-
-interface SetFontWeightAction {
-    type: ActionTypes.SET_FONT_WEIGHT;
-    payload: number;
+interface SetImageObjectAction {
+    type: ActionTypes.SET_IMAGE_OBJECT;
+    payload: ImageObject;
 }
 
 interface SetObjectAngleAction {
@@ -72,13 +79,33 @@ interface SetSelectedAction {
     payload: { slide?: string, objects: string[] };
 }
 
-const importDocument = (editor: Editor): ImportDocumentAction => ({
-    type: ActionTypes.IMPORT_DOCUMENT,
-    payload: editor,
+interface SetScaleFactorAction {
+    type: ActionTypes.SET_SCALE_FACTOR;
+    payload: number
+}
+
+interface SetSlideSizeAction {
+    type: ActionTypes.SET_SLIDE_SIZE;
+    payload: { width: number; height: number };
+}
+
+const setText = (textObject: TextObject): SetText => ({
+    type: ActionTypes.SET_TEXT,
+    payload: textObject,
+});
+const setSlideBackground = (background: Background): SetSlideBackground => ({
+    type: ActionTypes.SET_SLIDE_BACKGROUND,
+    payload: background,
 });
 
-const exportDocument = (): ExportDocumentAction => ({
-    type: ActionTypes.EXPORT_DOCUMENT,
+const setEditor = (newEditor: Editor): SetEditorAction => ({
+    type: ActionTypes.SET_EDITOR,
+    payload: newEditor,
+});
+
+const importDocument = (importedEditor: Editor): ImportDocumentAction => ({
+    type: ActionTypes.IMPORT_DOCUMENT,
+    payload: importedEditor,
 });
 
 const addSlide = (): AddSlideAction => ({
@@ -90,8 +117,9 @@ const addImageObject = (imageObject: ImageObject): AddImageObjectAction => ({
     payload: imageObject,
 });
 
-const addTextObject = (): AddTextObjectAction => ({
+const addTextObject = (textObject: TextObject): AddTextObjectAction => ({
     type: ActionTypes.ADD_TEXT_OBJECT,
+    payload: textObject
 });
 
 const removeSlide = (): RemoveSlideAction => ({
@@ -107,16 +135,6 @@ const reorderSlide = (newIndex: number): ReorderSlideAction => ({
     payload: newIndex,
 });
 
-const setFontSize = (fontSize: number): SetFontSizeAction => ({
-    type: ActionTypes.SET_FONT_SIZE,
-    payload: fontSize,
-});
-
-const setFontWeight = (fontWeight: number): SetFontWeightAction => ({
-    type: ActionTypes.SET_FONT_WEIGHT,
-    payload: fontWeight,
-});
-
 const setObjectAngle = (angle: number): SetObjectAngleAction => ({
     type: ActionTypes.SET_OBJECT_ANGLE,
     payload: angle,
@@ -124,12 +142,17 @@ const setObjectAngle = (angle: number): SetObjectAngleAction => ({
 
 const setObjectPosition = (x: number, y: number): SetObjectPositionAction => ({
     type: ActionTypes.SET_OBJECT_POSITION,
-    payload: { x, y },
+    payload: {x, y},
 });
 
 const setObjectSize = (width: number, height: number): SetObjectSizeAction => ({
     type: ActionTypes.SET_OBJECT_SIZE,
-    payload: { width, height },
+    payload: {width, height},
+});
+
+const setImageObject = (image: ImageObject): SetImageObjectAction => ({
+    type: ActionTypes.SET_IMAGE_OBJECT,
+    payload: image,
 });
 
 const setPresentationTitle = (title: string): SetPresentationTitleAction => ({
@@ -139,40 +162,56 @@ const setPresentationTitle = (title: string): SetPresentationTitleAction => ({
 
 const setSelected = (slide?: string, objects: string[] = []): SetSelectedAction => ({
     type: ActionTypes.SET_SELECTED,
-    payload: { slide, objects: objects || [] },
+    payload: {slide, objects: objects},
+});
+
+const setScaleFactor = (scaleFactor: number): SetScaleFactorAction => ({
+    type: ActionTypes.SET_SCALE_FACTOR,
+    payload: scaleFactor,
+});
+
+const setSlideSize = (width: number, height: number): SetSlideSizeAction => ({
+    type: ActionTypes.SET_SLIDE_SIZE,
+    payload: {width, height},
 });
 
 export type ActionsInterfase =
+    | SetText
     | AddSlideAction
     | AddImageObjectAction
     | AddTextObjectAction
     | RemoveSlideAction
     | RemoveObjectAction
     | ReorderSlideAction
-    | SetFontSizeAction
-    | SetFontWeightAction
     | SetObjectAngleAction
     | SetObjectPositionAction
     | SetObjectSizeAction
     | SetPresentationTitleAction
     | SetSelectedAction
     | ImportDocumentAction
-    | ExportDocumentAction;
+    | SetScaleFactorAction
+    | SetSlideSizeAction
+    | SetImageObjectAction
+    | SetSlideBackground
+    | SetEditorAction;
 
 export const ActionCreators = {
     importDocument,
-    exportDocument,
     addSlide,
     addImageObject,
     addTextObject,
     removeSlide,
     removeObject,
     reorderSlide,
-    setFontSize,
-    setFontWeight,
     setObjectAngle,
     setObjectPosition,
     setObjectSize,
     setPresentationTitle,
     setSelected,
+    setScaleFactor,
+    setSlideSize,
+    setImageObject,
+    setEditor,
+    setSlideBackground,
+    setText
 };
